@@ -7,11 +7,14 @@ public class ItemManagement : MonoBehaviour
 	//Placeholder for interacting with pickups and activators
 	public bool activated = false;
 
-	private float originalZ;
+	private Vector3 original;
+	private float angle;
 
-	void start ()
+	void Start ()
 	{
-		originalZ = transform.position.z;
+		//Track original angle and position
+		original = transform.localPosition;
+		angle = transform.eulerAngles.x;
 	}
 
 	void Update ()
@@ -20,16 +23,18 @@ public class ItemManagement : MonoBehaviour
 		{
 			if (gameObject.tag == "Book")
 			{
-				transform.position = new Vector3(transform.position.x, transform.position.y, -0.7f);
-				transform.eulerAngles = new Vector3(45.0f, transform.eulerAngles.y, transform.eulerAngles.z);
+				//Pull book out and angle downward
+				transform.localPosition = original + transform.forward * 0.25f;
+				transform.eulerAngles = new Vector3(angle + 45.0f, transform.eulerAngles.y, transform.eulerAngles.z);
 			}
 		}
 		else
 		{
 			if (gameObject.tag == "Book")
 			{
-				transform.position = new Vector3(transform.position.x, transform.position.y, -0.6f);
-				transform.eulerAngles = new Vector3(0.0f, transform.eulerAngles.y, transform.eulerAngles.z);
+				//Restore book to original position
+				transform.localPosition = original;
+				transform.eulerAngles = new Vector3(angle, transform.eulerAngles.y, transform.eulerAngles.z);
 			}
 		}
 	}
