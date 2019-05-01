@@ -14,25 +14,25 @@ AnimatorController:
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: Back
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: ToLoadGame
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   - m_Name: ToOptions
     m_Type: 9
     m_DefaultFloat: 0
     m_DefaultInt: 0
     m_DefaultBool: 0
-    m_Controller: {fileID: 0}
+    m_Controller: {fileID: 9100000}
   m_AnimatorLayers:
   - serializedVersion: 5
     m_Name: Base Layer
@@ -470,19 +470,19 @@ AnimatorStateMachine:
     m_Position: {x: 324, y: 168, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 1102821182447161840}
-    m_Position: {x: 708, y: 252, z: 0}
+    m_Position: {x: 684, y: 276, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 1102017319788332530}
-    m_Position: {x: 528, y: 48, z: 0}
+    m_Position: {x: 756, y: 48, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 1102115904566144936}
-    m_Position: {x: 360, y: -72, z: 0}
+    m_Position: {x: 708, y: -72, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 1102371257038876874}
     m_Position: {x: 228, y: -216, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 1102870646094544028}
-    m_Position: {x: 601.5867, y: -155.67007, z: 0}
+    m_Position: {x: 492, y: -204, z: 0}
   m_ChildStateMachines: []
   m_AnyStateTransitions: []
   m_EntryTransitions: []
