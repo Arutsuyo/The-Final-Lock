@@ -5,7 +5,8 @@ using UnityEngine;
 public class ItemManagement : MonoBehaviour
 {
 	//Placeholder for interacting with pickups and activators
-	public bool activated = false;
+	public bool activated = false; //Player can activate items but they still need to be a clue for something to happen
+	public bool clue = false;
 
 	private Vector3 original;
 	private float angle;
@@ -19,7 +20,7 @@ public class ItemManagement : MonoBehaviour
 
 	void Update ()
 	{
-		if (activated)
+		if (activated && clue)
 		{
 			if (gameObject.tag == "Book")
 			{
