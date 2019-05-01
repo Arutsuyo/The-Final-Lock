@@ -7,6 +7,8 @@ TagManager:
   - Pickup
   - Actionable
   - Book
+  - Wall Item X
+  - Wall Item Z
   layers:
   - Default
   - TransparentFX

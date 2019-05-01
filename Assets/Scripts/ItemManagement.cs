@@ -9,13 +9,13 @@ public class ItemManagement : MonoBehaviour
 	public bool clue = false;
 
 	private Vector3 original;
-	private float angle;
+	private Vector3 angle;
 
 	void Start ()
 	{
 		//Track original angle and position
 		original = transform.localPosition;
-		angle = transform.eulerAngles.x;
+		angle = transform.eulerAngles;
 	}
 
 	void Update ()
@@ -26,17 +26,24 @@ public class ItemManagement : MonoBehaviour
 			{
 				//Pull book out and angle downward
 				transform.localPosition = original + transform.forward * 0.25f;
-				transform.eulerAngles = new Vector3(angle + 45.0f, transform.eulerAngles.y, transform.eulerAngles.z);
+				transform.eulerAngles = new Vector3(angle.x + 45.0f, angle.y, angle.z);
+			}
+			else if (gameObject.tag == "Wall Item X")
+			{
+				//Rotate object slightly
+				transform.eulerAngles = new Vector3(angle.x + 30.0f, angle.y, angle.z);
+			}
+			else if (gameObject.tag == "Wall Item Z")
+			{
+				//Rotate object slightly
+				transform.eulerAngles = new Vector3(angle.x, angle.y, angle.z + 30.0f);
 			}
 		}
 		else
 		{
-			if (gameObject.tag == "Book")
-			{
-				//Restore book to original position
-				transform.localPosition = original;
-				transform.eulerAngles = new Vector3(angle, transform.eulerAngles.y, transform.eulerAngles.z);
-			}
+			//Restore object to original position
+			transform.localPosition = original;
+			transform.eulerAngles = new Vector3(angle.x, angle.y, angle.z);
 		}
 	}
 }
