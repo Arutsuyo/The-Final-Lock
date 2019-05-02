@@ -5,6 +5,10 @@
 [Bb]uilds/
 Assets/AssetStoreTools*
 
+# FMOD Cache
+FMOD/fmodproj/.cache/
+FMOD/fmodproj/.unsaved/
+
 # Visual Studio cache directory
 .vs/
 
@@ -23,6 +27,8 @@ ExportedObj/
 *.svd
 *.pdb
 *.opendb
+*.log
+
 
 # Unity3D generated meta files
 *.pidb.meta
