@@ -17,6 +17,34 @@ public class CameraController : MonoBehaviour
     public float yaw = 0.0f;
     public float pitch = 0.0f;
 
+    // Set if something is in the middle of the screen
+    Interactable obj;
+    public string objName;
+    private bool interact = false;
+
+    private void CheckForObject()
+    {
+        // Check for an object in the middle if the screen
+        Ray ray = Camera.main.ScreenPointToRay(
+            new Vector3(
+                Screen.width / 2f,
+                Screen.height / 2f, 0));
+        RaycastHit hit;
+        if (Physics.Raycast(ray, out hit, 20f))
+        {
+            obj = hit.collider.gameObject.GetComponent<Interactable>();
+            if(obj != null)
+            {
+                objName = obj.gameObject.name;
+                obj.LookingAt();
+                if (interact)
+                    obj.Interact();
+            }
+        }
+
+        interact = false;
+    }
+
     void Update () 
     {
         //Adjust camera with mouse
@@ -26,6 +54,9 @@ public class CameraController : MonoBehaviour
             pitch = 89.9f;
         if (pitch <= -90)
             pitch = -89.9f;
+
+        if (Input.GetKey(KeyCode.E))
+            interact = true;
     }
 
     void LateUpdate ()
@@ -34,6 +65,9 @@ public class CameraController : MonoBehaviour
         transform.eulerAngles = new Vector3(pitch, yaw, 0.0f);
         //Rotate player with camera
         player.transform.rotation = Quaternion.Euler(player.transform.rotation.eulerAngles.x, transform.rotation.eulerAngles.y, player.transform.rotation.eulerAngles.z);
+
+
+        CheckForObject();
     }
 
 }
