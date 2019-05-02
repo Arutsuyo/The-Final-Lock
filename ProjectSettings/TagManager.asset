@@ -3,7 +3,12 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Pickup
+  - Actionable
+  - Book
+  - Wall Item X
+  - Wall Item Z
   layers:
   - Default
   - TransparentFX
