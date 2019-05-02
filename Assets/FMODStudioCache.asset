@@ -22,7 +22,11 @@ MonoBehaviour:
   - {fileID: 114010857036227082}
   StringsBanks:
   - {fileID: 114439715907192732}
+<<<<<<< Updated upstream
   stringsBankWriteTime: 636923372036848408
+=======
+  stringsBankWriteTime: 636923183714479334
+>>>>>>> Stashed changes
   cacheVersion: 3
 --- !u!114 &114010857036227082
 MonoBehaviour:
@@ -115,7 +119,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Path: FMOD\fmodproj\Build\Desktop\Master Bank.strings.bank
+<<<<<<< Updated upstream
   lastModified: 636923372036848408
+=======
+  lastModified: 636923183714479334
+>>>>>>> Stashed changes
   LoadResult: 0
   FileSizes:
   - Name: Desktop
@@ -157,7 +165,11 @@ MonoBehaviour:
   Is3D: 0
   IsOneShot: 0
   Parameters:
+<<<<<<< Updated upstream
   - {fileID: 114321103400485942}
+=======
+  - {fileID: 114508720093172454}
+>>>>>>> Stashed changes
   MinDistance: 0
   MaxDistance: 0
   Length: 54868
