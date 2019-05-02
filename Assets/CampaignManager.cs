@@ -50,6 +50,8 @@ public class CampaignManager : MonoBehaviour
     public void Go(int id)
     {
         Debug.Log("Launching campaign ID " + id + " in 3...2....1...JUMP");
+        animation.SetTrigger("GoToRoom");
+
     }
     public void Starting()
     {
