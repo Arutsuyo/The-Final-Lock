@@ -8,7 +8,7 @@ public class ObjWatcher : MonoBehaviour
     [Range(0.01f,100f)]public float threshold = 0.01f;
     [Range(0.001f, 2*Mathf.PI)] public float rotThreshold = 0.01f;
     [Range(0, 10f)] public float sendFrequency = 0.1f;
-    [Range(0.001f, 10f)] public float refreshDelay = 0.1f;
+    [Range(0.0001f, 10f)] public float refreshDelay = 0.1f;
     public bool sendMovement = true;
     public bool sendRotation = true;
     public int qosStream = 1;
