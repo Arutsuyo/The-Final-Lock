@@ -17,31 +17,36 @@ public class CameraController : MonoBehaviour
     public float yaw = 0.0f;
     public float pitch = 0.0f;
 
-    // Set if something is in the middle of the screen
-    Interactable obj;
-    public string objName;
+    // Set during update to see if the player wants to interact.
     private bool interact = false;
 
+    // This function triggers the subscribed events on the target object in the 
+    // center of the screen. Call this function at the end of LateUpdate so we 
+    // can calculate the ray AFTER camera movement.
     private void CheckForObject()
     {
         // Check for an object in the middle if the screen
+        RaycastHit hit;
         Ray ray = Camera.main.ScreenPointToRay(
             new Vector3(
                 Screen.width / 2f,
                 Screen.height / 2f, 0));
-        RaycastHit hit;
+        
+        // Test if there is something in the middle
         if (Physics.Raycast(ray, out hit, 20f))
         {
-            obj = hit.collider.gameObject.GetComponent<Interactable>();
+            // Check if the target is interactable
+            Interactable obj = hit.collider.gameObject.GetComponent<Interactable>();
             if(obj != null)
             {
-                objName = obj.gameObject.name;
+                // Trigger the corresponding events
                 obj.LookingAt();
                 if (interact)
                     obj.Interact();
             }
         }
 
+        // Reset intractability
         interact = false;
     }
 
@@ -50,11 +55,14 @@ public class CameraController : MonoBehaviour
         //Adjust camera with mouse
         yaw += hSpeed * Input.GetAxis("Mouse X");
         pitch -= vSpeed * Input.GetAxis("Mouse Y");
+
+        // Correct for Gimbo Lock (Player Camera should not rotate past 90'
         if (pitch >= 90)
             pitch = 89.9f;
         if (pitch <= -90)
             pitch = -89.9f;
 
+        // This can be whatever "Use" input we want to accept
         if (Input.GetKey(KeyCode.E))
             interact = true;
     }
@@ -66,7 +74,7 @@ public class CameraController : MonoBehaviour
         //Rotate player with camera
         player.transform.rotation = Quaternion.Euler(player.transform.rotation.eulerAngles.x, transform.rotation.eulerAngles.y, player.transform.rotation.eulerAngles.z);
 
-
+        // Interact with whatever we might be looking at after movement
         CheckForObject();
     }
 

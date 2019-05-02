@@ -14,37 +14,67 @@ public class testQuit : MonoBehaviour
 
     public void Subscribe()
     {
+        // Get the Interactable script reference
         Interactable ia = gameObject.GetComponent<Interactable>();
+
+        // Make sure it's not null
         if (ia)
         {
-            ia.lookEvent += () => { LookedAt(); };
-            ia.interactEvent += () => { Interacted(); };
+            // Subscribe to the event
+            ia.lookEvent += LookedAt;
+            ia.interactEvent += Interacted;
         }
     }
 
-    private void Update()
+    public void Unsubscribe()
     {
-        gameObject.GetComponent<Renderer>().material = standard;
+        // Get the Interactable script reference
+        Interactable ia = gameObject.GetComponent<Interactable>();
+
+        // Make sure it's not null
+        if (ia)
+        {
+            // Unsubscribe to the event
+            ia.lookEvent -= LookedAt;
+            ia.interactEvent -= Interacted;
+        }
     }
 
     private void LookedAt()
     {
+        //Handle event.....
         Debug.Log("Look event triggered!");
-        gameObject.GetComponent<Renderer>().material = looking;
+        // Can call whatever function you want
+        SwapMaterial();
     }
 
     private void Interacted()
     {
         //Handle event.....
         Debug.Log("Interact event triggered!");
+        // Can call whatever function you want
+        QuitEditor();
+    }
+    private void Update()
+    {
+        gameObject.GetComponent<Renderer>().material = standard;
+    }
+
+    private void QuitEditor()
+    {
 
 #if UNITY_WEBPLAYER
-    Application.OpenURL(webplayerQuitURL);  
+        Application.OpenURL(webplayerQuitURL);  
 #elif UNITY_EDITOR
         UnityEditor.EditorApplication.isPlaying = false;
 #else
-    Application.Quit();
+        Application.Quit();
 #endif
 
+    }
+
+    private void SwapMaterial()
+    {
+        gameObject.GetComponent<Renderer>().material = looking;
     }
 }
