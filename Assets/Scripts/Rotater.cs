@@ -9,7 +9,7 @@ public class Rotater : MonoBehaviour
     private float delta = 0;
     public void Update()
     {
-        gameObject.transform.rotation = Quaternion.Euler(0, delta, 0);
-        delta += speed * Time.deltaTime;
+        gameObject.transform.localRotation *= Quaternion.Euler(0, delta, 0);
+        delta = speed * Time.deltaTime;
     }
 }

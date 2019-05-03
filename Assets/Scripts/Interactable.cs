@@ -10,24 +10,24 @@ using UnityEngine;
 public class Interactable : MonoBehaviour
 {
     // This is what the event subscriber should look like
-    public delegate void EventHandler();
+    public delegate void EventHandler(CameraController cc);
 
     // These are the 2 events, triggered by the player camera raycast
     public event EventHandler lookEvent = delegate { };
     public event EventHandler interactEvent = delegate { };
 
     // Fires Interact event
-    public void Interact()
+    public void Interact(CameraController cc)
     {
         //Debug.Log("Interacted with " + gameObject.name);
-        interactEvent();
+        interactEvent(cc);
     }
 
     // Fires Look event
-    public void LookingAt()
+    public void LookingAt(CameraController cc)
     {
         //Debug.Log("Looking at " + gameObject.name);
-        lookEvent();
+        lookEvent(cc);
     }
 }
 

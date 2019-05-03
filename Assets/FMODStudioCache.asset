@@ -13,22 +13,18 @@ MonoBehaviour:
   m_Name: FMODStudioCache
   m_EditorClassIdentifier: 
   EditorBanks:
-  - {fileID: 114439715907192732}
-  - {fileID: 114010857036227082}
+  - {fileID: 114108573030129572}
+  - {fileID: 114279558354652130}
   EditorEvents:
-  - {fileID: 114298912354237068}
-  - {fileID: 114840792911135522}
+  - {fileID: 114390327614904928}
+  - {fileID: 114918883592987546}
   MasterBanks:
-  - {fileID: 114010857036227082}
+  - {fileID: 114279558354652130}
   StringsBanks:
-  - {fileID: 114439715907192732}
-<<<<<<< Updated upstream
-  stringsBankWriteTime: 636923372036848408
-=======
+  - {fileID: 114108573030129572}
   stringsBankWriteTime: 636923183714479334
->>>>>>> Stashed changes
   cacheVersion: 3
---- !u!114 &114010857036227082
+--- !u!114 &114108573030129572
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -40,14 +36,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Path: F:\Nara\Unity Projects\The-Final-Lock\FMOD\fmodproj\Build\Desktop\Master Bank.bank
-  lastModified: 636923372036800412
+  Path: FMOD\fmodproj\Build\Desktop\Master Bank.strings.bank
+  lastModified: 636923183714479334
   LoadResult: 0
   FileSizes:
   - Name: Desktop
-    Value: 664064
+    Value: 770
   Exists: 1
---- !u!114 &114291819118459214
+--- !u!114 &114279558354652130
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -67,85 +63,7 @@ MonoBehaviour:
   - Name: Desktop
     Value: 664064
   Exists: 1
---- !u!114 &114298912354237068
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Path: event:/Music
-  guid: 54485aecba78da4894c3fcd03cf03c5a
-  Banks:
-  - {fileID: 114010857036227082}
-  IsStream: 1
-  Is3D: 0
-  IsOneShot: 0
-  Parameters: []
-  MinDistance: 0
-  MaxDistance: 0
-  Length: 48000
---- !u!114 &114321103400485942
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Name: Speed
-  Min: 0
-  Max: 100
-  Default: 0
---- !u!114 &114439715907192732
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c18180ecb35941f4682ae60107b85b7c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Path: FMOD\fmodproj\Build\Desktop\Master Bank.strings.bank
-<<<<<<< Updated upstream
-  lastModified: 636923372036848408
-=======
-  lastModified: 636923183714479334
->>>>>>> Stashed changes
-  LoadResult: 0
-  FileSizes:
-  - Name: Desktop
-    Value: 770
-  Exists: 1
---- !u!114 &114508720093172454
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Name: Speed
-  Min: 0
-  Max: 100
-  Default: 0
---- !u!114 &114840792911135522
+--- !u!114 &114390327614904928
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -160,16 +78,51 @@ MonoBehaviour:
   Path: event:/MainMenuMusic
   guid: 125d9f9b388ad74ca87803d1ea8d4c5d
   Banks:
-  - {fileID: 114010857036227082}
+  - {fileID: 114279558354652130}
   IsStream: 1
   Is3D: 0
   IsOneShot: 0
   Parameters:
-<<<<<<< Updated upstream
-  - {fileID: 114321103400485942}
-=======
-  - {fileID: 114508720093172454}
->>>>>>> Stashed changes
+  - {fileID: 114706969689377556}
   MinDistance: 0
   MaxDistance: 0
   Length: 54868
+--- !u!114 &114706969689377556
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fecb8ef7f94ca804a8ab72049b86782e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Name: Speed
+  Min: 0
+  Max: 100
+  Default: 0
+--- !u!114 &114918883592987546
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ceb653cd98e289a4e8697a1af55201f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Path: event:/Music
+  guid: 54485aecba78da4894c3fcd03cf03c5a
+  Banks:
+  - {fileID: 114279558354652130}
+  IsStream: 1
+  Is3D: 0
+  IsOneShot: 0
+  Parameters: []
+  MinDistance: 0
+  MaxDistance: 0
+  Length: 48000

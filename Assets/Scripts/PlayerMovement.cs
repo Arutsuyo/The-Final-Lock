@@ -10,7 +10,7 @@ public class PlayerMovement : MonoBehaviour
     public float moveSpeed;
     public float turnSpeed;
     public Rigidbody rb;
-
+    public CameraController camera;
     private float verticalInput;
     private float horizontalInput;
 
@@ -35,7 +35,8 @@ public class PlayerMovement : MonoBehaviour
 
     void Move()
     {
-    	//Get movement values from speed and input
+        //Get movement values from speed and input
+        if (camera.isInCutscene) { return; }
     	Vector3 verticalMovement = transform.forward * verticalInput * moveSpeed;
     	Vector3 HorizontalMovement = transform.right * horizontalInput * moveSpeed;
         rb.MovePosition(rb.position + verticalMovement + HorizontalMovement);
