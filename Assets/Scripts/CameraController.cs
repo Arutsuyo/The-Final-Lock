@@ -21,7 +21,8 @@ public class CameraController : MonoBehaviour
     public float interactDistance = 20f;
     // Set during update to see if the player wants to interact.
     private bool interact = false;
-    private bool isCursorFreed = false;
+    //private bool isCursorFreed = false;
+    
     // This function triggers the subscribed events on the target object in the 
     // center of the screen. Call this function at the end of LateUpdate so we 
     // can calculate the ray AFTER camera movement.

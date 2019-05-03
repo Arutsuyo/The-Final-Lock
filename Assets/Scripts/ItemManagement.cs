@@ -77,14 +77,14 @@ public class ItemManagement : MonoBehaviour
         }
     }
 
-    private void LookedAt()
+    private void LookedAt(CameraController cc)
     {
         // Handle event. . . Set whatever you want. . .
         // Call whatever function you want. . .
         // Debug.Log("Looking at: " + gameObject.name);
     }
 
-    private void Interacted()
+    private void Interacted(CameraController cc)
     {
         // Handle event. . . Set whatever you want. . .
         // Call whatever function you want. . . 

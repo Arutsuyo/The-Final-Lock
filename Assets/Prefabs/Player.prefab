@@ -96,10 +96,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 178535871269747404}
+  playerMngr: {fileID: 0}
   hSpeed: 3
   vSpeed: 3
   yaw: 0
   pitch: 0
+  interactDistance: 20
+  isInCutscene: 0
+  cam: {fileID: 0}
 --- !u!1 &178535870893453947
 GameObject:
   m_ObjectHideFlags: 0
@@ -4261,6 +4265,7 @@ MonoBehaviour:
   moveSpeed: 0.1
   turnSpeed: 3
   rb: {fileID: 178535871269747402}
+  camera: {fileID: 178535869964050395}
 --- !u!54 &178535871269747402
 Rigidbody:
   m_ObjectHideFlags: 0

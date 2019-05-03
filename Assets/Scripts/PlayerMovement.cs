@@ -10,7 +10,7 @@ public class PlayerMovement : MonoBehaviour
     public float moveSpeed;
     public float turnSpeed;
     public Rigidbody rb;
-    public CameraController camera;
+    public new CameraController camera;
     private float verticalInput;
     private float horizontalInput;
 
