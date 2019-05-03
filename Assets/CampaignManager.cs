@@ -20,7 +20,8 @@ public class CampaignManager : MonoBehaviour
     public GameObject[] holoDeck;
     public string[] holoDeckNames;
     public GameObject holoStorage;
-    public Animator animation;
+    public new Animator animation;  //New keyword fixes warning CS0108
+
     
 
 
