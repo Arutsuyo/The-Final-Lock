@@ -3,10 +3,15 @@ using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
 using System.IO;
+using System;
 
 public class WavMusicConvert
 {
-    public static string ToASCII(byte[] arr, int from, int len)
+
+    public static List<AudioClip> musicClips =new List<AudioClip>();
+    public static List<string> names = new List<string>();
+
+    public static string ToASCII(byte[] arr, long from, int len)
     {
         StringBuilder sb = new StringBuilder();
         for(int i = 0; i < len; i++)
@@ -15,7 +20,7 @@ public class WavMusicConvert
         }
         return sb.ToString();
     }
-    public static void ConvertFromBytes(byte[] arr)
+    public static AudioClip ConvertFromBytes(byte[] arr, string name)
     {
         try
         {
@@ -64,13 +69,46 @@ public class WavMusicConvert
                 curPos += 4;
                 toRead = BuildInt(arr, curPos, 4);
                 curPos += 4;
-
+                ffv = ReadAllBytes(arr, curPos, toRead, blockAlign, bitsPerSample, numChannels);
+                AudioClip ccp = AudioClip.Create(name, ffv.Length, numChannels, (int)sampleRate, false);
+                Debug.Log(ccp.SetData(ffv, 0));
+                return ccp;
             }
         }
-        catch (System.Exception)
+        catch (System.Exception ex)
         {
-            Debug.Log("Malformed wave file!");
+            Debug.Log("Malformed wave file!" + ex.Message + " \n\n " + ex.StackTrace);
         }
+        return null;
+    }
+
+    public static void register(AudioClip audioClip, string v)
+    {
+        musicClips.Add(audioClip);
+        names.Add(v);
+        Debug.Log("Registered clip " + v);
+    }
+
+    private static float[] ReadAllBytes(byte[] arr,long curPos, long toRead, int BA, int BPS, int channels)
+    {
+        float[] fp = new float[(arr.LongLength - curPos) / (BPS/8)];
+        long maxValue = 1;
+        for(int i = 0; i < BPS/8; i++)
+        {
+            maxValue *= 256;
+        }
+        StringBuilder sbs = new StringBuilder();
+        for(long l = 0; l < fp.LongLength; l++)
+        {
+            fp[l] = (BuildInt(arr, curPos + l * BPS/8, BPS / 8)* 2.0f / maxValue)- 1.0f;
+            /*if (l % 10 == 0)
+            {
+                sbs.Append(fp[l] + " ");
+            }*/
+        }
+        Debug.Log(sbs.ToString());
+        return fp;
+
     }
     public static void DebugBytes(byte[] arr, int from, int len)
     {
@@ -81,7 +119,7 @@ public class WavMusicConvert
         }
         Debug.Log(sb.ToString().TrimEnd());
     }
-    public static long BuildInt(byte[] arr, int from, int len)
+    public static long BuildInt(byte[] arr, long from, int len)
     {
         long l = 0;
         for(int i = len - 1; i >= 0; i--)
