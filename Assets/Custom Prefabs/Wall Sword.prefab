@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 7342147942410319203}
   - component: {fileID: 7342147942409189283}
   - component: {fileID: 7342147942413273027}
+  - component: {fileID: 6061348462302807563}
   - component: {fileID: 8726685661268070524}
   m_Layer: 0
   m_Name: Wall Sword
@@ -92,9 +93,21 @@ MeshCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Convex: 0
+  m_Convex: 1
   m_CookingOptions: 14
   m_Mesh: {fileID: 4300000, guid: 5a13865907eb04d779d14a5525e62409, type: 3}
+--- !u!114 &6061348462302807563
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7342147942406990179}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc5fce68b3f325b43bb05b066b9c9705, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &8726685661268070524
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -11,7 +11,9 @@ GameObject:
   - component: {fileID: 1400576212970280437}
   - component: {fileID: 1400576212966888917}
   - component: {fileID: 1400576212967986965}
+  - component: {fileID: 6378623817970721720}
   - component: {fileID: 1400576213517568273}
+  - component: {fileID: 5066926917592154069}
   m_Layer: 0
   m_Name: Wall Axe
   m_TagString: Wall Item X
@@ -80,6 +82,20 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
+--- !u!64 &6378623817970721720
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1400576212970179029}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Convex: 0
+  m_CookingOptions: 14
+  m_Mesh: {fileID: 4300000, guid: 56f480636f5ce4ad482c741a25b8c424, type: 3}
 --- !u!114 &1400576213517568273
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -94,3 +110,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   activated: 0
   clue: 0
+--- !u!114 &5066926917592154069
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1400576212970179029}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc5fce68b3f325b43bb05b066b9c9705, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

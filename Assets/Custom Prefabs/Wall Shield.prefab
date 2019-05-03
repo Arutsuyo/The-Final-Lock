@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 6584959064330843568}
   - component: {fileID: 6584959064326735312}
   - component: {fileID: 2141808658328274065}
+  - component: {fileID: 7742815805371852108}
   m_Layer: 0
   m_Name: Wall Shield
   m_TagString: Wall Item Z
@@ -93,7 +94,7 @@ MeshCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Convex: 0
+  m_Convex: 1
   m_CookingOptions: 14
   m_Mesh: {fileID: 4300000, guid: fe8e7ba801faf4be8b9b4d03d9fe8a8d, type: 3}
 --- !u!114 &2141808658328274065
@@ -110,3 +111,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   activated: 0
   clue: 0
+--- !u!114 &7742815805371852108
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6584959064328842096}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bc5fce68b3f325b43bb05b066b9c9705, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

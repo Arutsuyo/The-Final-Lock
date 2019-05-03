@@ -16,6 +16,8 @@ public class ItemManagement : MonoBehaviour
 		//Track original angle and position
 		original = transform.localPosition;
 		angle = transform.eulerAngles;
+		Subscribe();
+
 	}
 
 	void Update ()
@@ -25,7 +27,6 @@ public class ItemManagement : MonoBehaviour
 			if (gameObject.tag == "Book")
 			{
 				//Pull book out and angle downward
-				transform.localPosition = original + transform.forward * 0.25f;
 				transform.eulerAngles = new Vector3(angle.x + 45.0f, angle.y, angle.z);
 			}
 			else if (gameObject.tag == "Wall Item X")
@@ -46,5 +47,48 @@ public class ItemManagement : MonoBehaviour
 			transform.eulerAngles = new Vector3(angle.x, angle.y, angle.z);
 		}
 	}
+
+	//Interaction
+	public void Subscribe()
+    {
+        // Get the Interactable script reference
+        Interactable ia = gameObject.GetComponent<Interactable>();
+
+        // Make sure it's not null
+        if (ia)
+        {
+            // Subscribe to the event
+            ia.lookEvent += LookedAt;
+            ia.interactEvent += Interacted;
+        }
+    }
+
+    public void Unsubscribe()
+    {
+        // Get the Interactable script reference
+        Interactable ia = gameObject.GetComponent<Interactable>();
+
+        // Make sure it's not null
+        if (ia)
+        {
+            // Unsubscribe to the event
+            ia.lookEvent -= LookedAt;
+            ia.interactEvent -= Interacted;
+        }
+    }
+
+    private void LookedAt()
+    {
+        // Handle event. . . Set whatever you want. . .
+        // Call whatever function you want. . .
+        // Debug.Log("Looking at: " + gameObject.name);
+    }
+
+    private void Interacted()
+    {
+        // Handle event. . . Set whatever you want. . .
+        // Call whatever function you want. . . 
+        activated = true;
+    }
 }
 
