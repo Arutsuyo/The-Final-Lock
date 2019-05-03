@@ -17,6 +17,8 @@ public class CameraController : MonoBehaviour
     public float yaw = 0.0f;
     public float pitch = 0.0f;
 
+    [Header("Interactive Variables")]
+    public float interactDistance = 20f;
     // Set during update to see if the player wants to interact.
     private bool interact = false;
 
@@ -33,7 +35,7 @@ public class CameraController : MonoBehaviour
                 Screen.height / 2f, 0));
         
         // Test if there is something in the middle
-        if (Physics.Raycast(ray, out hit, 20f))
+        if (Physics.Raycast(ray, out hit, interactDistance))
         {
             // Check if the target is interactable
             Interactable obj = hit.collider.gameObject.GetComponent<Interactable>();
