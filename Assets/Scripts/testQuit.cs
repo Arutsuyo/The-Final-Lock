@@ -40,7 +40,7 @@ public class testQuit : MonoBehaviour
         }
     }
 
-    private void LookedAt()
+    private void LookedAt(CameraController cc)
     {
         //Handle event.....
         Debug.Log("Look event triggered!");
@@ -48,7 +48,7 @@ public class testQuit : MonoBehaviour
         SwapMaterial();
     }
 
-    private void Interacted()
+    private void Interacted(CameraController cc)
     {
         //Handle event.....
         Debug.Log("Interact event triggered!");

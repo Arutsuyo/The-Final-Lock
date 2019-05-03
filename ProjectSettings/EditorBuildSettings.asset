@@ -6,6 +6,12 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
+    path: Assets/Scenes/Start Scene.unity
+    guid: bf09dbf9042bde44da2239ef4d976829
+  - enabled: 1
+    path: Assets/Scenes/Lockpick Scene.unity
+    guid: 8d05d761db695c54a8bd598f61820c97
+  - enabled: 1
     path: Assets/Scenes/Tutorial Scene.unity
     guid: 81a0a17551ac3354ca6b0dada985ab9f
   m_configObjects: {}

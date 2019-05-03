@@ -79,6 +79,7 @@ public class Networker
     public static void Init()
     {
         // Handle initalization!
+
         Networker.Start();
     }
 
@@ -232,7 +233,7 @@ public class Networker
             return -1;
         }
         channels.Add(channelType);
-        return channels.Count;
+        return channels.Count-1;
     }
     public static void Shutdown()
     {
@@ -254,6 +255,7 @@ public class Networker
         OnClientDisconnect += Debugger2;
         OnErrorEvent += Debugger3;
         OnServerDisconnected += Debugger2;
+        AddChannel(QosType.Reliable);
     }
     private static void Debugger3(ErrorObj o)
     {
