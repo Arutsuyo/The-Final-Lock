@@ -105,19 +105,27 @@ public class CameraController : MonoBehaviour
         interact = false;
     }
 
-    void Update () 
+    private void HandleInput()
     {
         //Adjust camera with mouse
         if (!isInCutscene)
         {
             yaw += hSpeed * Input.GetAxis("Mouse X");
             pitch -= vSpeed * Input.GetAxis("Mouse Y");
-            
+
             // Correct for Gimbo Lock (Player Camera should not rotate past 90')
             if (pitch >= 90)
                 pitch = 89.9f;
             if (pitch <= -90)
                 pitch = -89.9f;
+
+            //Apply camera adjustments
+            if (!isInCutscene)
+            {
+                transform.eulerAngles = new Vector3(pitch, yaw, 0.0f);
+                //Rotate player with camera
+                player.transform.rotation = Quaternion.Euler(player.transform.rotation.eulerAngles.x, transform.rotation.eulerAngles.y, player.transform.rotation.eulerAngles.z);
+            }
 
             // This can be whatever "Use" input we want to accept
             if (Input.GetKeyDown(KeyCode.E))
@@ -131,18 +139,12 @@ public class CameraController : MonoBehaviour
         }
     }
 
-    void LateUpdate ()
+    void Update () 
     {
-        //Apply camera adjustments
-        if (!isInCutscene)
-        {
-            transform.eulerAngles = new Vector3(pitch, yaw, 0.0f);
-            //Rotate player with camera
-            player.transform.rotation = Quaternion.Euler(player.transform.rotation.eulerAngles.x, transform.rotation.eulerAngles.y, player.transform.rotation.eulerAngles.z);
+        HandleInput();
 
-            // Interact with whatever we might be looking at after movement
-            CheckForObject();
-        }
+        // Interact with whatever we might be looking at after movement
+        CheckForObject();
     }
 
 }

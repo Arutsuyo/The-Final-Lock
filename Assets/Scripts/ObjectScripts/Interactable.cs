@@ -3,6 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+// Automatically adds the script to the gameobject
+[RequireComponent(typeof(GlowObject))]
+
 // Add this script to whatever gameobject we want to be able to interact with. 
 // The events can be subscribed to or unsubscribe at any point, making it 
 // fairly dynamic. Just add the code snippet at the bottom to whatever object we 
@@ -16,6 +19,24 @@ public class Interactable : MonoBehaviour
     public event EventHandler lookEvent = delegate { };
     public event EventHandler interactEvent = delegate { };
 
+    private GlowObject glow;
+    private bool inView;
+
+    private void Awake()
+    {
+        glow = gameObject.GetComponent<GlowObject>();
+        if (!glow)
+            Debug.LogError("Attach a GlowObject Script to " + gameObject.name);
+    }
+
+    private void LateUpdate()
+    {
+        if (!inView)
+            glow.DisableGlow();
+        else
+            inView = false;
+    }
+
     // Fires Interact event
     public void Interact(CameraController cc)
     {
@@ -28,6 +49,8 @@ public class Interactable : MonoBehaviour
     {
         //Debug.Log("Looking at " + gameObject.name);
         lookEvent(cc);
+        glow.EnableGlow();
+        inView = true;
     }
 }
 
