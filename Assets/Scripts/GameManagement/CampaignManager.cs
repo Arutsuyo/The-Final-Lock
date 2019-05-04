@@ -124,53 +124,78 @@ public class CampaignManager : MonoBehaviour
 
     public void QueryRooms()
     {
-        if (Directory.Exists(@"./Rooms"))
-        {
-            List<EscapeRoom> eerooms = new List<EscapeRoom>();
-            foreach(string s in Directory.EnumerateFiles(@"./Rooms"))
-            {
-                if (s.EndsWith(".room"))
-                {
-                    XmlDocument xx = new XmlDocument();
-                    xx.Load(s);
-                    try
-                    {
-                        EscapeRoom e = ParseFile(xx);
 
-                        if (e != null)
-                        {
-                            eerooms.Add(e);
-                            continue;
-                        }
-                    }
-                    catch (System.Exception)
-                    {
-                        Debug.LogError("Malformed escape room file! Ignoring.");
-                    }
-                    
-                }
-                else
-                {
-                    // ignore :D
-                    Debug.Log("Ignoring file " + s);
-                }
-            }
-            erooms = eerooms.ToArray<EscapeRoom>();
-        }
-        else
+        TextAsset[] ss = Resources.LoadAll<TextAsset>(RoomSearchPath);
+        List<EscapeRoom> eerooms = new List<EscapeRoom>();
+        // Debug.Log(ss.Length);
+        foreach(TextAsset sss in ss)
         {
-            if (Directory.CreateDirectory(@"./Rooms").Exists)
+            try
             {
-                Debug.LogWarning("Rooms file was missing. No available campaigns!");
+                XmlDocument xx = new XmlDocument();
+                Debug.Log(sss.text);
+                xx.LoadXml(sss.text);
+                EscapeRoom e = ParseFile(xx);
+                if (e != null)
+                {
+                    eerooms.Add(e);
+                    continue;
+                }
+            }catch(Exception e)
+            {
+                Debug.LogError("Malformed escape room file! " + e.StackTrace);
+            }
+        }
+        erooms = eerooms.ToArray<EscapeRoom>();
+            
+            /*
+            if (Directory.Exists(RoomSearchPath))
+            {
+                List<EscapeRoom> eerooms = new List<EscapeRoom>();
+                foreach(string s in Directory.EnumerateFiles(RoomSearchPath))
+                {
+                    if (s.EndsWith(".room"))
+                    {
+                        XmlDocument xx = new XmlDocument();
+                        xx.Load(s);
+                        try
+                        {
+                            EscapeRoom e = ParseFile(xx);
+
+                            if (e != null)
+                            {
+                                eerooms.Add(e);
+                                continue;
+                            }
+                        }
+                        catch (System.Exception)
+                        {
+                            Debug.LogError("Malformed escape room file! Ignoring.");
+                        }
+
+                    }
+                    else
+                    {
+                        // ignore :D
+                        Debug.Log("Ignoring file " + s);
+                    }
+                }
+                erooms = eerooms.ToArray<EscapeRoom>();
             }
             else
             {
-                Debug.LogError("Could not create rooms file!");
-            }
+                if (Directory.CreateDirectory(RoomSearchPath).Exists)
+                {
+                    Debug.LogWarning("Rooms file was missing. No available campaigns!");
+                }
+                else
+                {
+                    Debug.LogError("Could not create rooms file!");
+                }
 
+            }
+            */
         }
-        
-    }
 }
 [System.Serializable]
 public class EscapeRoom

@@ -17,6 +17,7 @@ public class PickGame : MonoBehaviour
     public float[] pinPositions;
     public float tumblerPosition;
     public float[] pinTolerance;
+    public bool[] isLatched;
     public int testingPinID = 0;
     public int bindingPin = 0;
     private float[] origPinHeights;
@@ -36,6 +37,7 @@ public class PickGame : MonoBehaviour
         interact.interactEvent += InterAt;
         pinHeights = new float[numPins];
         isSecure = new bool[numPins];
+        isLatched = new bool[numPins];
         pinPositions = new float[numPins];
         pinTolerance = new float[numPins];
         origPinHeights = new float[numPins];
@@ -49,6 +51,7 @@ public class PickGame : MonoBehaviour
         {
             pinHeights[i] = Random.Range(0.3f, 0.9f);
             isSecure[i] = false;
+            isLatched[i] = false;
             pinPositions[i] = Random.Range(0.0f, 1.0f);
             origPinHeights[i] = pinHeights[i];
             pinTolerance[i] = Random.Range(0.1f, 0.2f);
@@ -162,14 +165,15 @@ public class PickGame : MonoBehaviour
                 Vector3 vr = new Vector3(0, tumblerPosition * 10, 0);
                 if (bindingPin!= -1)
                 {
-                    if (tumblerPosition >= pinPositions[bindingPin] && !(Mathf.Abs(pinHeights[testingPinID]) < pinTolerance[testingPinID]))
+                    if (tumblerPosition >= pinPositions[bindingPin] && !(Mathf.Abs(pinHeights[bindingPin]) < pinTolerance[bindingPin]))
                     {
                         tumblerPosition = pinPositions[bindingPin];
                         if (Input.GetMouseButtonDown(0)) { Debug.Log("A pin is binding!"); }
                     }
-                    else if ((tumblerPosition >= pinPositions[bindingPin]) && Mathf.Abs(pinHeights[testingPinID]) < pinTolerance[testingPinID])
+                    else if ((tumblerPosition >= pinPositions[bindingPin]) && bindingPin == testingPinID&& Mathf.Abs(pinHeights[bindingPin]) < pinTolerance[bindingPin])
                     {
                         Debug.Log("Click!");
+                        isLatched[testingPinID] = true;
                         tumblerPosition += turnSpeed;
                         vr = new Vector3(0, tumblerPosition * 10, 0);
                         //PinHolderPos.transform.localRotation = Quaternion.Euler(vr);
@@ -263,7 +267,7 @@ public class PickGame : MonoBehaviour
         for (int i = 0; i < numPins; i++)
         {
             pinHeights[i] = origPinHeights[i];
-            if (LPBP > pinPositions[i] - tumblerPosition && tumblerPosition - pinPositions[i] <= 0)
+            if (LPBP > pinPositions[i] - tumblerPosition && !isLatched[i])
             {
                 LPBP = pinPositions[i] - tumblerPosition;
                 bindingPin = i;
