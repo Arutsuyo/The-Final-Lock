@@ -3406,6 +3406,18 @@ PrefabInstance:
       propertyPath: m_StaticEditorFlags
       value: 4294967295
       objectReference: {fileID: 0}
+    - target: {fileID: 400002, guid: f0291ba0e5a78446ab9a5494492da05f, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -1.131
+      objectReference: {fileID: 0}
+    - target: {fileID: 400002, guid: f0291ba0e5a78446ab9a5494492da05f, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -2.02
+      objectReference: {fileID: 0}
+    - target: {fileID: 400002, guid: f0291ba0e5a78446ab9a5494492da05f, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -1
+      objectReference: {fileID: 0}
     - target: {fileID: 400004, guid: f0291ba0e5a78446ab9a5494492da05f, type: 3}
       propertyPath: m_LocalPosition.x
       value: 17.041
@@ -3449,18 +3461,6 @@ PrefabInstance:
     - target: {fileID: 400004, guid: f0291ba0e5a78446ab9a5494492da05f, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 400002, guid: f0291ba0e5a78446ab9a5494492da05f, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -1.131
-      objectReference: {fileID: 0}
-    - target: {fileID: 400002, guid: f0291ba0e5a78446ab9a5494492da05f, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -2.02
-      objectReference: {fileID: 0}
-    - target: {fileID: 400002, guid: f0291ba0e5a78446ab9a5494492da05f, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f0291ba0e5a78446ab9a5494492da05f, type: 3}
@@ -3599,7 +3599,7 @@ MonoBehaviour:
   holoStorage: {fileID: 662688654}
   animation: {fileID: 1300492846}
   Rooms: []
-  RoomSearchPath: 
+  RoomSearchPath: Rooms
   erooms: []
   Campaigns: []
   holo: {fileID: 0}
@@ -4969,13 +4969,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player: {fileID: 0}
   playerMngr: {fileID: 0}
+  cam: {fileID: 0}
   hSpeed: 1
   vSpeed: 1
+  isInCutscene: 0
   yaw: 0
   pitch: 0
   interactDistance: 20
-  isInCutscene: 0
-  cam: {fileID: 0}
+  hitMarker: {fileID: 0}
 --- !u!95 &922488711
 Animator:
   serializedVersion: 3
@@ -5027,7 +5028,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.00036621094, y: 0.00039672852}
+  m_AnchoredPosition: {x: 0.00036621094, y: 0.00024414062}
   m_SizeDelta: {x: 0, y: 300}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &962688138 stripped
@@ -7772,7 +7773,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 329369601}
   m_Direction: 2
   m_Value: 0
-  m_Size: 0.9999989
+  m_Size: 0.99999964
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -8292,6 +8293,22 @@ PrefabInstance:
       propertyPath: m_StaticEditorFlags
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: 55d45c6586ba84b00bc08c8e09086128, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.04
+      objectReference: {fileID: 0}
+    - target: {fileID: 400000, guid: 55d45c6586ba84b00bc08c8e09086128, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 400002, guid: 55d45c6586ba84b00bc08c8e09086128, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.04
+      objectReference: {fileID: 0}
+    - target: {fileID: 400002, guid: 55d45c6586ba84b00bc08c8e09086128, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0
+      objectReference: {fileID: 0}
     - target: {fileID: 400004, guid: 55d45c6586ba84b00bc08c8e09086128, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0.158
@@ -8347,22 +8364,6 @@ PrefabInstance:
     - target: {fileID: 400004, guid: 55d45c6586ba84b00bc08c8e09086128, type: 3}
       propertyPath: m_LocalScale.z
       value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: 55d45c6586ba84b00bc08c8e09086128, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0.04
-      objectReference: {fileID: 0}
-    - target: {fileID: 400000, guid: 55d45c6586ba84b00bc08c8e09086128, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 400002, guid: 55d45c6586ba84b00bc08c8e09086128, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0.04
-      objectReference: {fileID: 0}
-    - target: {fileID: 400002, guid: 55d45c6586ba84b00bc08c8e09086128, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 55d45c6586ba84b00bc08c8e09086128, type: 3}
