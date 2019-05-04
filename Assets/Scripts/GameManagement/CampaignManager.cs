@@ -20,10 +20,7 @@ public class CampaignManager : MonoBehaviour
     public GameObject[] holoDeck;
     public string[] holoDeckNames;
     public GameObject holoStorage;
-    public new Animator animation;  //New keyword fixes warning CS0108
-
-    
-
+    public new Animator animation;  //New keyword fixes warning CS0108 (might wanna change the name)
 
     [Header("Rooms Offered")]
     public string[] Rooms;
@@ -124,7 +121,6 @@ public class CampaignManager : MonoBehaviour
 
     public void QueryRooms()
     {
-
         TextAsset[] ss = Resources.LoadAll<TextAsset>(RoomSearchPath);
         List<EscapeRoom> eerooms = new List<EscapeRoom>();
         // Debug.Log(ss.Length);
@@ -148,53 +144,6 @@ public class CampaignManager : MonoBehaviour
         }
         erooms = eerooms.ToArray<EscapeRoom>();
             
-            /*
-            if (Directory.Exists(RoomSearchPath))
-            {
-                List<EscapeRoom> eerooms = new List<EscapeRoom>();
-                foreach(string s in Directory.EnumerateFiles(RoomSearchPath))
-                {
-                    if (s.EndsWith(".room"))
-                    {
-                        XmlDocument xx = new XmlDocument();
-                        xx.Load(s);
-                        try
-                        {
-                            EscapeRoom e = ParseFile(xx);
-
-                            if (e != null)
-                            {
-                                eerooms.Add(e);
-                                continue;
-                            }
-                        }
-                        catch (System.Exception)
-                        {
-                            Debug.LogError("Malformed escape room file! Ignoring.");
-                        }
-
-                    }
-                    else
-                    {
-                        // ignore :D
-                        Debug.Log("Ignoring file " + s);
-                    }
-                }
-                erooms = eerooms.ToArray<EscapeRoom>();
-            }
-            else
-            {
-                if (Directory.CreateDirectory(RoomSearchPath).Exists)
-                {
-                    Debug.LogWarning("Rooms file was missing. No available campaigns!");
-                }
-                else
-                {
-                    Debug.LogError("Could not create rooms file!");
-                }
-
-            }
-            */
         }
 }
 [System.Serializable]

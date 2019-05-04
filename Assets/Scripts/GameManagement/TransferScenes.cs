@@ -18,7 +18,7 @@ public class TransferScenes : MonoBehaviour
         {
             HasJumped = true;
             DontDestroyOnLoad(gameObject);
-            DontDestroyOnLoad(toHold);
+            Destroy(toHold);
             SceneManager.LoadSceneAsync(SceneIndex, LSM);
             SceneManager.sceneLoaded += SceneManager_sceneLoaded;
         }
@@ -29,8 +29,8 @@ public class TransferScenes : MonoBehaviour
         Debug.Log("Loaded new scene!");
         if (DestroyOnLoad)
         {
-            Destroy(toHold);
-            Destroy(gameObject);
+            //Destroy(toHold);
+            //Destroy(gameObject);
         }
     }
 }
