@@ -1,17 +1,23 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 //Source for camera movement: https://gamedev.stackexchange.com/questions/104693/how-to-use-input-getaxismouse-x-y-to-rotate-the-camera
 //Source for only rotating y-axis: https://answers.unity.com/questions/1111675/copy-only-y-axis-rotation-of-an-object.html
 
 public class CameraController : MonoBehaviour
 {
+    [Header("Player Related")]
     public GameObject player;
     public PlayerManager playerMngr;
+
+    [Header("Camera")]
+    public Camera cam;
     //Camera movement speeds
     public float hSpeed = 1.0f;
     public float vSpeed = 1.0f;
+    public bool isInCutscene = false;
 
     //Variables that track camera position
     public float yaw = 0.0f;
@@ -19,11 +25,9 @@ public class CameraController : MonoBehaviour
 
     [Header("Interactive Variables")]
     public float interactDistance = 20f;
+    public Image hitMarker;
     // Set during update to see if the player wants to interact.
     private bool interact = false;
-
-    public bool isInCutscene = false;
-    public Camera cam;
 
     private void Start()
     {
@@ -35,7 +39,6 @@ public class CameraController : MonoBehaviour
     }
     private Interactable DetermineifHit(Transform ob)
     {
-        // Travel up the parent tree...
         Interactable i = ob.GetComponent<Interactable>();
         if(i != null)
         {
@@ -43,6 +46,7 @@ public class CameraController : MonoBehaviour
         }
         else if(ob.parent != null)
         {
+            // Travel up the parent tree...
             return DetermineifHit(ob.parent);
         }
         return null;
@@ -81,10 +85,10 @@ public class CameraController : MonoBehaviour
         if (Physics.Raycast(ray, out hit, interactDistance))
         {
             // Check if the target is interactable
-            
             Interactable obj = DetermineifHit(hit.collider.gameObject.transform);
             if (obj != null)
             {
+                hitMarker.gameObject.SetActive(true);
                 // Trigger the corresponding events
                 obj.LookingAt(this);
                 if (interact)
@@ -94,13 +98,7 @@ public class CameraController : MonoBehaviour
                 }
             }
             else
-            {
-                //Debug.DrawRay(ray.origin, ray.direction, Color.red, 1, false);
-            }
-        }
-        else
-        {
-            //Debug.DrawRay(ray.origin, ray.direction, Color.blue, 1,false);
+                hitMarker.gameObject.SetActive(false);
         }
 
         // Reset intractability
@@ -114,7 +112,7 @@ public class CameraController : MonoBehaviour
         {
             yaw += hSpeed * Input.GetAxis("Mouse X");
             pitch -= vSpeed * Input.GetAxis("Mouse Y");
-
+            
             // Correct for Gimbo Lock (Player Camera should not rotate past 90')
             if (pitch >= 90)
                 pitch = 89.9f;
