@@ -22,12 +22,10 @@ public class CampaignManager : MonoBehaviour
     public GameObject holoStorage;
     public new Animator animation;  //New keyword fixes warning CS0108
 
-    
-
-
     [Header("Rooms Offered")]
     public string[] Rooms;
-    public string RoomSearchPath;
+
+    private string RoomSearchPath = @"Rooms/";
 
     [Header("Debugging")]
     public EscapeRoom[] erooms;
@@ -124,10 +122,11 @@ public class CampaignManager : MonoBehaviour
 
     public void QueryRooms()
     {
-        if (Directory.Exists(@"./Rooms"))
+        TextAsset[] files = Resources.LoadAll<TextAsset>(RoomSearchPath);
+        if (Directory.Exists(RoomSearchPath))
         {
             List<EscapeRoom> eerooms = new List<EscapeRoom>();
-            foreach(string s in Directory.EnumerateFiles(@"./Rooms"))
+            foreach(string s in Directory.EnumerateFiles(RoomSearchPath))
             {
                 if (s.EndsWith(".room"))
                 {
@@ -159,7 +158,7 @@ public class CampaignManager : MonoBehaviour
         }
         else
         {
-            if (Directory.CreateDirectory(@"./Rooms").Exists)
+            if (Directory.CreateDirectory(RoomSearchPath).Exists)
             {
                 Debug.LogWarning("Rooms file was missing. No available campaigns!");
             }

@@ -5,7 +5,7 @@ using UnityEngine;
 public class Quit : MonoBehaviour
 {
     public static string webplayerQuitURL = "http://google.com";
-    public static void QuitMe()
+    public void QuitMe()
     {
 #if UNITY_WEBPLAYER
     Application.OpenURL(webplayerQuitURL);  
