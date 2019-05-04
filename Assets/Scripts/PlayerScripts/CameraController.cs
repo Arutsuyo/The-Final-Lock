@@ -36,6 +36,11 @@ public class CameraController : MonoBehaviour
 
         WavMusicConvert.register(WavMusicConvert.ConvertFromBytes(WavMusicConvert.ReadBytes("./Assets/Music/Censored.wav"), "Censored.wav"), "Censored.wav");
 
+        if (!hitMarker)
+        {
+            Debug.LogError("Add the UI/Markers prefab to the overlay canvas and" +
+                " drop the disabled Hit child object into the hitMarker slot of the Camera Controller");
+        }
     }
     private Interactable DetermineifHit(Transform ob)
     {

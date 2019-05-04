@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 1400576212967986965}
   - component: {fileID: 6378623817970721720}
   - component: {fileID: 1400576213517568273}
+  - component: {fileID: 1103895729027254379}
   - component: {fileID: 5066926917592154069}
   m_Layer: 0
   m_Name: Wall Axe
@@ -110,6 +111,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   activated: 0
   clue: 0
+--- !u!114 &1103895729027254379
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1400576212970179029}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f8ec0fb3ff2a5454e8863609a58514d0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GlowColor: {r: 0, g: 0, b: 0, a: 1}
+  LerpFactor: 10
 --- !u!114 &5066926917592154069
 MonoBehaviour:
   m_ObjectHideFlags: 0

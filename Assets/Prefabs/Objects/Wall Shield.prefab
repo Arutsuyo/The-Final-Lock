@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 6584959064330843568}
   - component: {fileID: 6584959064326735312}
   - component: {fileID: 2141808658328274065}
+  - component: {fileID: 6249088866401822479}
   - component: {fileID: 7742815805371852108}
   m_Layer: 0
   m_Name: Wall Shield
@@ -111,6 +112,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   activated: 0
   clue: 0
+--- !u!114 &6249088866401822479
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6584959064328842096}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f8ec0fb3ff2a5454e8863609a58514d0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GlowColor: {r: 0, g: 0, b: 0, a: 0}
+  LerpFactor: 10
 --- !u!114 &7742815805371852108
 MonoBehaviour:
   m_ObjectHideFlags: 0
