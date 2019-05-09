@@ -18,6 +18,7 @@ public class PromptManager : MonoBehaviour
     public bool bad = false;
     public float badTime = 0;
     public Text UITitle;
+    public Text SubmitTitle;
     public Vector3 pos;
     public Text SampleText;
     public void Submitted()
@@ -102,7 +103,23 @@ public class PromptManager : MonoBehaviour
     {
      pos = input.transform.localPosition;
     }
-    public bool GetNumber(System.Action<System.Object> a, int lowerBound=int.MinValue, int upperBound=int.MaxValue, string title="Please enter a number:", string sampleText = "")
+    public bool GetAcknowledge(System.Action<System.Object> a, string title="Please enter a number:", string submitText = "")
+    {
+        if (IsActive) { return false; }
+        input.gameObject.SetActive(false);
+        UITitle.text = title; // Assumes user inputted the hint in here.
+        input.characterLimit = 1;//Mathf.CeilToInt(Mathf.Log10(Mathf.Max(Mathf.Abs(upperBound), Mathf.Abs(lowerBound))));
+        IsActive = true;
+        callback = a;
+        lowerBound = 0;
+        upperBound = 1;
+        input.text = "";
+        SubmitTitle.text = submitText;
+        input.contentType = InputField.ContentType.Standard;
+        StartCoroutine("MoveTowards");
+        return true;
+    }
+    public bool GetNumber(System.Action<System.Object> a, int lowerBound=int.MinValue, int upperBound=int.MaxValue, string title="Please enter a number:", string sampleText = "", string submitText = "")
     {
         if (IsActive) { return false; };
         UITitle.text = title; // Assumes user inputted the hint in here.
@@ -113,12 +130,14 @@ public class PromptManager : MonoBehaviour
         SampleText.text = sampleText;
         callback = a;
         input.text = "";
+        SubmitTitle.text = submitText;
         input.contentType = InputField.ContentType.IntegerNumber;
+        input.gameObject.SetActive(true);
         StartCoroutine("MoveTowards");
         return true;
     }
 
-    public bool GetString(System.Action<System.Object> a, int lowerBound = 0, int upperBound = int.MaxValue, string title = "Please enter a string:", string sampleText = "")
+    public bool GetString(System.Action<System.Object> a, int lowerBound = 0, int upperBound = int.MaxValue, string title = "Please enter a string:", string sampleText = "", string submitText = "")
     {
         if (IsActive) { return false; };
         UITitle.text = title; // Assumes user inputted the hint in here.
@@ -127,8 +146,10 @@ public class PromptManager : MonoBehaviour
         input.characterLimit = upperBound;
         SampleText.text = sampleText;
         IsActive = true;
+        SubmitTitle.text = submitText;
         callback = a;
         input.text = "";
+        input.gameObject.SetActive(true);
         input.contentType = InputField.ContentType.Standard;
         StartCoroutine("MoveTowards");
         return true;

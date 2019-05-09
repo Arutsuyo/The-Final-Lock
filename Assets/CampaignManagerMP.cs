@@ -22,11 +22,11 @@ public class CampaignManagerMP : MonoBehaviour
     public GameObject holoStorage;
     public Animator PlayerAnimation;
     public PromptManager pm;
-
+    public NetworkManagerBridge nm;
     public Animator doorAnimation;
     public Animator holoAnimation;
     public int ActiveID = 0;
-    public NetworkManager NM;
+    
     public int Port;
 
 
@@ -53,6 +53,27 @@ public class CampaignManagerMP : MonoBehaviour
         StartBtn.onClick.RemoveAllListeners();
         StartBtn.onClick.AddListener(() => Go(id));
     }
+    public void PromptTryJoin()
+    {
+        pm.GetString(GetJoin, 5, 25, "Please enter the server's ip:port combo: ", "127.0.0.1" + 25565, "Connect");
+    }
+    public void DoConnect()
+    {
+        //Debug.Log("Do Connect!");
+        //Debug.Log(Networker.isActive() + " " + Networker.isConnected());
+        // Send a message of our name
+    }
+    public void GetJoin(System.Object o)
+    {
+        Debug.Log("GetJOIN");
+        if(o != null)
+        {
+            PlayerAnimation.SetTrigger("ToLobby");
+            StartCoroutine(nm.StartClient((string)o, this, DoConnect));
+            
+            Debug.Log("ToLOBBY!");
+        }
+    }
     public void GetPort(System.Object o)
     {
         int oo;
@@ -62,7 +83,7 @@ public class CampaignManagerMP : MonoBehaviour
             // Now actually launch it.
             //Debug.Log("Launching campaign ID " + ActiveID + " in 3...2....1...JUMP");
             PlayerAnimation.SetTrigger("ToLobby");
-            NM.StartServer(Port, this);
+            nm.StartServer(Port, this);
 
             //doorAnimation.SetTrigger("Door");
             //holoAnimation.SetTrigger("ToDoor");
@@ -83,7 +104,7 @@ public class CampaignManagerMP : MonoBehaviour
         {
             bb.interactable = false;
         }
-        pm.GetNumber(GetPort, 1000, 65535, "Please enter the port for hosting:", ""+25565);
+        pm.GetNumber(GetPort, 1000, 65535, "Please enter the port for hosting:", ""+25565, "Start Server");
         ActiveID = id;
     }
     public void Starting()
@@ -107,6 +128,10 @@ public class CampaignManagerMP : MonoBehaviour
         {
             Destroy(holo);
         }
+    }
+    public void GoBack(System.Object o)
+    {
+        PlayerAnimation.SetTrigger("Back");
     }
     public void ShowUI()
     {
