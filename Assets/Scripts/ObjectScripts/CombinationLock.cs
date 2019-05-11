@@ -98,11 +98,6 @@ public class CombinationLock : MonoBehaviour
         }
     }
 
-    IEnumerator PlayZoomInForward()
-    {
-
-    }
-
     public void Unsubscribe()
     {
         // Get the Interactable script reference

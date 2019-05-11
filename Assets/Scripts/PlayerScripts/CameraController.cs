@@ -139,7 +139,7 @@ public class CameraController : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.Escape))
             {
                 //Cursor.lockState = Cursor.lockState == CursorLockMode.None ? CursorLockMode.Confined : CursorLockMode.None;
-                Debug.Log("Lock me?");
+                //Debug.Log("Lock me?");
             }
         }
     }
@@ -149,7 +149,7 @@ public class CameraController : MonoBehaviour
         HandleInput();
 
         // Interact with whatever we might be looking at after movement
-        //CheckForObject();
+        CheckForObject();
     }
 
 }

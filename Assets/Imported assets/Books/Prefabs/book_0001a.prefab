@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 2300000}
   - component: {fileID: 1703708374141737243}
   - component: {fileID: 6802667550434236040}
+  - component: {fileID: 2996927372557151069}
   m_Layer: 0
   m_Name: book_0001a
   m_TagString: Untagged
@@ -103,5 +104,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f8ec0fb3ff2a5454e8863609a58514d0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  GlowColor: {r: 0, g: 0, b: 0, a: 0}
+  GlowColor: {r: 0.110137075, g: 0.52151656, b: 0.7075472, a: 0}
   LerpFactor: 10
+--- !u!114 &2996927372557151069
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 100000}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: db8e5d0339251c145b404bf362515302, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  activated: 0
+  clue: 0
