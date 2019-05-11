@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Networking;
+using System.Text;
 #pragma warning disable CS0618 // Type or member is obsolete
 public class CArbObj
 {
@@ -18,7 +19,7 @@ public class NetworkManagerBridge : MonoBehaviour
     // Assumes on a game "quit", this object will be removed and the instance cleared.
     public Image playerNamePrefab;
     public RectTransform scroller;
-
+    public List<Image> playersReg = new List<Image>();
 
     public static short IDC = 0;
 
@@ -32,69 +33,12 @@ public class NetworkManagerBridge : MonoBehaviour
     public Dictionary<int, List<System.Action<CArbObj>>> registeredConsumers = new Dictionary<int, List<System.Action<CArbObj>>>();
     
     public NetworkClient nc;
+    public NetworkClient webc;
     public bool IsClient()
     {
         return isClient;
     }
-    public bool SendMessageToServer(UserNETMSG nm)
-    {
-        if (!IsClient()) { return false; }
-        return nc.Send((short)nm.subID,nm);//Networker.SendServer(nm, channel);
-        
-    }
-
-    public bool SendMessageToClient(UserNETMSG nm, long UUID)
-    {
-        if (IsClient()) { return false; }
-        NetworkServer.SendToClient(Networker.GetConnectionID(UUID), (short)nm.subID, nm);
-        return true;
-    }
-
-    public bool SendMessageToAllClients(UserNETMSG nm)
-    {
-        if (IsClient()) { return false; }
-        NetworkServer.SendToAll((short)nm.subID, nm);
-        //NetworkTransport.Sen
-        return true;
-    }
-    public bool SendMessageToAllOtherClients(UserNETMSG nm, int channel, long exceptUUID)
-    {
-        if (IsClient()) { return false; }
-        foreach (long lluuid in Networker.playerIDs.Keys)
-        {
-            if(lluuid == exceptUUID)
-            {
-                continue;
-            }
-            NetworkServer.SendToClient(Networker.playerIDs[lluuid], (short)nm.subID, nm);
-        }
-        return true;
-    }
-    public void RegisterCARBHandler(int subID, System.Action<CArbObj> act)
-    {
-        if (!registeredConsumers.ContainsKey(subID))
-        {
-            registeredConsumers.Add(subID, new List<System.Action<CArbObj>>());
-        }
-        registeredConsumers[subID].Add(act);
-    }
-    public bool UnregisterCARBHandler(int subID, System.Action<CArbObj> act)
-    {
-        if (!registeredConsumers.ContainsKey(subID))
-        {
-            return false; // Failed
-        }
-        var v = registeredConsumers[subID];
-        if (v.Contains(act))
-        {
-            return v.Remove(act); // Success?
-        }
-        else
-        {
-            return false; // Not found
-        }
-    }
-
+   
     public static NetworkManagerBridge getInstance()
     {
         return instance; // :|
@@ -135,34 +79,155 @@ public class NetworkManagerBridge : MonoBehaviour
     public void StartServer(int Port, CampaignManagerMP CMMP)
     {
         CLPS = CMMP;
-
+        Debug.Log("Starting Server...");
         this.SocketInfo = new IPAP("127.0.0.1:"+Port);
-        Networker.port = this.SocketInfo.PORT;
-        Networker.web_port = this.SocketInfo.PORT + 1;
+        //Networker.port = this.SocketInfo.PORT;
+        //Networker.web_port = this.SocketInfo.PORT + 1;
         net.networkAddress = "localhost";
         net.networkPort = this.SocketInfo.PORT;
-        nc = net.StartHost();
-    }
+#if UNITY_WEBGL && !UNITY_EDITOR
+        //net.useWebSockets = true;
+        //net.networkPort = this.SocketInfo.PORT + 1;
+        //webc = net.StartHost();
+        Debug.LogError("You can not host from a WEBGL game! IGNORING REQUEST!");
+        return;
+#else
 
+        //net.useWebSockets = true;
+        //net.networkPort = this.SocketInfo.PORT + 1;
+        //net.StartServer();
+        // Actually try both....
+        net.useWebSockets = false;
+        net.networkPort = this.SocketInfo.PORT;
+        nc = net.StartHost();
+        net.RegisterHandler(BuiltinMsgTypes.Connectioninformation, HandleName);
+        
+        StartCoroutine(SendNameSoon());
+#endif
+    }
+    public IEnumerator SendNameSoon()
+    {
+        yield return null;
+        StartCoroutine(SendName());
+    }
+    public void DisplayConnecting()
+    {
+        // Does nothing T_T
+    }
     public IEnumerator StartClient(string IPM, CampaignManagerMP CMMP, System.Action connected)
     {
         CLPS = CMMP;
-
+        
         this.SocketInfo = new IPAP(IPM);
-        Networker.port = this.SocketInfo.PORT;
+        Debug.Log("Starting Client..." + this.SocketInfo.IP + " :: " + this.SocketInfo.PORT);
+        /*Networker.port = this.SocketInfo.PORT;
         Networker.web_port = this.SocketInfo.PORT + 1;
         Networker.ConnIP = this.SocketInfo.IP;
         /*Networker.StartClient();*/
         net.networkAddress = this.SocketInfo.IP;
-        net.networkPort = this.SocketInfo.PORT;
-        nc = net.StartClient();
 
+#if UNITY_WEBGL && !UNITY_EDITOR
+        net.networkPort = this.SocketInfo.PORT+1;
+        net.useWebSockets = true;
+#else
+        net.networkPort = this.SocketInfo.PORT;
+        // Actually try both....
+#endif
+        
+        //net.useWebSockets = true;
+        nc = net.StartClient();
+        net.ForceClient(nc);
+        net.RegisterHandler(BuiltinMsgTypes.Connectioninformation, HandleName);
+        DisplayConnecting();
         while(!net.isFin && !net.isConn)
         {
-            Debug.Log(net.isFin + " " + net.isConn);
+            Debug.Log(net.isFin + " " + net.isConn +" " +net.IsClientConnected());
+
             yield return new WaitForSeconds(1);
         }
+        Debug.Log("Skipped?! " + net.isFin + " " + net.isConn + " " + net.IsClientConnected());
+        if (net.isFin)
+        {
+            // Reset it.
+            net.Reset();
+#if UNITY_WEBGL && !UNITY_EDITOR
+            yield break;
+#else
+            // try again but with the websockets...
+            net.networkPort+= 1;
+            net.useWebSockets = true;
+            nc = net.StartClient();
+            net.ForceClient(nc);
+            net.RegisterHandler(BuiltinMsgTypes.Connectioninformation, HandleName);
+            while (!net.isFin && !net.isConn)
+            {
+                Debug.Log(net.isFin + " " + net.isConn);
+                yield return new WaitForSeconds(1);
+            }
+            if (net.isFin)
+            {
+                net.Reset();
+                yield break;
+            }
+#endif
+
+        }
+
+        StartCoroutine(SendName());
         connected();
+    }
+    public void HandleName(NetworkMessage nm)
+    {
+        Debug.Log(nm.reader.Length + " " + nm.reader.Position);
+        uint op = nm.reader.Position;
+        nm.reader.SeekZero();
+        byte[] bbs = nm.reader.ReadBytes(nm.reader.Length);
+        StringBuilder sbb = new StringBuilder();
+        foreach (byte b in bbs)
+        {
+            sbb.Append(b + " ");
+        }
+        Debug.Log(sbb.ToString());
+        nm.reader.SeekZero();
+        nm.reader.ReadBytes((int)op);
+        UserInformationMsg TMB = nm.ReadMessage<UserInformationMsg>();
+        if (net.CheckPacket(TMB))
+        {
+            Debug.Log("Handling a name request :D " + TMB.name + " " + TMB.UUID);
+            //addUserName();
+        }
+        else
+        {
+            // You ignore it, it wasn't for you :(
+            Debug.Log("Ignoring packet!");
+        }
+    }
+    public IEnumerator SendName()
+    {
+        string sst = PlayerPrefs.GetString("PlayerName");
+        Debug.Log("Here?");
+        while (!net.isSafe)
+        {
+            yield return new WaitForSeconds(0.5f);
+            Debug.Log("Boy: " + net.isSafe + " " + net.isHost + " " + net.isConn + " " + net.isFin);
+        }
+        if (net.IsClientConnected())
+        {
+            if (net.isHost)
+            {
+                //net.SendToAllClients(BuiltinMsgTypes.Connectioninformation, new UserInformationMsg() { UUID = net.getUUID(), ActualMsgType = 0, invertTarget = false, name = sst, TargetUUID = -1 });
+                //Debug.Log("Here!");
+            }
+            else
+            {
+                Debug.Log(net.SendToAllOtherClients(BuiltinMsgTypes.Connectioninformation, new UserInformationMsg() { UUID = net.getUUID(), name = PlayerPrefs.GetString("PlayerName") + "a" }));
+                Debug.Log(net.SendToServer(BuiltinMsgTypes.Connectioninformation, new UserInformationMsg() { UUID = net.getUUID(), name = PlayerPrefs.GetString("PlayerName")}));
+            }
+        }
+        else
+        {
+            Debug.Log("Not allowed to do that just yet!");
+        }
     }
     public void Update()
     {
@@ -178,6 +243,9 @@ public class NetworkManagerBridge : MonoBehaviour
             Destroy(this.gameObject);
             return;
         }
+
+        net.OnClientConnected += Net_OnClientConnected;
+
         /*Networker.Init();
         instance = this;
         DontDestroyOnLoad(gameObject);
@@ -191,6 +259,11 @@ public class NetworkManagerBridge : MonoBehaviour
         NetChannels.Add(Networker.AddChannel(UnityEngine.Networking.QosType.StateUpdate), UnityEngine.Networking.QosType.StateUpdate);
         NetChannels.Add(Networker.AddChannel(UnityEngine.Networking.QosType.ReliableSequenced), UnityEngine.Networking.QosType.ReliableSequenced);*/
 
+    }
+
+    private void Net_OnClientConnected(long userID)
+    {
+        // Create a new "connecting template"...   
     }
 
     public bool ConnectToServer(string IPP, CampaignManagerMP mp)

@@ -163,6 +163,7 @@ public class CampaignManagerMP : MonoBehaviour
     public void Start()
     {
         HideUI();
+        
     }
     protected EscapeRoom ParseFile(XmlDocument x)
     {
