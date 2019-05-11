@@ -14,9 +14,10 @@ GameObject:
   - component: {fileID: 7188036142424153839}
   - component: {fileID: 8337238473629605076}
   - component: {fileID: 3133399136482412374}
+  - component: {fileID: 2669176755243964541}
   m_Layer: 0
   m_Name: book_0001b
-  m_TagString: Untagged
+  m_TagString: Book
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -120,3 +121,17 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   GlowColor: {r: 0.110137075, g: 0.52151656, b: 0.7075472, a: 0}
   LerpFactor: 10
+--- !u!64 &2669176755243964541
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 100000}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Convex: 1
+  m_CookingOptions: 14
+  m_Mesh: {fileID: 4300000, guid: 08e091500e68ded43b4abfb1b3f718d0, type: 3}
