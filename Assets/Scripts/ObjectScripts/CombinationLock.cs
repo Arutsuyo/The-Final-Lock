@@ -15,9 +15,9 @@ public class CombinationLock : MonoBehaviour
 	public float right;
 
 	// Numbers resprestented by current lock position
-	public int leftVal;
-	public int midVal;
-	public int rightVal;
+	private int leftVal;
+	private int midVal;
+	private int rightVal;
 
 	//Lock GameObjects
 	public GameObject leftLock;
@@ -96,6 +96,11 @@ public class CombinationLock : MonoBehaviour
             ia.lookEvent += LookedAt;
             ia.interactEvent += Interacted;
         }
+    }
+
+    IEnumerator PlayZoomInForward()
+    {
+
     }
 
     public void Unsubscribe()

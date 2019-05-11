@@ -149,7 +149,7 @@ public class CameraController : MonoBehaviour
         HandleInput();
 
         // Interact with whatever we might be looking at after movement
-        CheckForObject();
+        //CheckForObject();
     }
 
 }
