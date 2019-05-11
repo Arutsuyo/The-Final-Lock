@@ -185,16 +185,17 @@ public class CombinationLock : MonoBehaviour
         CurLerpTime = Time.time;
         while(CurLerpTime - StartLerpTime < LerpTime)
         {
-            curPlayer.cam.transform.position = Vector3.Lerp(prevPosition, new Vector3(lockPosition.position.x, lockPosition.position.y, lockPosition.position.z + 0.4f), (CurLerpTime - StartLerpTime)/LerpTime);
+            curPlayer.cam.transform.position = Vector3.Lerp(prevPosition, new Vector3(lockPosition.position.x, lockPosition.position.y, lockPosition.position.z), (CurLerpTime - StartLerpTime)/LerpTime);
             curPlayer.cam.transform.rotation = Quaternion.Slerp(prevRotation, lockPosition.rotation  * Quaternion.Euler(0.0f, 180.0f, 0.0f), (CurLerpTime - StartLerpTime) / LerpTime);
             yield return null;
             CurLerpTime = Time.time;
         }
-        curPlayer.cam.transform.position = new Vector3(lockPosition.position.x, lockPosition.position.y, lockPosition.position.z + 0.4f);
+        curPlayer.cam.transform.position = new Vector3(lockPosition.position.x, lockPosition.position.y, lockPosition.position.z);
+        curPlayer.cam.transform.localPosition = new Vector3(curPlayer.cam.transform.localPosition.x - 0.5f, curPlayer.cam.transform.localPosition.y + 0.2f, curPlayer.cam.transform.localPosition.z - 0.5f);
         curPlayer.cam.transform.rotation = lockPosition.rotation * Quaternion.Euler(0.0f, 180.0f, 0.0f);
         curPlayer.AllowCursorFreedom();
         cutsceneFinished = true;
-    }
+    } 
 
     // Return camera to player view
     IEnumerator PlayZoomInBackward()
