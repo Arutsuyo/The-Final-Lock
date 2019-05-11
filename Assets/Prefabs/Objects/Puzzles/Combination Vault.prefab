@@ -4372,9 +4372,15 @@ MonoBehaviour:
   left: 3
   middle: 5
   right: 6
+  increment: 0.1
   leftLock: {fileID: 5980600907366022878}
   midLock: {fileID: 2123458193316338952}
   rightLock: {fileID: 3377953827817167}
+  door: {fileID: 4470642107444799294}
+  lockPosition: {fileID: 4470642107112499984}
+  curPlayer: {fileID: 0}
+  LerpTime: 3
+  cutsceneFinished: 0
 --- !u!114 &4954842918815936273
 MonoBehaviour:
   m_ObjectHideFlags: 0

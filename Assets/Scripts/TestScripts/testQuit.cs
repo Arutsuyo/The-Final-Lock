@@ -55,9 +55,10 @@ public class testQuit : MonoBehaviour
         // Can call whatever function you want
         QuitEditor();
     }
+    
     private void Update()
     {
-        gameObject.GetComponent<Renderer>().material = standard;
+        //gameObject.GetComponent<Renderer>().material = standard;
     }
 
     private void QuitEditor()
