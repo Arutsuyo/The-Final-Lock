@@ -49,9 +49,18 @@ public class CombinationLock : MonoBehaviour
     //Tracks whether the door is opened
     private bool isOpen = false;
 
+    // Randomize values on Start()?
+    public bool randomize;
+
     // Start is called before the first frame update
     void Start()
     {
+        if (randomize)
+        {
+            combo[0] = UnityEngine.Random.Range(0, 10);
+            combo[1] = UnityEngine.Random.Range(0, 10);
+            combo[2] = UnityEngine.Random.Range(0, 10);
+        }
         Subscribe();
     }
 
