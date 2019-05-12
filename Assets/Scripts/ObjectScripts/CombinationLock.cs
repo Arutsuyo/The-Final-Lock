@@ -27,6 +27,9 @@ public class CombinationLock : MonoBehaviour
 	public GameObject rightLock;
 	public GameObject door;
 
+    //Hit marker
+    public GameObject hit;
+
     //Camera position variables
     public Transform lockPosition;
     private Vector3 prevPosition;
@@ -38,7 +41,7 @@ public class CombinationLock : MonoBehaviour
     public bool cutsceneFinished = false;
 
     //Tracks whether the player is playing the game
-    private bool inGame = false;
+    private static bool inGame = false;
 
     //Tracks which lock the player is turning
     private int current = 0;
@@ -55,6 +58,15 @@ public class CombinationLock : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (!inGame)
+        {
+            hit.SetActive(true);
+        }
+        else
+        {
+            hit.SetActive(false);
+        }
+
         if (curPlayer != null && cutsceneFinished)
         {
             if (isOpen || Input.GetKeyDown(KeyCode.Escape))
@@ -185,14 +197,15 @@ public class CombinationLock : MonoBehaviour
         CurLerpTime = Time.time;
         while(CurLerpTime - StartLerpTime < LerpTime)
         {
-            curPlayer.cam.transform.position = Vector3.Lerp(prevPosition, new Vector3(lockPosition.position.x, lockPosition.position.y, lockPosition.position.z), (CurLerpTime - StartLerpTime)/LerpTime);
-            curPlayer.cam.transform.rotation = Quaternion.Slerp(prevRotation, lockPosition.rotation  * Quaternion.Euler(0.0f, 180.0f, 0.0f), (CurLerpTime - StartLerpTime) / LerpTime);
+            curPlayer.cam.transform.position = Vector3.Lerp(prevPosition, lockPosition.position, (CurLerpTime - StartLerpTime)/LerpTime);
+            //curPlayer.cam.transform.localPosition = new Vector3(curPlayer.cam.transform.localPosition.x, curPlayer.cam.transform.localPosition.y, curPlayer.cam.transform.localPosition.z - 0.5f);
+            curPlayer.cam.transform.rotation = Quaternion.Slerp(prevRotation, lockPosition.rotation * Quaternion.Euler(0.0f, -90.0f, 0.0f), (CurLerpTime - StartLerpTime) / LerpTime);
             yield return null;
             CurLerpTime = Time.time;
         }
-        curPlayer.cam.transform.position = new Vector3(lockPosition.position.x, lockPosition.position.y, lockPosition.position.z);
-        curPlayer.cam.transform.localPosition = new Vector3(curPlayer.cam.transform.localPosition.x - 0.5f, curPlayer.cam.transform.localPosition.y + 0.2f, curPlayer.cam.transform.localPosition.z - 0.5f);
-        curPlayer.cam.transform.rotation = lockPosition.rotation * Quaternion.Euler(0.0f, 180.0f, 0.0f);
+        curPlayer.cam.transform.position = lockPosition.position;
+        //curPlayer.cam.transform.localPosition = new Vector3(curPlayer.cam.transform.localPosition.x, curPlayer.cam.transform.localPosition.y, curPlayer.cam.transform.localPosition.z - 0.5f);
+        curPlayer.cam.transform.rotation = lockPosition.rotation * Quaternion.Euler(0.0f, -90.0f, 0.0f);
         curPlayer.AllowCursorFreedom();
         cutsceneFinished = true;
     } 
