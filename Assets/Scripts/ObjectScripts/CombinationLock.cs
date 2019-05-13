@@ -3,6 +3,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/*
+Note for networking:
+Variables that need to be known by all clients
+inGame, left, middle, right
+Everything else should be handled by each client's script
+*/
+
 public class CombinationLock : MonoBehaviour
 {
 	//"Winning" combination
