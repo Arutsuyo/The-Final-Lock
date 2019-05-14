@@ -33,9 +33,10 @@ public class NetworkManagerBridge : MonoBehaviour
     public static NetworkManagerBridge instance;
 
     public Dictionary<int, List<System.Action<CArbObj>>> registeredConsumers = new Dictionary<int, List<System.Action<CArbObj>>>();
-    
+    public Dictionary<long, string> userNames = new Dictionary<long, string>();
     public NetworkClient nc;
     public NetworkClient webc;
+    public long PLAYERUUID = -10;
     public bool IsClient()
     {
         return isClient;
@@ -117,10 +118,20 @@ public class NetworkManagerBridge : MonoBehaviour
     {
         // Does nothing T_T
     }
+    public void OnClientUUIDGet(long UUID)
+    {
+        if (playerLabelss.ContainsKey(-4))
+        {
+            removeUserName(-4);
+            
+            addUserName(new UserInformationMsg() { UUID = UUID, name = PlayerPrefs.GetString("PlayerName") });
+        }
+        PLAYERUUID = UUID;
+    }
     public IEnumerator StartClient(string IPM, CampaignManagerMP CMMP, System.Action connected)
     {
         CLPS = CMMP;
-        addUserName(new UserInformationMsg() { UUID = -3, name = PlayerPrefs.GetString("PlayerName") });
+        addUserName(new UserInformationMsg() { UUID = -4, name = PlayerPrefs.GetString("PlayerName") });
         this.SocketInfo = new IPAP(IPM);
         Debug.Log("Starting Client..." + this.SocketInfo.IP + " :: " + this.SocketInfo.PORT);
         /*Networker.port = this.SocketInfo.PORT;
@@ -136,10 +147,12 @@ public class NetworkManagerBridge : MonoBehaviour
         net.networkPort = this.SocketInfo.PORT;
         // Actually try both....
 #endif
-        
+        net.UserUUIDObtained += OnClientUUIDGet;
         //net.useWebSockets = true;
         nc = net.StartClient();
+        
         net.ForceClient(nc);
+        
         net.RegisterHandler(BuiltinMsgTypes.Connectioninformation, HandleName);
         DisplayConnecting();
         while(!net.isFin && !net.isConn)
@@ -179,6 +192,10 @@ public class NetworkManagerBridge : MonoBehaviour
         StartCoroutine(SendName());
         connected();
     }
+    public string HOSTSTR()
+    {
+        return "(<color=\"#cccc00\">Host</color>)";
+    }
     public void addUserName(UserInformationMsg UIM)
     {
         Debug.Log("woot" + UIM.UUID);
@@ -190,6 +207,7 @@ public class NetworkManagerBridge : MonoBehaviour
         playerLabelss.Add(UIM.UUID, ii);
         Text tt = ii.GetComponentInChildren<Text>();
         tt.text = UIM.name;
+        userNames.Add(UIM.UUID, UIM.name);
     }
     public void removeUserName(long uuid)
     {
@@ -199,8 +217,8 @@ public class NetworkManagerBridge : MonoBehaviour
         playersReg.Remove(ii);
         Destroy(playerLabelss[uuid].gameObject);
         playerLabelss.Remove(uuid);
-
-        for(int i = pos; i < playersReg.Count; i++)
+        userNames.Remove(uuid);
+        for (int i = pos; i < playersReg.Count; i++)
         {
             // Move them up by the delta...
             playersReg[i].rectTransform.anchoredPosition = new Vector2(0, -playersReg[i].rectTransform.sizeDelta.y * (i + .5f));
@@ -245,7 +263,7 @@ public class NetworkManagerBridge : MonoBehaviour
         {
             if (net.isHost)
             {
-                net.SendToAllClients(BuiltinMsgTypes.Connectioninformation, new UserInformationMsg() { UUID = net.getUUID(), ActualMsgType = 0, invertTarget = false, name = sst + " (<color=\"#cccc00\">Host</color>)", TargetUUID = -1 });
+                net.SendToAllClients(BuiltinMsgTypes.Connectioninformation, new UserInformationMsg() { UUID = net.getUUID(), ActualMsgType = 0, invertTarget = false, name = sst + " "+HOSTSTR(), TargetUUID = -1 });
                 //Debug.Log("Here!");
             }
             else
@@ -297,7 +315,7 @@ public class NetworkManagerBridge : MonoBehaviour
         // Send user our name...
         // Also should send all other names and IDs...
         
-        net.SendToClient(userID, BuiltinMsgTypes.Connectioninformation, new UserInformationMsg() { UUID = -2, ActualMsgType = 0, invertTarget = false, name = PlayerPrefs.GetString("PlayerName") + " (<color=\"#cccc00\">Host</color>)", TargetUUID = -1 });
+        net.SendToClient(userID, BuiltinMsgTypes.Connectioninformation, new UserInformationMsg() { UUID = -3, ActualMsgType = 0, invertTarget = false, name = PlayerPrefs.GetString("PlayerName") + " " + HOSTSTR(), TargetUUID = -1 });
         // Need to send all other users...
         // Have the server send over all players...
         foreach(long UUID in playerLabelss.Keys)

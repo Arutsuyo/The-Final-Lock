@@ -75,9 +75,13 @@ public class CampaignManagerMP : MonoBehaviour
         // Send message to those who have the room loaded to wake up.
         Debug.Log("Yo yall here?!");
         nm.net.SendToAllClients(MPMsgTypes.GameFlow, new SimpleStringMessage() { payload = "Wakeup." });
-        StartCoroutine(HandleWakeup());
+        //StartCoroutine(HandleWakeup());
     }
 
+    public void SendServerReady(long uuid)
+    {
+        StartCoroutine(HandleWakeup());
+    }
 
     public void RoomGenerationAcceptor(NetworkMessage nm)
     {
@@ -100,11 +104,10 @@ public class CampaignManagerMP : MonoBehaviour
     }
     public IEnumerator HandleWakeup()
     {
-        cam.gameObject.SetActive(false);
-        while (AOP == null || !AOP.isDone)
-        {
-            yield return null;
+        if(cam != null && cam.gameObject != null) {
+            cam.gameObject.SetActive(false);
         }
+        
         if (nm.net.isHost)
         {
             List<long> UUIDs = nm.net.GetAllPlayers();
@@ -117,6 +120,8 @@ public class CampaignManagerMP : MonoBehaviour
             playerObjs.Add(-3, Instantiate(SpawnPlayerPrefab));
             NetworkServer.Spawn(playerObjs[-3]);
             playerObjs[-3].GetComponent<NetworkIdentity>().AssignClientAuthority(nm.net.connections[UUIDs[0]]);
+            Debug.Log("BOY: " + UUIDs[0]);
+            playerObjs[-3].GetComponent<PlayerMovementMP>().RpcChangeName(nm.userNames[UUIDs[0]]);
             Debug.Log("UUID counts: " + UUIDs.Count);
             
             foreach (long ID in UUIDs)
@@ -125,6 +130,7 @@ public class CampaignManagerMP : MonoBehaviour
                 if (ID < 0) { continue; }
                 playerObjs.Add(ID, Instantiate(SpawnPlayerPrefab));
                 NetworkServer.SpawnWithClientAuthority(playerObjs[ID], nm.net.connections[ID]);
+                playerObjs[ID].GetComponent<PlayerMovementMP>().RpcChangeName(nm.userNames[ID]);
             }
         }
         else
@@ -192,6 +198,23 @@ public class CampaignManagerMP : MonoBehaviour
         RegisterListenersHere();
     }
    
+    public void ShortCutJoin()
+    {
+        lobbyWaiter.text = "Waiting for host to start the game!";
+        startControl.gameObject.SetActive(false);
+        StartCoroutine(nm.StartClient("127.0.0.1:25565", this, DoConnect));
+        Debug.Log("ToLOBBY!");
+        PlayerAnimation.Play("NewToLobby", -1, 0.0f);
+    }
+    public void ShortCutHost()
+    {
+        lobbyWaiter.text = "Waiting on you to start the game!";
+        startControl.gameObject.SetActive(true);
+        nm.StartServer(25565, this);
+        RegisterListenersHere();
+        PlayerAnimation.Play("NewToLobby", -1, 0.0f);
+
+    }
     public void GetJoin(System.Object o)
     {
         Debug.Log("GetJOIN");
@@ -286,6 +309,7 @@ public class CampaignManagerMP : MonoBehaviour
         // Then call ToCampaign on the animator and swap scenes...note: the server should also send the user's the scene when it next appears o-o
         nm.net.AcceptingConnections = false;
         countDone = 0;
+        NetworkServer.SetAllClientsNotReady();
         nm.net.SendToAllClients(MPMsgTypes.RoundStarting, new SimpleStringMessage() {payload="Round Starting!"});
         StartCoroutine(CountDown());
     }
@@ -309,13 +333,13 @@ public class CampaignManagerMP : MonoBehaviour
         
         PlayerAnimation.SetTrigger("ToCampaign");
         // Swap scenes to Room 1 empty...but for right now just to scene 2.
-
-        AOP = SceneManager.LoadSceneAsync(1);
+        
+        //AOP = SceneManager.LoadSceneAsync(1);
         if (nm.net.isHost)
         {
             // Send all clients the room details
+            nm.net.ServerChangeScene("Room 1");
             
-            GenerateRoom();
         }
     }
     public void GoBack(System.Object o)
@@ -364,6 +388,8 @@ public class CampaignManagerMP : MonoBehaviour
         }
         HideUI();
         DontDestroyOnLoad(this.gameObject);
+        
+        nm.net.ClientSceneChanged += SendServerReady;
         instance = this;
     }
     protected EscapeRoom ParseFile(XmlDocument x)

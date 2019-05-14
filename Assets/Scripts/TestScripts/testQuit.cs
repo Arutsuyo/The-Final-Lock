@@ -48,12 +48,13 @@ public class testQuit : MonoBehaviour
         SwapMaterial();
     }
 
-    private void Interacted(CameraController cc)
+    private bool Interacted(CameraController cc)
     {
         //Handle event.....
         Debug.Log("Interact event triggered!");
         // Can call whatever function you want
         QuitEditor();
+        return false;
     }
     private void Update()
     {

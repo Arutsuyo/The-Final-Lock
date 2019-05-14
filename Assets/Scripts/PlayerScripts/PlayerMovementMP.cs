@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
+using UnityEngine.UI;
 
 //Freeze Rotation on movement: https://gamedev.stackexchange.com/questions/99094/how-to-move-a-cube-withour-rolling-it
 //Freeze rotation on collision source: https://answers.unity.com/questions/768581/stop-rotation-on-collision.html
@@ -15,6 +16,7 @@ public class PlayerMovementMP : NetworkBehaviour
     public CameraController cam;
     private float verticalInput;
     private float horizontalInput;
+    public Text nameTemplate;
     public Transform childCameraPosition;
     void Start()
     {
@@ -33,6 +35,13 @@ public class PlayerMovementMP : NetworkBehaviour
         go.transform.localRotation = Quaternion.identity;
         cam.player = rb.gameObject;
         cam.enabled = true;
+        nameTemplate.enabled = false;
+    }
+
+    [ClientRpc]
+    public void RpcChangeName(string name)
+    {
+        nameTemplate.text = name;
     }
     public override void OnStartAuthority()
     {

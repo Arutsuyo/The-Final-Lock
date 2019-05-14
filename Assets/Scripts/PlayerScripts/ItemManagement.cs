@@ -84,11 +84,13 @@ public class ItemManagement : MonoBehaviour
         // Debug.Log("Looking at: " + gameObject.name);
     }
 
-    private void Interacted(CameraController cc)
+    private bool Interacted(CameraController cc)
     {
         // Handle event. . . Set whatever you want. . .
         // Call whatever function you want. . . 
+        // If you are simply changing the state and aren't expecting to be "interacting" for any length of time, return false and tell the interaction to update a state. 
         activated = true;
+        return false;
     }
 }
 

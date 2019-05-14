@@ -35,6 +35,7 @@ public class PickGame : MonoBehaviour
     {
         interact.lookEvent += LookAt;
         interact.interactEvent += InterAt;
+        interact.escapeInteractEvent += Eject;
         pinHeights = new float[numPins];
         isSecure = new bool[numPins];
         isLatched = new bool[numPins];
@@ -94,19 +95,19 @@ public class PickGame : MonoBehaviour
     {
 
     }
-    private void InterAt(CameraController cc)
+    private bool InterAt(CameraController cc)
     {
-        if(isPicked) { return; }
+        if(isPicked) { return false; }
         bool hasPick = cc.playerMngr.inv.HasItem("KeyPick" + offsetID);
         bool hasHandle = cc.playerMngr.inv.HasItem("KeyHandle" + offsetID);
         if (!hasPick)
         {
             Debug.Log("I would need a key or a pick to get it open.");
-            return;
+            return false;
         }else if (!hasHandle)
         {
             Debug.Log("I will need a tension wrench to try to open it.");
-            return;
+            return false;
         }
 
         // Go into game
@@ -134,10 +135,25 @@ public class PickGame : MonoBehaviour
             o.SetActive(true);
         }
         Debug.Log("Information about minigame:\n Hold left mouse button down to apply tension. Release to allow for easier picks.\n Press and hold right mouse button to apply counter-rotation (useful for security pins).\n Press W to advance a pin. Press S to go back a pin.\nPress T to tap the pin (useful to check if binding or not)\nPress G to press the pin (pushes the pin up, remember to release tension).\nPress B for force a pin up, this will tell you if the pin can move or if it is jamming on something (it may be a security pin!) \n\nTo pick, you must exploit the fact that these locks aren't perfect, and that by forcing the interior of the lock to rotate, one pin will be \"pressed\" up against the cylinder. If you find this pin and can push it into the correct position, the cylinder will rotate, allowing the pin to be held up by the cylinder itself (hence removing it from the list to be picked).\n Some locks has security pins, which are meant to act as \"false sets\", these have to be tested for and it will never allow the pin to be pushed up all the way.\nHowever, normal pins can be pushed too far up the chamber, causing them to bind as well.\n\nIf you believe you have a security pin that is active, or if you accidently pushed a pin up too far (or both), you can perform a counter rotation to let the pins fall back into resting position (note, you technically can lose progress...).");
-        
+        return true;
         //cc.AllowCursorFreedom();
     }
     public float turnSpeed = 0.002f;
+    private void Eject()
+    {
+        Debug.Log("Stopping pick attempt.");
+        cutsceneFinished = false;
+        StopAllCoroutines();
+        StartCoroutine("PlayZoomInBackward");
+        if (isPicked)
+        {
+            gameLock.GFinished(curPlayer);
+        }
+        foreach (GameObject o in ToHide)
+        {
+            o.SetActive(false);
+        }
+    }
     private void Update()
     {
         if (curPlayer != null && cutsceneFinished)

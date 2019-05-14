@@ -9,6 +9,7 @@ TagManager:
   - Book
   - Wall Item X
   - Wall Item Z
+  - Username
   layers:
   - Default
   - TransparentFX

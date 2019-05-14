@@ -22,7 +22,7 @@ public class MDNetworker : NetworkManager
     public event ClientConnected OnClientConnected;
     public event ClientConnected OnRemoteConnected;
     public event ClientConnected OnRemoteDisconnected;
-
+    public event ClientConnected UserUUIDObtained;
     public bool isSafe { get; private set; }
     public bool isHost { get; private set; }
     public bool isConn { get; private set; }
@@ -192,6 +192,8 @@ public class MDNetworker : NetworkManager
         if (RCM.self)
         {
             userUUID = RCM.UUID;
+            if (UserUUIDObtained != null)
+                UserUUIDObtained(userUUID);
             return; // :D
         }
         else
@@ -273,6 +275,7 @@ public class MDNetworker : NetworkManager
         if (conn.isConnected || conn.hostId == -1)
         {
             base.OnServerReady(conn);
+            if (Rconnections.ContainsKey(conn)) { return; }
             Debug.Log("Boys be boys! " + serverUUIDs);
             long uID = serverUUIDs;
             if (conn.hostId == -1)
@@ -367,8 +370,23 @@ public class MDNetworker : NetworkManager
         if (OnRemoteDisconnected != null)
             OnRemoteDisconnected(uID);
         Debug.Log("Done removing...");
-        
     }
+    public event ClientConnected ClientSceneChanged;
+    public event ClientConnected ServerSceneChanged;
+    public override void OnClientSceneChanged(NetworkConnection conn)
+    {
+        base.OnClientSceneChanged(conn);
+        if (ClientSceneChanged != null)
+            ClientSceneChanged(-10);
+    }
+
+    public override void OnServerSceneChanged(string sceneName)
+    {
+        base.OnServerSceneChanged(sceneName);
+        if (ServerSceneChanged != null)
+            ServerSceneChanged(-3);
+    }
+
     // Disconnected from server (On clients)
     public override void OnClientDisconnect(NetworkConnection conn)
     {

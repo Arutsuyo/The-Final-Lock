@@ -14,7 +14,11 @@ public class Inventory : MonoBehaviour
         items.Add(c);
         Debug.Log("Picked up a " + c.ItemName + ".");
     }
-
+    public void SilentDelete(Item c)
+    {
+        // the game object should still be inactive...
+        items.Remove(c);
+    }
     public bool HasItem(string itemName)
     {
         foreach(Item i in items)

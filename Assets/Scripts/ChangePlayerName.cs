@@ -55,6 +55,6 @@ public class ChangePlayerName : MonoBehaviour
 
     public void ChangeName()
     {
-        pm.GetString(UpdateName, 1, 20, "Enter your player name:", Username);
+        pm.GetString(UpdateName, 1, 20, "Enter your player name:", Username, "Change name");
     }
 }
