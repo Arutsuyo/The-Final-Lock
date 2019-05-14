@@ -15,6 +15,7 @@ public class PromptManager : MonoBehaviour
     public System.Action<System.Object> callback;
     public int upperBound;
     public int lowerBound;
+    public string defaultText;
     public bool bad = false;
     public float badTime = 0;
     public Text UITitle;
@@ -24,6 +25,10 @@ public class PromptManager : MonoBehaviour
     public void Submitted()
     {
         if (!IsActive) { return; }
+        if(input.text.Length == 0)
+        {
+            input.text = defaultText;
+        }
         switch (input.contentType)
         {
             case InputField.ContentType.IntegerNumber:
@@ -131,6 +136,7 @@ public class PromptManager : MonoBehaviour
         callback = a;
         input.text = "";
         SubmitTitle.text = submitText;
+        defaultText = sampleText;
         input.contentType = InputField.ContentType.IntegerNumber;
         input.gameObject.SetActive(true);
         StartCoroutine("MoveTowards");
@@ -149,6 +155,7 @@ public class PromptManager : MonoBehaviour
         SubmitTitle.text = submitText;
         callback = a;
         input.text = "";
+        defaultText = sampleText;
         input.gameObject.SetActive(true);
         input.contentType = InputField.ContentType.Standard;
         StartCoroutine("MoveTowards");

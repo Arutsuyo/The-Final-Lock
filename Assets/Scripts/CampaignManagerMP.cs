@@ -7,6 +7,19 @@ using System.Linq;
 
 using System.Xml;
 using System;
+using UnityEngine.Networking;
+using UnityEngine.SceneManagement;
+using System.Text;
+#pragma warning disable CS0618 // Type or member is obsolete
+public class MPMsgTypes
+{
+    public static short RoundStarting = (short)(BuiltinMsgTypes.Highest + 1);
+    public static short RoomInformation = (short)(MPMsgTypes.RoundStarting + 1);
+    public static short GameFlow = (short)(MPMsgTypes.RoomInformation + 1);
+    public static short Highest = GameFlow;
+}
+
+
 
 public class CampaignManagerMP : MonoBehaviour
 {
@@ -25,10 +38,17 @@ public class CampaignManagerMP : MonoBehaviour
     public NetworkManagerBridge nm;
     public Animator doorAnimation;
     public Animator holoAnimation;
+    public Text lobbyWaiter;
+    public Camera cam;
+    public AsyncOperation AOP;
+
+    public GameObject SpawnPlayerPrefab;
+    public int countDone = 0;
+    public Image startControl;
     public int ActiveID = 0;
     
     public int Port;
-
+    public Dictionary<long, GameObject> playerObjs = new Dictionary<long, GameObject>();
 
     [Header("Rooms Offered")]
     public string[] Rooms;
@@ -38,6 +58,112 @@ public class CampaignManagerMP : MonoBehaviour
     public EscapeRoom[] erooms;
     public Button[] Campaigns; // Created at run time.
     public GameObject holo;
+
+    public static CampaignManagerMP instance;
+    public static CampaignManagerMP getInstance()
+    {
+        return instance;
+    }
+
+
+    public void GenerateRoom()
+    {
+        // do nothing for now for generation
+
+        // do nothing for now for sending room
+
+        // Send message to those who have the room loaded to wake up.
+        Debug.Log("Yo yall here?!");
+        nm.net.SendToAllClients(MPMsgTypes.GameFlow, new SimpleStringMessage() { payload = "Wakeup." });
+        StartCoroutine(HandleWakeup());
+    }
+
+
+    public void RoomGenerationAcceptor(NetworkMessage nm)
+    {
+
+    }
+    public void CountIncrementer()
+    {
+        // ASSUMES SYNCHRONIZED, WHICH IS DANGEROUS!
+        countDone++;
+        Debug.Log(countDone);
+    }
+    public String getSeperated<T>(List<T> t)
+    {
+        StringBuilder sb = new StringBuilder();
+        foreach(T t1 in t)
+        {
+            sb.Append(t1.ToString() + ", ");
+        }
+        return sb.ToString();
+    }
+    public IEnumerator HandleWakeup()
+    {
+        cam.gameObject.SetActive(false);
+        while (AOP == null || !AOP.isDone)
+        {
+            yield return null;
+        }
+        if (nm.net.isHost)
+        {
+            List<long> UUIDs = nm.net.GetAllPlayers();
+            Debug.Log((UUIDs.Count - 1) + " " + getSeperated(UUIDs));
+
+            while (countDone != UUIDs.Count - 1)
+            {
+                yield return null;
+            }
+            playerObjs.Add(-3, Instantiate(SpawnPlayerPrefab));
+            NetworkServer.Spawn(playerObjs[-3]);
+            playerObjs[-3].GetComponent<NetworkIdentity>().AssignClientAuthority(nm.net.connections[UUIDs[0]]);
+            Debug.Log("UUID counts: " + UUIDs.Count);
+            
+            foreach (long ID in UUIDs)
+            {
+                Debug.Log(ID + " " + nm.net.GetConnection(ID).ToString());
+                if (ID < 0) { continue; }
+                playerObjs.Add(ID, Instantiate(SpawnPlayerPrefab));
+                NetworkServer.SpawnWithClientAuthority(playerObjs[ID], nm.net.connections[ID]);
+            }
+        }
+        else
+        {
+            nm.net.SendToServer(MPMsgTypes.GameFlow, new SimpleStringMessage() { payload = "Room Loaded." });
+        }
+        GameObject go = GameObject.FindGameObjectWithTag("MainCamera");
+        Debug.Log(go);
+        go.GetComponent<Camera>().enabled = true;
+        // Enable character here...but need additional help.
+    }
+    public void GameFlowSM(NetworkMessage nm)
+    {
+        // Find the main camera, turn it on, disable your camera.
+        SimpleStringMessage ssm = nm.ReadMessage<SimpleStringMessage>();
+        switch (ssm.payload)
+        {
+            case "Wakeup.":
+                Debug.Log("WAKE ME UP INSIDE!");
+                StartCoroutine(HandleWakeup());
+                break;
+            case "Room Loaded.":
+                CountIncrementer();
+                break;
+        }
+        
+
+    }
+
+
+
+
+    private void RegisterListenersHere()
+    {
+        nm.net.RegisterHandler(MPMsgTypes.RoundStarting, SimpleStringPayload);
+        nm.net.RegisterHandler(MPMsgTypes.RoomInformation, RoomGenerationAcceptor);
+        nm.net.RegisterHandler(MPMsgTypes.GameFlow, GameFlowSM);
+    }
+
 
     public virtual void UpdateCampaignUI(int id)
     {
@@ -55,25 +181,31 @@ public class CampaignManagerMP : MonoBehaviour
     }
     public void PromptTryJoin()
     {
-        pm.GetString(GetJoin, 5, 25, "Please enter the server's ip:port combo: ", "127.0.0.1" + 25565, "Connect");
-    }
+        pm.GetString(GetJoin, 5, 25, "Please enter the server's ip:port combo: ", "127.0.0.1:" + 25565, "Connect");
+        lobbyWaiter.text = "Waiting for host to start the game!";
+}
     public void DoConnect()
     {
         //Debug.Log("Do Connect!");
         //Debug.Log(Networker.isActive() + " " + Networker.isConnected());
         // Send a message of our name
+        RegisterListenersHere();
     }
+   
     public void GetJoin(System.Object o)
     {
         Debug.Log("GetJOIN");
         if(o != null)
         {
             PlayerAnimation.SetTrigger("ToLobby");
+            lobbyWaiter.text = "Waiting for host to start the game!";
+            startControl.gameObject.SetActive(false);
             StartCoroutine(nm.StartClient((string)o, this, DoConnect));
             
             Debug.Log("ToLOBBY!");
         }
     }
+    
     public void GetPort(System.Object o)
     {
         int oo;
@@ -82,9 +214,11 @@ public class CampaignManagerMP : MonoBehaviour
             Port = oo;
             // Now actually launch it.
             //Debug.Log("Launching campaign ID " + ActiveID + " in 3...2....1...JUMP");
+            startControl.gameObject.SetActive(true);
+            lobbyWaiter.text = "Waiting on you to start the game!";
             PlayerAnimation.SetTrigger("ToLobby");
             nm.StartServer(Port, this);
-
+            RegisterListenersHere();
             //doorAnimation.SetTrigger("Door");
             //holoAnimation.SetTrigger("ToDoor");
         }
@@ -129,9 +263,70 @@ public class CampaignManagerMP : MonoBehaviour
             Destroy(holo);
         }
     }
+
+    public void SimpleStringPayload(NetworkMessage nm)
+    {
+        // We know it is a simple string payload!
+        SimpleStringMessage ms = nm.ReadMessage<SimpleStringMessage>();
+        switch (ms.payload)
+        {
+            case "Round Starting!":
+                StartCoroutine(CountDown());
+                break;
+            default:
+                Debug.LogError("Uncaught simple string payload: " + ms.payload);
+                break;
+        }
+    }
+
+    public void StartMission()
+    {
+        // Send out the starting mission signal
+        // Start it ourselves...count to 3...GO
+        // Then call ToCampaign on the animator and swap scenes...note: the server should also send the user's the scene when it next appears o-o
+        nm.net.AcceptingConnections = false;
+        countDone = 0;
+        nm.net.SendToAllClients(MPMsgTypes.RoundStarting, new SimpleStringMessage() {payload="Round Starting!"});
+        StartCoroutine(CountDown());
+    }
+    private bool wasCancelled= false;
+    private bool isCounting = false;
+    public IEnumerator CountDown()
+    {
+        lobbyWaiter.text = "Round starting in 3";
+        for (int i = 3; i >= 1; i--)
+        {
+            yield return new WaitForSecondsRealtime(0.25f);
+            lobbyWaiter.text += '.';
+            yield return new WaitForSecondsRealtime(0.25f);
+            lobbyWaiter.text += '.';
+            yield return new WaitForSecondsRealtime(0.25f);
+            lobbyWaiter.text += '.';
+            yield return new WaitForSecondsRealtime(0.25f);
+            lobbyWaiter.text += (i-1);
+        }
+        lobbyWaiter.text += "!";
+        
+        PlayerAnimation.SetTrigger("ToCampaign");
+        // Swap scenes to Room 1 empty...but for right now just to scene 2.
+
+        AOP = SceneManager.LoadSceneAsync(1);
+        if (nm.net.isHost)
+        {
+            // Send all clients the room details
+            
+            GenerateRoom();
+        }
+    }
     public void GoBack(System.Object o)
     {
         PlayerAnimation.SetTrigger("Back");
+        HideUI();
+    }
+    
+    public void GoBackBridge()
+    {
+        GoBack(null);
     }
     public void ShowUI()
     {
@@ -162,8 +357,14 @@ public class CampaignManagerMP : MonoBehaviour
 
     public void Start()
     {
+        if(instance != null)
+        {
+            Destroy(this.gameObject);
+            return;
+        }
         HideUI();
-        
+        DontDestroyOnLoad(this.gameObject);
+        instance = this;
     }
     protected EscapeRoom ParseFile(XmlDocument x)
     {
@@ -385,3 +586,4 @@ public class Clue
         Debug.LogWarning("Clues have yet to be implemented!");
     }
 }
+#pragma warning restore CS0618 // Type or member is obsolete

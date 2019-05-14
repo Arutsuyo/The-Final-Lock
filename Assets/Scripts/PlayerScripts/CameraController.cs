@@ -8,6 +8,7 @@ using UnityEngine.UI;
 
 public class CameraController : MonoBehaviour
 {
+
     [Header("Player Related")]
     public GameObject player;
     public PlayerManager playerMngr;
@@ -80,6 +81,7 @@ public class CameraController : MonoBehaviour
     {
         // Check for an object in the middle if the screen
         RaycastHit hit;
+        if(Camera.main == null) { return; }
         Ray ray = Camera.main.ScreenPointToRay(
             new Vector3(
                 Screen.width / 2f,

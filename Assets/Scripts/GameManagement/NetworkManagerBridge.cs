@@ -20,6 +20,8 @@ public class NetworkManagerBridge : MonoBehaviour
     public Image playerNamePrefab;
     public RectTransform scroller;
     public List<Image> playersReg = new List<Image>();
+    public Dictionary<long, Image> playerLabelss = new Dictionary<long, Image>();
+
 
     public static short IDC = 0;
 
@@ -80,6 +82,7 @@ public class NetworkManagerBridge : MonoBehaviour
     {
         CLPS = CMMP;
         Debug.Log("Starting Server...");
+        //addUserName(new UserInformationMsg() { UUID = -3, name = PlayerPrefs.GetString("PlayerName") + " (<color=\"#cccc00\">Host</color>)" });
         this.SocketInfo = new IPAP("127.0.0.1:"+Port);
         //Networker.port = this.SocketInfo.PORT;
         //Networker.web_port = this.SocketInfo.PORT + 1;
@@ -117,7 +120,7 @@ public class NetworkManagerBridge : MonoBehaviour
     public IEnumerator StartClient(string IPM, CampaignManagerMP CMMP, System.Action connected)
     {
         CLPS = CMMP;
-        
+        addUserName(new UserInformationMsg() { UUID = -3, name = PlayerPrefs.GetString("PlayerName") });
         this.SocketInfo = new IPAP(IPM);
         Debug.Log("Starting Client..." + this.SocketInfo.IP + " :: " + this.SocketInfo.PORT);
         /*Networker.port = this.SocketInfo.PORT;
@@ -176,6 +179,33 @@ public class NetworkManagerBridge : MonoBehaviour
         StartCoroutine(SendName());
         connected();
     }
+    public void addUserName(UserInformationMsg UIM)
+    {
+        Debug.Log("woot" + UIM.UUID);
+        if (playerLabelss.ContainsKey(UIM.UUID)) { Debug.Log("I already have that key though :("); return; }
+        Image ii = Instantiate<Image>(playerNamePrefab, scroller);
+        Debug.Log(ii.rectTransform.sizeDelta);
+        ii.rectTransform.anchoredPosition = new Vector2(0,-ii.rectTransform.sizeDelta.y * (playersReg.Count+.5f));
+        playersReg.Add(ii);
+        playerLabelss.Add(UIM.UUID, ii);
+        Text tt = ii.GetComponentInChildren<Text>();
+        tt.text = UIM.name;
+    }
+    public void removeUserName(long uuid)
+    {
+        Debug.Log("Boooooo!!!" + uuid);
+        Image ii = playerLabelss[uuid];
+        int pos = playersReg.IndexOf(ii);
+        playersReg.Remove(ii);
+        Destroy(playerLabelss[uuid].gameObject);
+        playerLabelss.Remove(uuid);
+
+        for(int i = pos; i < playersReg.Count; i++)
+        {
+            // Move them up by the delta...
+            playersReg[i].rectTransform.anchoredPosition = new Vector2(0, -playersReg[i].rectTransform.sizeDelta.y * (i + .5f));
+        }
+    }
     public void HandleName(NetworkMessage nm)
     {
         Debug.Log(nm.reader.Length + " " + nm.reader.Position);
@@ -194,7 +224,7 @@ public class NetworkManagerBridge : MonoBehaviour
         if (net.CheckPacket(TMB))
         {
             Debug.Log("Handling a name request :D " + TMB.name + " " + TMB.UUID);
-            //addUserName();
+            addUserName(TMB);
         }
         else
         {
@@ -215,12 +245,12 @@ public class NetworkManagerBridge : MonoBehaviour
         {
             if (net.isHost)
             {
-                //net.SendToAllClients(BuiltinMsgTypes.Connectioninformation, new UserInformationMsg() { UUID = net.getUUID(), ActualMsgType = 0, invertTarget = false, name = sst, TargetUUID = -1 });
+                net.SendToAllClients(BuiltinMsgTypes.Connectioninformation, new UserInformationMsg() { UUID = net.getUUID(), ActualMsgType = 0, invertTarget = false, name = sst + " (<color=\"#cccc00\">Host</color>)", TargetUUID = -1 });
                 //Debug.Log("Here!");
             }
             else
             {
-                Debug.Log(net.SendToAllOtherClients(BuiltinMsgTypes.Connectioninformation, new UserInformationMsg() { UUID = net.getUUID(), name = PlayerPrefs.GetString("PlayerName") + "a" }));
+                Debug.Log(net.SendToAllOtherClients(BuiltinMsgTypes.Connectioninformation, new UserInformationMsg() { UUID = net.getUUID(), name = PlayerPrefs.GetString("PlayerName") }));
                 Debug.Log(net.SendToServer(BuiltinMsgTypes.Connectioninformation, new UserInformationMsg() { UUID = net.getUUID(), name = PlayerPrefs.GetString("PlayerName")}));
             }
         }
@@ -245,7 +275,7 @@ public class NetworkManagerBridge : MonoBehaviour
         }
 
         net.OnClientConnected += Net_OnClientConnected;
-
+        net.OnRemoteDisconnected += removeUserName;
         /*Networker.Init();
         instance = this;
         DontDestroyOnLoad(gameObject);
@@ -263,7 +293,21 @@ public class NetworkManagerBridge : MonoBehaviour
 
     private void Net_OnClientConnected(long userID)
     {
-        // Create a new "connecting template"...   
+        // Create a new "connecting template"...
+        // Send user our name...
+        // Also should send all other names and IDs...
+        
+        net.SendToClient(userID, BuiltinMsgTypes.Connectioninformation, new UserInformationMsg() { UUID = -2, ActualMsgType = 0, invertTarget = false, name = PlayerPrefs.GetString("PlayerName") + " (<color=\"#cccc00\">Host</color>)", TargetUUID = -1 });
+        // Need to send all other users...
+        // Have the server send over all players...
+        foreach(long UUID in playerLabelss.Keys)
+        {
+            if(UUID == -2)
+            {
+                continue;
+            }
+            net.SendToClient(userID, BuiltinMsgTypes.Connectioninformation, new UserInformationMsg() { UUID = UUID, ActualMsgType = 0, invertTarget = false, name = playerLabelss[UUID].GetComponentInChildren<Text>().text, TargetUUID = -1 });
+        }
     }
 
     public bool ConnectToServer(string IPP, CampaignManagerMP mp)

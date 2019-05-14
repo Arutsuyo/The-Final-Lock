@@ -5,67 +5,6 @@ using UnityEngine;
 using UnityEngine.Networking;
 #pragma warning disable CS0618 // Type or member is obsolete
 
-public class BuiltinMsgTypes
-{
-    public static short RemoteInformation = MsgType.Highest + 1;
-    public static short Connectioninformation = (short)(RemoteInformation + 1);
-}
-[System.Serializable]
-public class RemoteConnectionMsg : MessageBase
-{
-    public long UUID;
-    public bool disconnected = false;
-    public bool self = false;
-}
-[System.Serializable]
-public class UserInformationMsg : TaggedMessageBase
-{
-    public long UUID;
-    public string name;
-    public override void Deserialize(NetworkReader reader)
-    {
-        Debug.Log("Deserialize me BITCH!");
-        TaggedMessageBase.BaseDeserialize(reader, this);
-        UUID = reader.ReadInt64();
-        name = reader.ReadString();
-    }
-    public override void Serialize(NetworkWriter write)
-    {
-        Debug.Log("Serialize me BITCH!");
-        TaggedMessageBase.BaseSerialize(write, this);
-        write.Write(UUID);
-        write.Write(name);
-    }
-
-}
-// ALL MESSAGES SHALL USE TAGGED MESSAGE BASE INSTEAD AS AN EXTENDER!!!
-[System.Serializable]
-public abstract class TaggedMessageBase : MessageBase
-{
-    public long TargetUUID; // UUID to send to, -1 to the server (ignores invertTarget)
-    public bool invertTarget; // Target all BUT the TargetUUID
-    public short ActualMsgType;
-    public bool Targetting = false;
-    public int channelID = 0;
-    public abstract override void Serialize(NetworkWriter write);
-    public abstract override void Deserialize(NetworkReader reader);
-    public static void BaseSerialize(NetworkWriter write, TaggedMessageBase TMB)
-    {
-        write.Write(TMB.TargetUUID);
-        write.Write(TMB.invertTarget);
-        write.Write(TMB.ActualMsgType);
-        write.Write(TMB.Targetting);
-        write.Write(TMB.channelID);
-    }
-    public static void BaseDeserialize(NetworkReader reader, TaggedMessageBase TMB)
-    {
-        TMB.TargetUUID = reader.ReadInt64();
-        TMB.invertTarget = reader.ReadBoolean();
-        TMB.ActualMsgType = reader.ReadInt16();
-        TMB.Targetting = reader.ReadBoolean();
-        TMB.channelID = reader.ReadInt32();
-    }
-}
 public class MDNetworker : NetworkManager
 {
     public Dictionary<long, int> playerIDs = new Dictionary<long, int>(); // Given id, actual id
@@ -89,6 +28,20 @@ public class MDNetworker : NetworkManager
     public bool isConn { get; private set; }
     public bool isFin  { get; private set; }
     public bool isDual { get; private set; }
+
+    public List<long> GetAllPlayers()
+    {
+        return new List<long>(curPlayerIDs);
+    }
+    public NetworkConnection GetConnection(long UUID)
+    {
+        if (!isHost) { return null; }
+        if (connections.ContainsKey(UUID))
+        {
+            return connections[UUID];
+        }
+        else { return null; }
+    }
 
     public bool SendToOtherClient(long UUID, short msgType, TaggedMessageBase msg, int channelID = 0)
     {
@@ -134,6 +87,10 @@ public class MDNetworker : NetworkManager
         bool isGood = true;
         foreach (long uid in connections.Keys)
         {
+            if(uid < 0)
+            {
+                continue;
+            }
             bool kk = connections[uid].SendByChannel(msgType, msg, channelID);
             isGood = isGood && kk;
         }
@@ -145,7 +102,7 @@ public class MDNetworker : NetworkManager
         bool isGood = true;
         foreach (long uid in connections.Keys)
         { 
-            if(uid == UUID)
+            if(uid == UUID || uid < 0)
             {
                 continue;
             }
@@ -215,6 +172,7 @@ public class MDNetworker : NetworkManager
         curPlayerIDs.Clear();
         IDplayers.Clear();
         playerIDs.Clear();
+        RNMD.Clear();
     }
     public bool IsHost()
     {
@@ -240,14 +198,20 @@ public class MDNetworker : NetworkManager
         {
             if (RCM.disconnected)
             {
-                curPlayerIDs.Remove(RCM.UUID);
-                ignorePID.Add(RCM.UUID);
+                if (!isHost)
+                {
+                    curPlayerIDs.Remove(RCM.UUID);
+                    ignorePID.Add(RCM.UUID);
+                }
                 if (OnRemoteDisconnected != null)
                     OnRemoteDisconnected(RCM.UUID);
             }
             else if (!ignorePID.Contains(RCM.UUID))
             {
-                curPlayerIDs.Add(RCM.UUID);
+                if (!isHost)
+                {
+                    curPlayerIDs.Add(RCM.UUID);
+                }
                 if (OnRemoteConnected != null)
                     OnRemoteConnected(RCM.UUID);
 
@@ -282,7 +246,7 @@ public class MDNetworker : NetworkManager
         if (AcceptingConnections)
         {
             base.OnServerConnect(conn);
-            Debug.Log("Client connected to server...");
+            Debug.Log("Client connected to server..." + conn.ToString());
 
             isHost = true;
         }
@@ -295,8 +259,8 @@ public class MDNetworker : NetworkManager
     public override void OnClientConnect(NetworkConnection conn)
     {
         base.OnClientConnect(conn);
-        
-        Debug.Log("Server is present for client!...");
+
+        Debug.Log("Server is present for client!..." + conn.ToString());
         clientConn = conn;
         isDual = isHost;
         isSafe = true;
@@ -306,15 +270,22 @@ public class MDNetworker : NetworkManager
     public override void OnServerReady(NetworkConnection conn)
     {
         Debug.Log("Server is done with handshakes client!...");
-        if (conn.isConnected)
+        if (conn.isConnected || conn.hostId == -1)
         {
             base.OnServerReady(conn);
             Debug.Log("Boys be boys! " + serverUUIDs);
             long uID = serverUUIDs;
-            serverUUIDs = serverUUIDs + 1;
-            Debug.Log("UUID: " + serverUUIDs);
+            if (conn.hostId == -1)
+            {
+                uID = -3;
+            }
+            else
+            {
+                serverUUIDs = serverUUIDs + 1;
+                Debug.Log("UUID: " + serverUUIDs);
+            }
             connections.Add(uID, conn);
-            curPlayerIDs.Add(uID);
+            curPlayerIDs.Add(uID); // Actually never mind o-0
             playerIDs.Add(uID, conn.connectionId);
             IDplayers.Add(conn.connectionId, uID);
             foreach (short P in RNMD.Keys)
@@ -371,10 +342,12 @@ public class MDNetworker : NetworkManager
     public override void OnServerDisconnect(NetworkConnection conn)
     {
         base.OnServerDisconnect(conn);
+        Debug.Log("Here..." + conn.ToString() + " " + Rconnections.ContainsKey(conn));
+
         if (!Rconnections.ContainsKey(conn)) { return; }
         long uID = Rconnections[conn];
-        
 
+        Debug.Log("Player UUID: " + uID);
         // Now we flood them
         foreach (long PID in curPlayerIDs)
         {
@@ -389,8 +362,11 @@ public class MDNetworker : NetworkManager
         playerIDs.Remove(uID);
         IDplayers.Remove(conn.connectionId);
 
-        Rconnections.Remove(connections[uID]);
+        Rconnections.Remove(conn);
         connections.Remove(uID);
+        if (OnRemoteDisconnected != null)
+            OnRemoteDisconnected(uID);
+        Debug.Log("Done removing...");
         
     }
     // Disconnected from server (On clients)
@@ -412,5 +388,83 @@ public class MDNetworker : NetworkManager
         return userUUID;
     }
     
+}
+
+public class BuiltinMsgTypes
+{
+    public static short RemoteInformation = MsgType.Highest + 1;
+    public static short Connectioninformation = (short)(RemoteInformation + 1);
+
+    public static short Highest = Connectioninformation;
+}
+[System.Serializable]
+public class RemoteConnectionMsg : MessageBase
+{
+    public long UUID;
+    public bool disconnected = false;
+    public bool self = false;
+}
+[System.Serializable]
+public class UserInformationMsg : TaggedMessageBase
+{
+    public long UUID;
+    public string name;
+    public override void Deserialize(NetworkReader reader)
+    {
+        TaggedMessageBase.BaseDeserialize(reader, this);
+        UUID = reader.ReadInt64();
+        name = reader.ReadString();
+    }
+    public override void Serialize(NetworkWriter write)
+    {
+        TaggedMessageBase.BaseSerialize(write, this);
+        write.Write(UUID);
+        write.Write(name);
+    }
+
+}
+[System.Serializable]
+public class SimpleStringMessage : TaggedMessageBase
+{
+    public string payload;
+    public override void Deserialize(NetworkReader reader)
+    {
+        TaggedMessageBase.BaseDeserialize(reader, this);
+        payload = reader.ReadString();
+    }
+    public override void Serialize(NetworkWriter write)
+    {
+        TaggedMessageBase.BaseSerialize(write, this);
+        write.Write(payload);
+    }
+
+}
+// ALL MESSAGES SHALL USE TAGGED MESSAGE BASE INSTEAD AS AN EXTENDER!!!
+[System.Serializable]
+public abstract class TaggedMessageBase : MessageBase
+{
+    public long TargetUUID; // UUID to send to, -1 to the server (ignores invertTarget)
+    public bool invertTarget; // Target all BUT the TargetUUID
+    public short ActualMsgType;
+    public bool Targetting = false;
+    public int channelID = 0;
+    public abstract override void Serialize(NetworkWriter write);
+    public abstract override void Deserialize(NetworkReader reader);
+    public static void BaseSerialize(NetworkWriter write, TaggedMessageBase TMB)
+    {
+        write.Write(TMB.TargetUUID);
+        write.Write(TMB.invertTarget);
+        write.Write(TMB.ActualMsgType);
+        write.Write(TMB.Targetting);
+        write.Write(TMB.channelID);
+    }
+    public static void BaseDeserialize(NetworkReader reader, TaggedMessageBase TMB)
+    {
+        TMB.TargetUUID = reader.ReadInt64();
+        TMB.invertTarget = reader.ReadBoolean();
+        TMB.ActualMsgType = reader.ReadInt16();
+        TMB.Targetting = reader.ReadBoolean();
+        TMB.channelID = reader.ReadInt32();
+    }
 }
 #pragma warning restore CS0618 // Type or member is obsolete
