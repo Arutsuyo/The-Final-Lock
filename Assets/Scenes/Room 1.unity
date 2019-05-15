@@ -146,38 +146,6 @@ Transform:
   m_Father: {fileID: 1968264948}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!84 &81211413
-RenderTexture:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: 
-  m_ImageContentsHash:
-    serializedVersion: 2
-    Hash: 00000000000000000000000000000000
-  m_ForcedFallbackFormat: 4
-  m_DownscaleFallback: 0
-  m_Width: 625
-  m_Height: 445
-  m_AntiAliasing: 4
-  m_DepthFormat: 2
-  m_ColorFormat: 7
-  m_MipMap: 0
-  m_GenerateMips: 1
-  m_SRGB: 0
-  m_UseDynamicScale: 0
-  m_BindMS: 0
-  m_TextureSettings:
-    serializedVersion: 2
-    m_FilterMode: 1
-    m_Aniso: 1
-    m_MipBias: 0
-    m_WrapU: 1
-    m_WrapV: 1
-    m_WrapW: 1
-  m_Dimension: 2
-  m_VolumeDepth: 1
 --- !u!1 &135142372
 GameObject:
   m_ObjectHideFlags: 0
@@ -1114,7 +1082,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh16296
+  m_Name: pb_Mesh48666
   serializedVersion: 9
   m_SubMeshes:
   - serializedVersion: 2
@@ -1675,7 +1643,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh16166
+  m_Name: pb_Mesh48516
   serializedVersion: 9
   m_SubMeshes:
   - serializedVersion: 2
@@ -2448,7 +2416,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh16124
+  m_Name: pb_Mesh48474
   serializedVersion: 9
   m_SubMeshes:
   - serializedVersion: 2
@@ -3031,7 +2999,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh16202
+  m_Name: pb_Mesh48552
   serializedVersion: 9
   m_SubMeshes:
   - serializedVersion: 2
@@ -3407,7 +3375,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh16050
+  m_Name: pb_Mesh48392
   serializedVersion: 9
   m_SubMeshes:
   - serializedVersion: 2
@@ -4459,6 +4427,38 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 14
   m_Mesh: {fileID: 4300000, guid: f0291ba0e5a78446ab9a5494492da05f, type: 3}
+--- !u!84 &1440888659
+RenderTexture:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 
+  m_ImageContentsHash:
+    serializedVersion: 2
+    Hash: 00000000000000000000000000000000
+  m_ForcedFallbackFormat: 4
+  m_DownscaleFallback: 0
+  m_Width: 448
+  m_Height: 428
+  m_AntiAliasing: 4
+  m_DepthFormat: 2
+  m_ColorFormat: 7
+  m_MipMap: 0
+  m_GenerateMips: 1
+  m_SRGB: 0
+  m_UseDynamicScale: 0
+  m_BindMS: 0
+  m_TextureSettings:
+    serializedVersion: 2
+    m_FilterMode: 1
+    m_Aniso: 1
+    m_MipBias: 0
+    m_WrapU: 1
+    m_WrapV: 1
+    m_WrapW: 1
+  m_Dimension: 2
+  m_VolumeDepth: 1
 --- !u!1 &1454676785
 GameObject:
   m_ObjectHideFlags: 0
@@ -5143,7 +5143,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh16240
+  m_Name: pb_Mesh52268
   serializedVersion: 9
   m_SubMeshes:
   - serializedVersion: 2
@@ -6073,7 +6073,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh16064
+  m_Name: pb_Mesh48406
   serializedVersion: 9
   m_SubMeshes:
   - serializedVersion: 2
@@ -6368,7 +6368,7 @@ Camera:
     serializedVersion: 2
     m_Bits: 4294967295
   m_RenderingPath: -1
-  m_TargetTexture: {fileID: 81211413}
+  m_TargetTexture: {fileID: 1440888659}
   m_TargetDisplay: 0
   m_TargetEye: 3
   m_HDR: 1
@@ -6808,71 +6808,22 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 841620163366126425, guid: c603b0abcf21ea9469b03a9a4cf86e12,
+        type: 3}
+      propertyPath: drawer
+      value: 
+      objectReference: {fileID: 8737789352450569457}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c603b0abcf21ea9469b03a9a4cf86e12, type: 3}
---- !u!1 &8737789352450569457 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4895924936457719633, guid: c603b0abcf21ea9469b03a9a4cf86e12,
+--- !u!114 &8737789352450569457 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3928467210194070708, guid: c603b0abcf21ea9469b03a9a4cf86e12,
     type: 3}
   m_PrefabInstance: {fileID: 8737789352450569456}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &8737789352450569458
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8737789352450569457}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a3095029f8a9a154da3d9661b22c088a, type: 3}
+  m_Script: {fileID: 11500000, guid: bc5fce68b3f325b43bb05b066b9c9705, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  owner: -10
---- !u!114 &8737789352450569459
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8737789352450569457}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f8ec0fb3ff2a5454e8863609a58514d0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  GlowColor: {r: 0.08018869, g: 0.74278337, b: 1, a: 0.7490196}
-  LerpFactor: 10
---- !u!114 &8737789352450569460
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8737789352450569457}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 372142912, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_SceneId:
-    m_Value: 0
-  m_AssetId:
-    i0: 198
-    i1: 3
-    i2: 176
-    i3: 171
-    i4: 207
-    i5: 33
-    i6: 234
-    i7: 148
-    i8: 105
-    i9: 176
-    i10: 58
-    i11: 154
-    i12: 76
-    i13: 248
-    i14: 110
-    i15: 18
-  m_ServerOnly: 0
-  m_LocalPlayerAuthority: 1

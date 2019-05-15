@@ -28,7 +28,7 @@ public class Interactable : NetworkBehaviour
 
     private GlowObject glow;
     private bool inView;
-
+    public bool NeedCheckOwner = true;
     private bool hasAwaked = false;
     public long owner = -10; // Not used
     private void Awake()
@@ -45,7 +45,7 @@ public class Interactable : NetworkBehaviour
     [Command]
     public void CmdServerFinished(long ID)
     {
-        if(ID == owner)
+        if(ID == owner || !NeedCheckOwner)
         {
             CmdReleaseHold();
             RpcServerFinished();
