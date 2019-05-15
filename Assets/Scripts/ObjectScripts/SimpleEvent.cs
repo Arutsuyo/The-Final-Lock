@@ -15,6 +15,7 @@ public class SimpleEvent : MonoBehaviour
 
     private void Locks_GameFinished(CameraController cc)
     {
+        // Dispatch a game finished... o-o
         foreach(GameObject go in toDisable)
         {
             go.SetActive(false);

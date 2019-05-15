@@ -31,11 +31,13 @@ public class PickGame : MonoBehaviour
     private float StartLerpTime = 0;
     public bool cutsceneFinished = false;
     public bool isPicked = false;
+    public bool isTryingObject = false;
     void Start()
     {
         interact.lookEvent += LookAt;
         interact.interactEvent += InterAt;
         interact.escapeInteractEvent += Eject;
+        interact.gameInteractComplete += PickFin;
         pinHeights = new float[numPins];
         isSecure = new bool[numPins];
         isLatched = new bool[numPins];
@@ -98,6 +100,7 @@ public class PickGame : MonoBehaviour
     private bool InterAt(CameraController cc)
     {
         if(isPicked) { return false; }
+        
         bool hasPick = cc.playerMngr.inv.HasItem("KeyPick" + offsetID);
         bool hasHandle = cc.playerMngr.inv.HasItem("KeyHandle" + offsetID);
         if (!hasPick)
@@ -109,7 +112,7 @@ public class PickGame : MonoBehaviour
             Debug.Log("I will need a tension wrench to try to open it.");
             return false;
         }
-
+        isTryingObject = true;
         // Go into game
         Debug.Log("Picking lock...");
         cc.isInCutscene = true;
@@ -142,17 +145,19 @@ public class PickGame : MonoBehaviour
     private void Eject()
     {
         Debug.Log("Stopping pick attempt.");
+        if (!isTryingObject) { return; }
+        isTryingObject = false;
         cutsceneFinished = false;
         StopAllCoroutines();
         StartCoroutine("PlayZoomInBackward");
-        if (isPicked)
-        {
-            gameLock.GFinished(curPlayer);
-        }
         foreach (GameObject o in ToHide)
         {
             o.SetActive(false);
         }
+    }
+    private void PickFin()
+    {
+        gameLock.GFinished(curPlayer);
     }
     private void Update()
     {
@@ -162,10 +167,11 @@ public class PickGame : MonoBehaviour
             {
                 Debug.Log("Stopping pick attempt.");
                 cutsceneFinished = false;
+                isTryingObject = false;
                 StartCoroutine("PlayZoomInBackward");
                 if (isPicked)
                 {
-                    gameLock.GFinished(curPlayer);
+                    interact.SendSF();
                 }
                 foreach (GameObject o in ToHide)
                 {
@@ -199,8 +205,9 @@ public class PickGame : MonoBehaviour
                 if(tumblerPosition > 5)
                 {
                     Debug.Log("Minigame finished!");
-                    gameLock.GFinished(curPlayer);
+                    interact.SendSF();
                     cutsceneFinished = false;
+                    isTryingObject = false;
                     StartCoroutine("PlayZoomInBackward");
                     foreach (GameObject o in ToHide)
                     {

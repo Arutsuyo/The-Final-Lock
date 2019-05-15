@@ -21,7 +21,16 @@ public class Item : MonoBehaviour
     }
     private void Return()
     {
-        prevCC.playerMngr.inv.SilentDelete(this);
+        if (prevCC != null)
+        {
+            prevCC.playerMngr.inv.SilentDelete(this);
+            // Already deleted :P
+        }
+        else
+        {
+            // Silently disable this...
+            gameObject.SetActive(false);
+        }
     }
     private bool InterAt(CameraController cc)
     {

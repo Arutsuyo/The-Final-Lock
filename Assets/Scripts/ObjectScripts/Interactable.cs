@@ -24,9 +24,12 @@ public class Interactable : NetworkBehaviour
     public event TryEventHandler interactEvent;
     public event SimpleEventHandler escapeInteractEvent = delegate { };
 
+    public event SimpleEventHandler gameInteractComplete = delegate { };
+
     private GlowObject glow;
     private bool inView;
 
+    private bool hasAwaked = false;
     public long owner = -10; // Not used
     private void Awake()
     {
@@ -34,6 +37,44 @@ public class Interactable : NetworkBehaviour
         if (!glow)
             Debug.LogError("Attach a GlowObject Script to " + gameObject.name);
     }
+    [ClientRpc]
+    public void RpcServerFinished()
+    {
+        gameInteractComplete();
+    }
+    [Command]
+    public void CmdServerFinished(long ID)
+    {
+        if(ID == owner)
+        {
+            CmdReleaseHold();
+            RpcServerFinished();
+        }
+        else
+        {
+            Debug.Log("Excuse me what the fuck? Hacker "+ ID + " go home you got caught.");
+        }
+    }
+
+    public void SendSF()
+    {
+        RoomManager.instance.CMMP.nm.net.SendToServer(MPMsgTypes.FinInteractions, new InteractablePacket() { objectID = (int)this.netId.Value, playerRequesting = CampaignManagerMP.instance.nm.PLAYERUUID });
+    }
+
+    public void Update()
+    {
+        if (!hasAwaked)
+        {
+            hasAwaked = true;
+            if (RoomManager.instance.interactables.ContainsKey(this.netId.Value))
+            {
+                Debug.Log("Detecting that not a server!");
+                return;
+            }
+            RoomManager.instance.interactables.Add(this.netId.Value, this);
+        }
+    }
+    
 
     private void LateUpdate()
     {
@@ -59,15 +100,18 @@ public class Interactable : NetworkBehaviour
     [ClientRpc]
     public void RpcPickupContest(long winnerUUID)
     {
-        Debug.Log("Pickup contest :(");
+        Debug.Log("Pickup contest :(" + winnerUUID + " " + CampaignManagerMP.instance.nm.PLAYERUUID);
+        owner = winnerUUID;
         if (winnerUUID != CampaignManagerMP.instance.nm.PLAYERUUID)
         {
             // Didn't pick it up :( 
             escapeInteractEvent();
+            Debug.Log("I have to put it down :(");
         }
         else
         {
             // :D
+            Debug.Log("I got to pick it up :D");
         }
     }
     [ClientRpc]
@@ -92,8 +136,12 @@ public class Interactable : NetworkBehaviour
     
         if(succ)
         {
-            
-            CmdTryPickUp(CampaignManagerMP.instance.nm.PLAYERUUID);
+            // Instead, send a packet. 
+            Debug.Log("PLAYER UUID: " + CampaignManagerMP.instance.nm.PLAYERUUID);
+            RoomManager.instance.CMMP.nm.net.SendToServer(MPMsgTypes.Interactions, new InteractablePacket() {objectID = (int)this.netId.Value, playerRequesting = CampaignManagerMP.instance.nm.PLAYERUUID });
+            //this.netId.Value
+
+            //CmdTryPickUp(CampaignManagerMP.instance.nm.PLAYERUUID);
         }
     }
 
@@ -104,6 +152,26 @@ public class Interactable : NetworkBehaviour
         lookEvent(cc);
         glow.EnableGlow();
         inView = true;
+    }
+}
+
+public class InteractablePacket : TaggedMessageBase
+{
+    public int objectID;
+    public long playerRequesting;
+
+    public override void Deserialize(NetworkReader reader)
+    {
+        TaggedMessageBase.BaseDeserialize(reader, this);
+        objectID = reader.ReadInt32();
+        playerRequesting = reader.ReadInt64();
+    }
+
+    public override void Serialize(NetworkWriter write)
+    {
+        TaggedMessageBase.BaseSerialize(write, this);
+        write.Write(objectID);
+        write.Write(playerRequesting);
     }
 }
 
@@ -152,4 +220,5 @@ public class Interactable : NetworkBehaviour
         // Call whatever function you want. . . 
     }
 */
+
 #pragma warning restore CS0618 // Type or member is obsolete

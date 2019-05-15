@@ -16,7 +16,9 @@ public class MPMsgTypes
     public static short RoundStarting = (short)(BuiltinMsgTypes.Highest + 1);
     public static short RoomInformation = (short)(MPMsgTypes.RoundStarting + 1);
     public static short GameFlow = (short)(MPMsgTypes.RoomInformation + 1);
-    public static short Highest = GameFlow;
+    public static short Interactions = (short)(MPMsgTypes.GameFlow + 1);
+    public static short FinInteractions = (short)(MPMsgTypes.Interactions + 1);
+    public static short Highest = FinInteractions;
 }
 
 
@@ -132,6 +134,7 @@ public class CampaignManagerMP : MonoBehaviour
                 NetworkServer.SpawnWithClientAuthority(playerObjs[ID], nm.net.connections[ID]);
                 playerObjs[ID].GetComponent<PlayerMovementMP>().RpcChangeName(nm.userNames[ID]);
             }
+            NetworkServer.SpawnObjects();
         }
         else
         {

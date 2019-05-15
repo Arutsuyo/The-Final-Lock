@@ -31,3 +31,8 @@ public class ObjStrPair
     public bool networked;
     
 }
+
+public class Room
+{
+
+}
