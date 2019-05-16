@@ -8,7 +8,7 @@ public class PickGame : MonoBehaviour
     public Interactable interact;
     public GameLock gameLock;
     public GameObject PinHolderPos;
-    public GameObject[] ToHide;
+    public GameObject[] toDelete;
     public Transform PickTrans;
     public int offsetID = 0;
     public float[] pinHeights;
@@ -32,6 +32,11 @@ public class PickGame : MonoBehaviour
     public bool cutsceneFinished = false;
     public bool isPicked = false;
     public bool isTryingObject = false;
+    public bool isKey = false;
+    public Transform keyTransform;
+    public Transform pickTransform;
+    public Transform handleTransform;
+
     void Start()
     {
         interact.lookEvent += LookAt;
@@ -46,10 +51,6 @@ public class PickGame : MonoBehaviour
         origPinHeights = new float[numPins];
        
         tumblerPosition = 0;
-        foreach(GameObject o in ToHide)
-        {
-            o.SetActive(false);
-        }
         for(int i = 0; i < numPins; i++)
         {
             pinHeights[i] = Random.Range(0.3f, 0.9f);
@@ -103,14 +104,39 @@ public class PickGame : MonoBehaviour
         
         bool hasPick = cc.playerMngr.inv.HasItem("KeyPick" + offsetID);
         bool hasHandle = cc.playerMngr.inv.HasItem("KeyHandle" + offsetID);
-        if (!hasPick)
+        bool hasKey = cc.playerMngr.inv.HasItem("Key" + offsetID);
+        if (hasKey)
         {
-            Debug.Log("I would need a key or a pick to get it open.");
-            return false;
-        }else if (!hasHandle)
+            isKey = true;
+            // Spawn the key :D
+            Item ii = cc.playerMngr.inv.GetItem("Key" + offsetID);
+            Item dj = Instantiate<Item>(ii, keyTransform);
+            dj.enabled = false;
+            dj.gameObject.SetActive(true);
+            turnSpeed *= 30;
+        }
+        else
         {
-            Debug.Log("I will need a tension wrench to try to open it.");
-            return false;
+            if (!hasPick)
+            {
+                Debug.Log("I would need the key or a pick to get it open.");
+                return false;
+            }
+            else if (!hasHandle)
+            {
+                Debug.Log("I will need a tension wrench to try to force it open.");
+                return false;
+            }
+            // Spawn the pick and handle..
+            Item ii = cc.playerMngr.inv.GetItem("KeyPick" + offsetID);
+            Item dj = Instantiate<Item>(ii, pickTransform);
+            dj.enabled = false;
+            Item ii1 = cc.playerMngr.inv.GetItem("KeyHandle" + offsetID);
+            Item dj1 = Instantiate<Item>(ii1, handleTransform);
+            dj1.enabled = false;
+            dj1.gameObject.SetActive(true);
+            dj.gameObject.SetActive(true);
+            isKey = false;
         }
         isTryingObject = true;
         // Go into game
@@ -133,10 +159,6 @@ public class PickGame : MonoBehaviour
             }
         }
         StartCoroutine("PlayZoomInForward");
-        foreach (GameObject o in ToHide)
-        {
-            o.SetActive(true);
-        }
         Debug.Log("Information about minigame:\n Hold left mouse button down to apply tension. Release to allow for easier picks.\n Press and hold right mouse button to apply counter-rotation (useful for security pins).\n Press W to advance a pin. Press S to go back a pin.\nPress T to tap the pin (useful to check if binding or not)\nPress G to press the pin (pushes the pin up, remember to release tension).\nPress B for force a pin up, this will tell you if the pin can move or if it is jamming on something (it may be a security pin!) \n\nTo pick, you must exploit the fact that these locks aren't perfect, and that by forcing the interior of the lock to rotate, one pin will be \"pressed\" up against the cylinder. If you find this pin and can push it into the correct position, the cylinder will rotate, allowing the pin to be held up by the cylinder itself (hence removing it from the list to be picked).\n Some locks has security pins, which are meant to act as \"false sets\", these have to be tested for and it will never allow the pin to be pushed up all the way.\nHowever, normal pins can be pushed too far up the chamber, causing them to bind as well.\n\nIf you believe you have a security pin that is active, or if you accidently pushed a pin up too far (or both), you can perform a counter rotation to let the pins fall back into resting position (note, you technically can lose progress...).");
         return true;
         //cc.AllowCursorFreedom();
@@ -150,9 +172,17 @@ public class PickGame : MonoBehaviour
         cutsceneFinished = false;
         StopAllCoroutines();
         StartCoroutine("PlayZoomInBackward");
-        foreach (GameObject o in ToHide)
+        foreach (Transform t in keyTransform)
         {
-            o.SetActive(false);
+            Destroy(t.gameObject);
+        }
+        foreach (Transform t in pickTransform)
+        {
+            Destroy(t.gameObject);
+        }
+        foreach (Transform t in handleTransform)
+        {
+            Destroy(t.gameObject);
         }
     }
     private void PickFin()
@@ -169,13 +199,22 @@ public class PickGame : MonoBehaviour
                 cutsceneFinished = false;
                 isTryingObject = false;
                 StartCoroutine("PlayZoomInBackward");
+                interact.Finished();
                 if (isPicked)
                 {
                     interact.SendSF();
                 }
-                foreach (GameObject o in ToHide)
+                foreach (Transform t in keyTransform)
                 {
-                    o.SetActive(false);
+                    Destroy(t.gameObject);
+                }
+                foreach (Transform t in pickTransform)
+                {
+                    Destroy(t.gameObject);
+                }
+                foreach (Transform t in handleTransform)
+                {
+                    Destroy(t.gameObject);
                 }
             }
             
@@ -185,40 +224,51 @@ public class PickGame : MonoBehaviour
                 //PinHolderPos.transform.localRotation.eulerAngles;
                 tumblerPosition += turnSpeed;
                 Vector3 vr = new Vector3(0, tumblerPosition * 10, 0);
-                if (bindingPin!= -1)
+                if (!isKey)
                 {
-                    if (tumblerPosition >= pinPositions[bindingPin] && !(Mathf.Abs(pinHeights[bindingPin]) < pinTolerance[bindingPin]))
+                    if (bindingPin != -1)
                     {
-                        tumblerPosition = pinPositions[bindingPin];
-                        if (Input.GetMouseButtonDown(0)) { Debug.Log("A pin is binding!"); }
-                    }
-                    else if ((tumblerPosition >= pinPositions[bindingPin]) && bindingPin == testingPinID&& Mathf.Abs(pinHeights[bindingPin]) < pinTolerance[bindingPin])
-                    {
-                        Debug.Log("Click!");
-                        isLatched[testingPinID] = true;
-                        tumblerPosition += turnSpeed;
-                        vr = new Vector3(0, tumblerPosition * 10, 0);
-                        //PinHolderPos.transform.localRotation = Quaternion.Euler(vr);
-                        findNextBinding();
+                        if (tumblerPosition >= pinPositions[bindingPin] && !(Mathf.Abs(pinHeights[bindingPin]) < pinTolerance[bindingPin]))
+                        {
+                            tumblerPosition = pinPositions[bindingPin];
+                            if (Input.GetMouseButtonDown(0)) { Debug.Log("A pin is binding!"); }
+                        }
+                        else if ((tumblerPosition >= pinPositions[bindingPin]) && bindingPin == testingPinID && Mathf.Abs(pinHeights[bindingPin]) < pinTolerance[bindingPin])
+                        {
+                            Debug.Log("Click!");
+                            isLatched[testingPinID] = true;
+                            tumblerPosition += turnSpeed;
+                            vr = new Vector3(0, tumblerPosition * 10, 0);
+                            //PinHolderPos.transform.localRotation = Quaternion.Euler(vr);
+                            findNextBinding();
+                        }
                     }
                 }
-                if(tumblerPosition > 5)
+                if (tumblerPosition > 5)
                 {
                     Debug.Log("Minigame finished!");
                     interact.SendSF();
                     cutsceneFinished = false;
                     isTryingObject = false;
+                    isPicked = true;
                     StartCoroutine("PlayZoomInBackward");
-                    foreach (GameObject o in ToHide)
+                    foreach (Transform t in keyTransform)
                     {
-                        o.SetActive(false);
+                        Destroy(t.gameObject);
+                    }
+                    foreach (Transform t in pickTransform)
+                    {
+                        Destroy(t.gameObject);
+                    }
+                    foreach (Transform t in handleTransform)
+                    {
+                        Destroy(t.gameObject);
                     }
                 }
+                
                 PinHolderPos.transform.localRotation = Quaternion.Euler(vr);
-
-
             }
-            if (isPicked == false)
+            if (isPicked == false && !isKey)
             {
                 if (Input.GetKeyDown(KeyCode.W))
                 {

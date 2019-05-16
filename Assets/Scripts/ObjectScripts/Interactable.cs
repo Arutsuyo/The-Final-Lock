@@ -97,6 +97,10 @@ public class Interactable : NetworkBehaviour
             RpcPickupContest(owner);
         }
     }
+    public void Finished()
+    {
+
+    }
     [ClientRpc]
     public void RpcPickupContest(long winnerUUID)
     {
@@ -133,7 +137,10 @@ public class Interactable : NetworkBehaviour
         bool succ = false;
         if(interactEvent!= null)
             succ = interactEvent(cc);
-    
+        if (!RoomManager.instance.CMMP.nm.net.IsConnected())
+        {
+            succ = false;
+        }
         if(succ)
         {
             // Instead, send a packet. 

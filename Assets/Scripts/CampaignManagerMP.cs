@@ -26,6 +26,7 @@ public class MPMsgTypes
 public class CampaignManagerMP : MonoBehaviour
 {
     [Header("Object References")]
+    public CampaignManagerMP otherContestant; // Other CMMP to DESTROY! (If they go MP...that is)
     public Button BackBtn;
     public Button StartBtn;
     public ScrollRect CampaignRect;
@@ -320,6 +321,7 @@ public class CampaignManagerMP : MonoBehaviour
     private bool isCounting = false;
     public IEnumerator CountDown()
     {
+        Destroy(otherContestant);
         lobbyWaiter.text = "Round starting in 3";
         for (int i = 3; i >= 1; i--)
         {

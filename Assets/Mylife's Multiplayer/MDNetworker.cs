@@ -8,21 +8,22 @@ using UnityEngine.Networking;
 public class MDNetworker : NetworkManager
 {
     public Dictionary<long, int> playerIDs = new Dictionary<long, int>(); // Given id, actual id
-    private Dictionary<int, long> IDplayers = new Dictionary<int, long>(); // actual id, given id
-    private List<long> curPlayerIDs = new List<long>();
-    private HashSet<long> ignorePID = new HashSet<long>();
-    private static long userUUID = 1; // OH this is a "current UUID"
-    private static long serverUUIDs = 1;
+    protected Dictionary<int, long> IDplayers = new Dictionary<int, long>(); // actual id, given id
+    protected List<long> curPlayerIDs = new List<long>();
+    protected HashSet<long> ignorePID = new HashSet<long>();
+    protected static long userUUID = 1; // OH this is a "current UUID"
+    protected static long serverUUIDs = 1;
     public bool AcceptingConnections = true;
     public Dictionary<long, NetworkConnection> connections = new Dictionary<long, NetworkConnection>();
     public Dictionary<NetworkConnection, long> Rconnections = new Dictionary<NetworkConnection, long>();
-    private Dictionary<short, NetworkMessageDelegate> RNMD = new Dictionary<short, NetworkMessageDelegate>();
+    protected Dictionary<short, NetworkMessageDelegate> RNMD = new Dictionary<short, NetworkMessageDelegate>();
     public NetworkConnection clientConn;
     public delegate void ClientConnected(long userID);
     public event ClientConnected OnClientConnected;
     public event ClientConnected OnRemoteConnected;
     public event ClientConnected OnRemoteDisconnected;
     public event ClientConnected UserUUIDObtained;
+    
     public bool isSafe { get; private set; }
     public bool isHost { get; private set; }
     public bool isConn { get; private set; }

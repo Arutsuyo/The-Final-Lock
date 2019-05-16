@@ -55,6 +55,10 @@ public class CampaignManager : CampaignManagerMP
         PlayerAnimation.SetTrigger("GoToRoom");
         doorAnimation.SetTrigger("Door");
         holoAnimation.SetTrigger("ToDoor");
+        // Swap rooms....
+        // Actually, destroy the OTHER campaign manager :3
+        // the other will destroy this one...
+        Destroy(otherContestant);
     }
     public override void UpdateCampaignUI(int id)
     {

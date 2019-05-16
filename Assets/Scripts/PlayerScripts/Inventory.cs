@@ -30,5 +30,15 @@ public class Inventory : MonoBehaviour
         }
         return false;
     }
-
+    public Item GetItem(string itemName)
+    {
+        foreach (Item i in items)
+        {
+            if (i.ItemName.Equals(itemName))
+            {
+                return i;
+            }
+        }
+        return null;
+    }
 }
