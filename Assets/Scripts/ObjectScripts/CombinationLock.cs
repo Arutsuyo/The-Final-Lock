@@ -55,15 +55,37 @@ public class CombinationLock : MonoBehaviour
 			locks[1].GetComponent<GlowObject>(),
 			locks[2].GetComponent<GlowObject>()};
 
-		for( int i = 0; i < 3; i++)
+		if(randomize)
 		{
-			// Set current rotation
-			curState[i] = UnityEngine.Random.Range(0, 10);
-			locks[i].transform.localRotation = Quaternion.Euler(-36.0f * curState[i] + 36.0f, 0.0f, -90.0f);
+			for (int i = 0; i < 3; i++)
+			{
+				// Set current rotation
+				curState[i] = UnityEngine.Random.Range(0, 10);
+				locks[i].transform.localRotation = Quaternion.Euler(-36.0f * curState[i] + 36.0f, 0.0f, -90.0f);
 
-			// Set combo target
-			combo[i] = UnityEngine.Random.Range(0, 10);
-			targetStates[i] = Quaternion.Euler(-36.0f * combo[i] + 36.0f, 0.0f, -90.0f);
+				// Set combo target
+				combo[i] = UnityEngine.Random.Range(0, 10);
+				targetStates[i] = Quaternion.Euler(-36.0f * combo[i] + 36.0f, 0.0f, -90.0f);
+			}
+		}
+		else
+		{
+			// Set DEBUG settings
+			curState[0] = 2;
+			curState[1] = 1;
+			curState[2] = 1;
+			combo[0] = 1;
+			combo[1] = 1;
+			combo[2] = 1;
+			locks[0].transform.localRotation = 
+				Quaternion.Euler(-36.0f * curState[0] + 36.0f, 0.0f, -90.0f);
+			locks[1].transform.localRotation = 
+				locks[2].transform.localRotation = 
+				Quaternion.Euler(-36.0f * curState[1] + 36.0f, 0.0f, -90.0f);
+			targetStates[0] = 
+				targetStates[1] = 
+				targetStates[2] = 
+				Quaternion.Euler(-36.0f * combo[0] + 36.0f, 0.0f, -90.0f);
 		}
 
 		doorTarget = Quaternion.Euler(0.0f, -90.0f, 90.0f);
