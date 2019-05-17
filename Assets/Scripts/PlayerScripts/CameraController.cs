@@ -26,7 +26,10 @@ public class CameraController : MonoBehaviour
 
     [Header("Interactive Variables")]
     public float interactDistance = 20f;
-    public Image hitMarker;
+    public Image centerMarker; // Center Marker
+    public Image hitMarker; // Blue Interactable
+    private bool showMarkers; // Set if going into a mini game
+
     // Set during update to see if the player wants to interact.
     private bool interact = false;
 
@@ -34,7 +37,7 @@ public class CameraController : MonoBehaviour
     {
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
-
+        showMarkers = true;
         //WavMusicConvert.register(WavMusicConvert.ConvertFromBytes(WavMusicConvert.ReadBytes("./Assets/Music/Censored.wav"), "Censored.wav"), "Censored.wav");
 
         if (!hitMarker)
@@ -58,20 +61,29 @@ public class CameraController : MonoBehaviour
         return null;
     }
 
-    public void AllowCursorFreedom()
+    public void AllowMouse()
     {
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
+        showMarkers = false;
     }
-    public void AllowCursorPrison()
+    public void RestrictMouse()
     {
         Cursor.lockState = CursorLockMode.Confined;
         Cursor.visible = true;
+        showMarkers = true;
     }
-    public void BanCursorFreedom()
+
+    public void ShowMarkers()
     {
-       /* Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;*/
+        showMarkers = true;
+        centerMarker.gameObject.SetActive(true);
+    }
+    public void HideMarkers()
+    {
+        showMarkers = false;
+        centerMarker.gameObject.SetActive(false);
+        hitMarker.gameObject.SetActive(false);
     }
 
     // This function triggers the subscribed events on the target object in the 
@@ -95,7 +107,9 @@ public class CameraController : MonoBehaviour
             Interactable obj = DetermineifHit(hit.collider.gameObject.transform);
             if (obj != null)
             {
-                hitMarker.gameObject.SetActive(true);
+                if(showMarkers)
+                    hitMarker.gameObject.SetActive(true);
+
                 // Trigger the corresponding events
                 obj.LookingAt(this);
                 if (interact)

@@ -34,9 +34,6 @@ public class CombinationLock : MonoBehaviour
 	public GameObject rightLock;
 	public GameObject door;
 
-	//Hit marker
-	public GameObject hit;
-
 	//Camera position variables
 	public Transform lockPosition;
 	private Vector3 prevPosition;
@@ -74,15 +71,6 @@ public class CombinationLock : MonoBehaviour
 	// Update is called once per frame
 	void Update()
 	{
-		if (!inGame)
-		{
-			hit.SetActive(true);
-		}
-		else
-		{
-			hit.SetActive(false);
-		}
-
 		if (curPlayer != null && cutsceneFinished)
 		{
 			if (isOpen || Input.GetKeyDown(KeyCode.Escape))
@@ -209,6 +197,7 @@ public class CombinationLock : MonoBehaviour
 	// Zoom camera forward
 	IEnumerator PlayZoomInForward()
 	{
+		curPlayer.HideMarkers();
 		StartLerpTime = Time.time;
 		CurLerpTime = Time.time;
 		while(CurLerpTime - StartLerpTime < LerpTime)
@@ -222,7 +211,7 @@ public class CombinationLock : MonoBehaviour
 		curPlayer.cam.transform.position = lockPosition.position;
 		//curPlayer.cam.transform.localPosition = new Vector3(curPlayer.cam.transform.localPosition.x, curPlayer.cam.transform.localPosition.y, curPlayer.cam.transform.localPosition.z - 0.5f);
 		curPlayer.cam.transform.rotation = lockPosition.rotation * Quaternion.Euler(0.0f, -90.0f, 0.0f);
-		curPlayer.AllowCursorFreedom();
+		curPlayer.AllowMouse();
 		cutsceneFinished = true;
 	} 
 
@@ -241,7 +230,8 @@ public class CombinationLock : MonoBehaviour
 		curPlayer.cam.transform.position = prevPosition;
 		curPlayer.cam.transform.rotation = prevRotation;
 		curPlayer.isInCutscene = false;
-		curPlayer.BanCursorFreedom();
+		curPlayer.ShowMarkers();
+		curPlayer.RestrictMouse();
 		curPlayer = null;
 	}
 
