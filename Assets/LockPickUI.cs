@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class LockPickUI : MonoBehaviour
 {
@@ -11,7 +12,7 @@ public class LockPickUI : MonoBehaviour
 	public float moveX = 0;
 	public int pickPos = 1;
 	private int prevPickPos = 1;
-
+    public RectTransform canvas;
 	public RectTransform[] pins;
 	public RectTransform[] pinHeads;
 	private Vector2[] originalPP;
@@ -20,6 +21,10 @@ public class LockPickUI : MonoBehaviour
 	private float[] heldHeadPos;
 	public float yResting;
 
+    public Image ERR;
+    public Image WARN;
+    public Image FAIL;
+    public Image SUCC;
 	public RectTransform pick;
 	public RectTransform pusher;
 	private Vector2 pusherSizeDelta;
@@ -63,6 +68,52 @@ public class LockPickUI : MonoBehaviour
 		}
 	}
 
+    public void SpawnEXC()
+    {
+        // Spawn a ! where the pin is...
+        Image fo = Instantiate<Image>(ERR, SUCC.transform.parent);
+        fo.rectTransform.localPosition = ERR.rectTransform.localPosition;
+        fo.rectTransform.SetParent(canvas, true);
+        fo.gameObject.SetActive(true);
+        StartCoroutine(DeleteMe(fo));
+    }
+    public void SpawnGood()
+    {
+        // Spawn a check where the pin is...
+        Image fo = Instantiate<Image>(SUCC,SUCC.transform.parent);
+        fo.rectTransform.localPosition = SUCC.rectTransform.localPosition;
+        fo.rectTransform.SetParent(canvas, true);
+        fo.gameObject.SetActive(true);
+        StartCoroutine(DeleteMe(fo));
+    }
+    public void SpawnBad()
+    {
+        // Spawn a check where the pin is...
+        Image fo = Instantiate<Image>(FAIL, SUCC.transform.parent);
+        fo.rectTransform.localPosition = FAIL.rectTransform.localPosition;
+        fo.rectTransform.SetParent(canvas, true);
+        fo.gameObject.SetActive(true);
+        StartCoroutine(DeleteMe(fo));
+    }
+    public void SetWarn(bool yes)
+    {
+        // Spawn a check where the pin is...
+        WARN.gameObject.SetActive(yes);
+    }
+
+
+    IEnumerator DeleteMe(Image fo)
+    {
+        float ttt = Time.time;
+        Color aa = fo.color;
+        while(Time.time - ttt < 2)
+        {
+            aa.a = Mathf.Min(1f, 2 - (Time.time - ttt));
+            fo.color = aa;
+            yield return null;
+        }
+        Destroy(fo.gameObject);
+    }
 
 	public void UpdatePins()
 	{

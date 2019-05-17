@@ -68,7 +68,7 @@ public class CameraController : MonoBehaviour
 	}
 	public void AllowCursorPrison()
 	{
-		Cursor.lockState = CursorLockMode.Confined;
+		Cursor.lockState = CursorLockMode.None;
 		Cursor.visible = true;
 	}
 	public void BanCursorFreedom()
