@@ -67,7 +67,7 @@ public class Interactable : NetworkBehaviour
 
 	public void SendAbort()
 	{
-		RoomManager.instance.CMMP.nm.net.SendToServer(MPMsgTypes.FinInteractions, new InteractablePacket() { objectID = (int)this.netId.Value, playerRequesting = -20 });
+		RoomManager.instance.CMMP.nm.net.SendToServer(MPMsgTypes.Interactions, new InteractablePacket() { objectID = (int)this.netId.Value, playerRequesting = -20 });
 	}
 
 	public void Update()

@@ -2,15 +2,19 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 
-public class CombinationLock : MonoBehaviour
+#pragma warning disable CS0618 // Type or member is obsolete
+public class CombinationLock : NetworkBehaviour
 {
 	//"Winning" combination
-	public int[] combo;
+    
+	public SyncListInt combo= new SyncListInt();
 	//Current lock numbers
 	public int[] curState;
 	//Tracks which lock the player is turning
 	public int current = 0;
+
 	private Quaternion[] targetStates;
 
 	//Lock GameObjects
@@ -40,14 +44,18 @@ public class CombinationLock : MonoBehaviour
 
 	// Randomize values on Start()?
 	public bool randomize;
+    public bool hasChanged = false;
 
-	// Made this Awake so the poster clue can initialize during start
-	void Awake()
-	{
+    public delegate void OnLockReady();
+    public event OnLockReady PuzzleReady = delegate { };
+
+    // Made this Awake so the poster clue can initialize during start
+    public override void OnStartServer()
+    {
+        base.OnStartServer();
 		isOpen = false;
 		inGame = false;
 		current = 0;
-		combo = new int[3];
 		curState = new int[3];
 		targetStates = new Quaternion[3];
 
@@ -64,8 +72,8 @@ public class CombinationLock : MonoBehaviour
 				curState[i] = UnityEngine.Random.Range(0, 10);
 				locks[i].transform.localRotation = Quaternion.Euler(-36.0f * curState[i] + 36.0f, 0.0f, -90.0f);
 
-				// Set combo target
-				combo[i] = UnityEngine.Random.Range(0, 10);
+                // Set combo target
+                combo.Add(UnityEngine.Random.Range(0, 10));
 				targetStates[i] = Quaternion.Euler(-36.0f * combo[i] + 36.0f, 0.0f, -90.0f);
                 Debug.Log(combo[i] + " " + targetStates[i].ToString() + " " + locks[i].transform.localRotation.ToString() + " " +curState[i]);
 			}
@@ -74,12 +82,12 @@ public class CombinationLock : MonoBehaviour
 		{
 			// Set DEBUG settings
 			curState[0] = 2;
-			curState[1] =
-				curState[2] =
-				combo[0] =
-				combo[1] =
-				combo[2] = 1;
-			locks[0].transform.localRotation =
+            curState[1] =
+                curState[2] = 1;
+            combo.Add(1);
+            combo.Add(1);
+            combo.Add(1);
+            locks[0].transform.localRotation =
 				Quaternion.Euler(-36.0f * curState[0] + 36.0f, 0.0f, -90.0f);
 			locks[1].transform.localRotation =
 				locks[2].transform.localRotation =
@@ -91,15 +99,60 @@ public class CombinationLock : MonoBehaviour
 		}
 
 		doorTarget = Quaternion.Euler(0.0f, -90.0f, 90.0f);
-
+        PuzzleReady();
 		Subscribe();
 	}
 
-	void Ejection()
+    public override void OnStartClient()
+    {
+        base.OnStartClient();
+        combo.Callback += CC;
+        if(combo.Count == 3) {
+            Debug.Log("Getting addition 31.");
+            for (int i =0; i < 3; i++)
+            {
+                targetStates[i] = Quaternion.Euler(-36.0f * combo[i] + 36.0f, 0.0f, -90.0f);
+            }
+
+            StartCoroutine(SCC());
+        }
+    }
+    IEnumerator SCC()
+    {
+        while (RoomManager.instance==null || RoomManager.instance.CMMP == null)
+        {
+            yield return null;
+        }
+        if (!RoomManager.instance.CMMP.nm.net.isHost)
+        {
+            PuzzleReady();
+        }
+    }
+
+    void CC(SyncListInt.Operation op, int itemIndex)
+    {
+        Debug.Log("Getting addition.");
+        if (combo.Count == 3)
+        {
+            Debug.Log("Getting addition 3." + itemIndex);
+            for (int i = 0; i < 3; i++)
+            {
+
+                targetStates[i] = Quaternion.Euler(-36.0f * combo[i] + 36.0f, 0.0f, -90.0f);
+            }
+            if (!RoomManager.instance.CMMP.nm.net.isHost)
+            {
+                StartCoroutine(SCC());
+            }
+        }
+    }
+
+    void Ejection()
 	{
 		if (curPlayer != null)
 		{
-			inGame = false;
+            hasChanged = false;
+            inGame = false;
 			Debug.Log("Stopping unlock attempt");
 			cutsceneFinished = false;
 			StartCoroutine("PlayZoomInBackward");
@@ -114,7 +167,8 @@ public class CombinationLock : MonoBehaviour
 			if (isOpen || Input.GetKeyDown(KeyCode.Escape))
 			{
 				inGame = false;
-				Debug.Log("Stopping unlock attempt");
+                hasChanged = false;
+                Debug.Log("Stopping unlock attempt");
 				cutsceneFinished = false;
 				StartCoroutine("PlayZoomInBackward");
 				if (!isOpen)
@@ -130,7 +184,8 @@ public class CombinationLock : MonoBehaviour
 			// Get inputs
 			if (Input.GetKeyDown(KeyCode.W))
 			{
-				if (curState[current] == 9)
+                hasChanged = true;
+                if (curState[current] == 9)
 					curState[current] = 0;
 				else
 					curState[current]++;
@@ -138,7 +193,9 @@ public class CombinationLock : MonoBehaviour
 
 			if (Input.GetKeyDown(KeyCode.S))
 			{
-				if (curState[current] == 0)
+                hasChanged = true;
+
+                if (curState[current] == 0)
 					curState[current] = 9;
 				else
 					curState[current]--;
@@ -156,13 +213,14 @@ public class CombinationLock : MonoBehaviour
 			if (Input.GetKeyDown(KeyCode.A))
 			{
 				glow[current].DisableGlow();
-				current--;
+                
+                current--;
 				if (current < 0)
 					current = 2;
 				glow[current].EnableGlow();
 			}
 
-			if (RotateLock())
+			if (hasChanged && RotateLock())
 				isOpen = true;
 		}
 	}
@@ -202,8 +260,8 @@ public class CombinationLock : MonoBehaviour
 					spinnerLerpFactor * Time.deltaTime);
 			}
 
-			angle = Quaternion.Angle(locks[i].transform.localRotation, targetStates[i]);
-			if (angle < 1f)
+            angle = Mathf.Abs(Quaternion.Angle(locks[i].transform.localRotation, targetStates[i]));
+			if (angle > 1f)
 			{
 				unlocked = false;
 			}
@@ -311,3 +369,4 @@ public class CombinationLock : MonoBehaviour
 	}
 }
 
+#pragma warning restore CS0618 // Type or member is obsolete
