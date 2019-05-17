@@ -49,11 +49,11 @@ public class CameraController : MonoBehaviour
 	private Interactable DetermineifHit(Transform ob)
 	{
 		Interactable i = ob.GetComponent<Interactable>();
-		if(i != null)
+		if (i != null)
 		{
 			return i;
 		}
-		else if(ob.parent != null)
+		else if (ob.parent != null)
 		{
 			// Travel up the parent tree...
 			return DetermineifHit(ob.parent);
@@ -73,8 +73,8 @@ public class CameraController : MonoBehaviour
 	}
 	public void BanCursorFreedom()
 	{
-	   Cursor.lockState = CursorLockMode.Locked;
-	   Cursor.visible = false;
+		Cursor.lockState = CursorLockMode.Locked;
+		Cursor.visible = false;
 	}
 
 	public void ShowMarkers()
@@ -99,13 +99,13 @@ public class CameraController : MonoBehaviour
 
 		// Check for an object in the middle if the screen
 		RaycastHit hit;
-		if(Camera.main == null) { return; }
+		if (Camera.main == null) { return; }
 		Ray ray = Camera.main.ScreenPointToRay(
 			new Vector3(
 				Screen.width / 2f,
 				Screen.height / 2f, 0));
-		
-		
+
+
 		// Test if there is something in the middle
 		if (Physics.Raycast(ray, out hit, interactDistance))
 		{
@@ -113,7 +113,7 @@ public class CameraController : MonoBehaviour
 			Interactable obj = DetermineifHit(hit.collider.gameObject.transform);
 			if (obj != null)
 			{
-				if(showMarkers)
+				if (showMarkers)
 					hitMarker.gameObject.SetActive(true);
 
 				// Trigger the corresponding events
@@ -166,7 +166,7 @@ public class CameraController : MonoBehaviour
 		}
 	}
 
-	void Update () 
+	void Update()
 	{
 		HandleInput();
 

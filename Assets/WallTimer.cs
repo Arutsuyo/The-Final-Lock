@@ -37,7 +37,6 @@ public class WallTimer : MonoBehaviour
     }
     public void StopTimer()
     {
-
         if (!isStopped)
         {
             StopAllCoroutines();

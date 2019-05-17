@@ -4,17 +4,18 @@ using UnityEngine;
 
 public class GUITracker : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+	// Start is called before the first frame update
+	void Start()
+	{
 
-    // Update is called once per frame
-    void Update()
-    {
-        if(Camera.main == null) { return; }
+	}
 
-        this.gameObject.transform.LookAt(Camera.main.transform);
-    }
+	// Update is called once per frame
+	void Update()
+	{
+		if (Camera.main == null)
+			return;
+
+		this.gameObject.transform.LookAt(Camera.main.transform);
+	}
 }

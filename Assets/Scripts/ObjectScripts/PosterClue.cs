@@ -14,19 +14,20 @@ public class PosterClue : MonoBehaviour
 	void Start()
 	{
 		int sprayCount = canv.transform.childCount;
-		
-		for(int i = 0; i < 3; i++)
+
+		for (int i = 0; i < 3; i++)
 		{
-			for(int j = 0; j < safe.combo[i]; j++)
+			for (int j = 0; j < safe.combo[i]; j++)
 			{
 				int ran;
-				do {
+				do
+				{
 					ran = Random.Range(0, sprayCount);
 				} while (usedSprays.Contains(ran));
 
 				GameObject spray = canv.transform.GetChild(ran).gameObject;
 				Color setColor;
-				switch(i)
+				switch (i)
 				{
 					case 0:
 						setColor = new Color(255, 0, 0);

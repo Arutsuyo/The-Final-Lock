@@ -25,6 +25,7 @@ public class CombinationLock : MonoBehaviour
 	private Quaternion prevRotation;
 	public CameraController curPlayer;
 	private Interactable ia;
+
 	// Lerp info
 	public float spinnerLerpFactor = 5f;
 	public float DoorLerpFactor = 1f;
@@ -55,7 +56,7 @@ public class CombinationLock : MonoBehaviour
 			locks[1].GetComponent<GlowObject>(),
 			locks[2].GetComponent<GlowObject>()};
 
-		if(randomize)
+		if (randomize)
 		{
 			for (int i = 0; i < 3; i++)
 			{
@@ -72,19 +73,19 @@ public class CombinationLock : MonoBehaviour
 		{
 			// Set DEBUG settings
 			curState[0] = 2;
-			curState[1] = 1;
-			curState[2] = 1;
-			combo[0] = 1;
-			combo[1] = 1;
-			combo[2] = 1;
-			locks[0].transform.localRotation = 
+			curState[1] =
+				curState[2] =
+				combo[0] =
+				combo[1] =
+				combo[2] = 1;
+			locks[0].transform.localRotation =
 				Quaternion.Euler(-36.0f * curState[0] + 36.0f, 0.0f, -90.0f);
-			locks[1].transform.localRotation = 
-				locks[2].transform.localRotation = 
+			locks[1].transform.localRotation =
+				locks[2].transform.localRotation =
 				Quaternion.Euler(-36.0f * curState[1] + 36.0f, 0.0f, -90.0f);
-			targetStates[0] = 
-				targetStates[1] = 
-				targetStates[2] = 
+			targetStates[0] =
+				targetStates[1] =
+				targetStates[2] =
 				Quaternion.Euler(-36.0f * combo[0] + 36.0f, 0.0f, -90.0f);
 		}
 
@@ -92,9 +93,10 @@ public class CombinationLock : MonoBehaviour
 
 		Subscribe();
 	}
+
 	void Ejection()
 	{
-		if(curPlayer != null)
+		if (curPlayer != null)
 		{
 			inGame = false;
 			Debug.Log("Stopping unlock attempt");
@@ -102,6 +104,7 @@ public class CombinationLock : MonoBehaviour
 			StartCoroutine("PlayZoomInBackward");
 		}
 	}
+
 	// Update is called once per frame
 	void Update()
 	{
@@ -114,13 +117,10 @@ public class CombinationLock : MonoBehaviour
 				cutsceneFinished = false;
 				StartCoroutine("PlayZoomInBackward");
 				if (!isOpen)
-				{
 					ia.SendAbort();
-				}
+
 				else
-				{
 					ia.SendSF();
-				}
 			}
 		}
 
@@ -162,19 +162,18 @@ public class CombinationLock : MonoBehaviour
 			}
 
 			if (RotateLock())
-			{
 				isOpen = true;
-			}
 		}
-
 	}
+
 	private void OpenTheDoor()
 	{
 		StartCoroutine(OpenDoor());
 	}
+
 	IEnumerator OpenDoor()
 	{
-		while (isOpen && 
+		while (isOpen &&
 			Quaternion.Angle(door.transform.localRotation, doorTarget) > 1f)
 		{
 			door.transform.localRotation = Quaternion.Slerp(
@@ -186,12 +185,12 @@ public class CombinationLock : MonoBehaviour
 	}
 
 	// Move lock position, return true if the lock is open
-	public bool RotateLock ()
+	public bool RotateLock()
 	{
 		bool unlocked = true;
-		for(int i = 0; i < 3; i++)
+		for (int i = 0; i < 3; i++)
 		{
-			Quaternion target = 
+			Quaternion target =
 				Quaternion.Euler(-36.0f * curState[i] + 36.0f, 0.0f, -90.0f);
 			float angle = Quaternion.Angle(locks[i].transform.localRotation, target);
 			if (angle != 0)
@@ -218,9 +217,9 @@ public class CombinationLock : MonoBehaviour
 		curPlayer.BanCursorFreedom();
 		float StartLerpTime = Time.time;
 		float CurLerpTime = Time.time;
-		while(CurLerpTime - StartLerpTime < cameraLerpTime)
+		while (CurLerpTime - StartLerpTime < cameraLerpTime)
 		{
-			curPlayer.cam.transform.position = Vector3.Lerp(prevPosition, lockPosition.position, (CurLerpTime - StartLerpTime)/cameraLerpTime);
+			curPlayer.cam.transform.position = Vector3.Lerp(prevPosition, lockPosition.position, (CurLerpTime - StartLerpTime) / cameraLerpTime);
 			//curPlayer.cam.transform.localPosition = new Vector3(curPlayer.cam.transform.localPosition.x, curPlayer.cam.transform.localPosition.y, curPlayer.cam.transform.localPosition.z - 0.5f);
 			curPlayer.cam.transform.rotation = Quaternion.Slerp(prevRotation, lockPosition.rotation * Quaternion.Euler(0.0f, -90.0f, 0.0f), (CurLerpTime - StartLerpTime) / cameraLerpTime);
 			yield return null;
@@ -231,7 +230,7 @@ public class CombinationLock : MonoBehaviour
 		curPlayer.cam.transform.rotation = lockPosition.rotation * Quaternion.Euler(0.0f, -90.0f, 0.0f);
 		cutsceneFinished = true;
 		glow[current].EnableGlow();
-	} 
+	}
 
 	// Return camera to player view
 	IEnumerator PlayZoomInBackward()
@@ -290,7 +289,7 @@ public class CombinationLock : MonoBehaviour
 
 	private void LookedAt(CameraController cc)
 	{
-		
+
 	}
 
 	private bool Interacted(CameraController cc)
