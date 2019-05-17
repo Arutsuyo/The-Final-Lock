@@ -56,10 +56,6 @@ public class CampaignManagerMP : MonoBehaviour
     public void AnnounceRoomManager()
     {
         roomMngr = RoomManager.instance;
-        if (nm.net.isHost)
-        {
-            roomMngr.roomTimer.StartTheTimers();
-        }
     }
 
     [Header("Rooms Offered")]
@@ -145,6 +141,11 @@ public class CampaignManagerMP : MonoBehaviour
                 playerObjs[ID].GetComponent<PlayerMovementMP>().RpcChangeName(nm.userNames[ID]);
             }
             NetworkServer.SpawnObjects();
+            while(roomMngr == null)
+            {
+                yield return null;
+            }
+           roomMngr.roomTimer.CmdStartTheTimers();
         }
         else
         {

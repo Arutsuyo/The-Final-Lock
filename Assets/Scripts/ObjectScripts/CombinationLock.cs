@@ -24,9 +24,9 @@ public class CombinationLock : MonoBehaviour
 	private Vector3 prevPosition;
 	private Quaternion prevRotation;
 	public CameraController curPlayer;
-
-	// Lerp info
-	public float spinnerLerpFactor = 5f;
+    private Interactable ia;
+    // Lerp info
+    public float spinnerLerpFactor = 5f;
 	public float DoorLerpFactor = 1f;
 	public float cameraLerpTime = 3f;
 	public bool cutsceneFinished = false;
@@ -92,7 +92,16 @@ public class CombinationLock : MonoBehaviour
 
 		Subscribe();
 	}
-
+    void Ejection()
+    {
+        if(curPlayer != null)
+        {
+            inGame = false;
+            Debug.Log("Stopping unlock attempt");
+            cutsceneFinished = false;
+            StartCoroutine("PlayZoomInBackward");
+        }
+    }
 	// Update is called once per frame
 	void Update()
 	{
@@ -104,6 +113,14 @@ public class CombinationLock : MonoBehaviour
 				Debug.Log("Stopping unlock attempt");
 				cutsceneFinished = false;
 				StartCoroutine("PlayZoomInBackward");
+                if (!isOpen)
+                {
+                    ia.SendAbort();
+                }
+                else
+                {
+                    ia.SendSF();
+                }
 			}
 		}
 
@@ -150,12 +167,22 @@ public class CombinationLock : MonoBehaviour
 			}
 		}
 
-		if(isOpen && door.transform.localRotation != doorTarget)
-			door.transform.localRotation = Quaternion.Slerp(
-				door.transform.localRotation,
-				doorTarget,
-				Time.deltaTime * DoorLerpFactor);
 	}
+    private void OpenTheDoor()
+    {
+        StartCoroutine(OpenDoor());
+    }
+    IEnumerator OpenDoor()
+    {
+        while (isOpen && door.transform.localRotation != doorTarget)
+        {
+            door.transform.localRotation = Quaternion.Slerp(
+                door.transform.localRotation,
+                doorTarget,
+                Time.deltaTime * DoorLerpFactor);
+            yield return null;
+        }
+    }
 
 	// Move lock position, return true if the lock is open
 	public bool RotateLock ()
@@ -226,7 +253,7 @@ public class CombinationLock : MonoBehaviour
 	public void Subscribe()
 	{
 		// Get the Interactable script reference
-		Interactable ia = gameObject.GetComponent<Interactable>();
+		ia = gameObject.GetComponent<Interactable>();
 
 		// Make sure it's not null
 		if (ia)
@@ -234,13 +261,15 @@ public class CombinationLock : MonoBehaviour
 			// Subscribe to the event
 			ia.lookEvent += LookedAt;
 			ia.interactEvent += Interacted;
+            ia.escapeInteractEvent += Ejection;
+            ia.gameInteractComplete += OpenTheDoor;
 		}
 	}
 
 	public void Unsubscribe()
 	{
 		// Get the Interactable script reference
-		Interactable ia = gameObject.GetComponent<Interactable>();
+		ia = gameObject.GetComponent<Interactable>();
 
 		// Make sure it's not null
 		if (ia)
@@ -248,7 +277,9 @@ public class CombinationLock : MonoBehaviour
 			// Unsubscribe to the event
 			ia.lookEvent -= LookedAt;
 			ia.interactEvent -= Interacted;
-		}
+            ia.escapeInteractEvent -= Ejection;
+            ia.gameInteractComplete -= OpenTheDoor;
+        }
 	}
 
 	private void LookedAt(CameraController cc)

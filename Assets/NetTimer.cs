@@ -9,12 +9,25 @@ public class NetTimer : NetworkBehaviour
 
     public WallTimer wallTimer;
     public float TimeAllotted = 3 * 60;
-    public void StartTheTimers() { 
+    [Command]
+    public void CmdStartTheTimers() { 
     
         RpcStartTimers(TimeAllotted);
         PersonalStartTimers(TimeAllotted);
     }
 
+    [Command]
+    public void CmdStopTimer()
+    {
+        RpcStopTimer();
+        wallTimer.StopTimer();
+    }
+    
+    [ClientRpc]
+    public void RpcStopTimer()
+    {
+        wallTimer.StopTimer();
+    }
     public void PersonalStartTimers(float delta)
     {
         wallTimer.StartClock(delta);
