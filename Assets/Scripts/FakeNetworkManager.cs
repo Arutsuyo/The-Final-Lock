@@ -43,14 +43,14 @@ public class FakeNetworkManager : NetworkManagerBridge
     {
         return IsClientSide;
     }
-    public new bool SendMessageToServer(UserNETMSG nm, int channel)
+    public bool SendMessageToServer(UserNETMSG nm, int channel)
     {
         TNETMSG mmg = new TNETMSG() { msg = nm, time = (float)MylifeRandom.NormalizedRandom(NetworkDelay, NetworkGuassDelay * 2 + NetworkDelay) };
         messagesDict[channel].Enqueue(mmg, -mmg.time);
         return true;
     }
 
-    public new bool SendMessageToClient(UserNETMSG nm, int channel, long UUID)
+    public bool SendMessageToClient(UserNETMSG nm, int channel, long UUID)
     {
         if (!IsClientSide)
         {
@@ -61,7 +61,7 @@ public class FakeNetworkManager : NetworkManagerBridge
         return true;
     }
 
-    public new bool SendMessageToAllClients(UserNETMSG nm, int channel)
+    public bool SendMessageToAllClients(UserNETMSG nm, int channel)
     {
         if (!IsClientSide)
         {
@@ -71,7 +71,7 @@ public class FakeNetworkManager : NetworkManagerBridge
         messagesDict[channel].Enqueue(mmg, -mmg.time);
         return true;
     }
-    public new bool SendMessageToAllOtherClients(UserNETMSG nm, int channel, long exceptUUID)
+    public bool SendMessageToAllOtherClients(UserNETMSG nm, int channel, long exceptUUID)
     {
         if (!IsClientSide)
         {

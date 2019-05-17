@@ -77,7 +77,7 @@ public class PickGame : MonoBehaviour
         }
         curPlayer.cam.transform.position = pickPosition.position;
         curPlayer.cam.transform.rotation = pickPosition.rotation;
-        curPlayer.AllowCursorFreedom();
+        curPlayer.AllowMouse();
         cutsceneFinished = true;
     }
     IEnumerator PlayZoomInBackward()
@@ -94,7 +94,7 @@ public class PickGame : MonoBehaviour
         curPlayer.cam.transform.position = prevPosition;
         curPlayer.cam.transform.rotation = prevRotation;
         curPlayer.isInCutscene = false;
-        curPlayer.BanCursorFreedom();
+        curPlayer.RestrictMouse();
         curPlayer = null;
     }
     private void LookAt(CameraController cc)
