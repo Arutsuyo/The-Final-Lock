@@ -16,6 +16,8 @@ public class WallTimer : MonoBehaviour
     public bool Debug = false;
     public bool Debug2 = false;
     public bool isStopped = false;
+    public AudioSource AUS;
+    public AudioSource Tick;
     public void StartClock(float timeToRun)
     {
         TimeToCountTo = timeToRun + Time.time;
@@ -49,6 +51,7 @@ public class WallTimer : MonoBehaviour
         float ff = TimeToCountTo - Time.time;
         int LHS = 0;
         int RHS = 0;
+
         if (ff < 60.0f)
         {
             // Less than 1 minute... (show seconds and millis)
@@ -106,12 +109,23 @@ public class WallTimer : MonoBehaviour
     {
         int LHS = 0;
         int RHS = 0;
+        float LT = TimeToCountTo - Time.time;
         while (TimeToCountTo - Time.time > 0)
         {
             float ff = TimeToCountTo - Time.time;
+            if(Mathf.FloorToInt(ff) != Mathf.FloorToInt(LT))
+            {
+                Tick.Play();
+            }
+            if(ff <= 60.0f && LT >= 60.0f)
+            {
+                AUS.Play();
+            }
             if (ff < 60.0f)
             {
                 // Less than 1 minute... (show seconds and millis)
+                AUS.volume = Mathf.Min(1, ((60.0f - ff) / 30.0f));
+                Tick.volume = Mathf.Max(0, (ff - 45.0f)/15f);
                 LHS = Mathf.FloorToInt(ff);
                 RHS = Mathf.FloorToInt((ff - LHS) * 100);
             }
@@ -136,6 +150,7 @@ public class WallTimer : MonoBehaviour
             DIG2.ChangeUpdate();
             DIG3.ChangeUpdate();
             yield return null;
+            LT = ff;
         }
         DIG0.NUM = 0;
         DIG1.NUM = 0;
