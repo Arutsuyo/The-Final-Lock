@@ -67,6 +67,7 @@ public class CombinationLock : MonoBehaviour
 				// Set combo target
 				combo[i] = UnityEngine.Random.Range(0, 10);
 				targetStates[i] = Quaternion.Euler(-36.0f * combo[i] + 36.0f, 0.0f, -90.0f);
+                Debug.Log(combo[i] + " " + targetStates[i].ToString() + " " + locks[i].transform.localRotation.ToString() + " " +curState[i]);
 			}
 		}
 		else

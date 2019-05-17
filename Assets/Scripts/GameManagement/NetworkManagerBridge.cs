@@ -92,25 +92,34 @@ public class NetworkManagerBridge : MonoBehaviour
 		net.networkAddress = "localhost";
 		net.networkPort = this.SocketInfo.PORT;
 #if UNITY_WEBGL && !UNITY_EDITOR
-		//net.useWebSockets = true;
-		//net.networkPort = this.SocketInfo.PORT + 1;
-		//webc = net.StartHost();
 		Debug.LogError("You can not host from a WEBGL game! IGNORING REQUEST!");
 		return;
 #else
-
-		//net.useWebSockets = true;
-		//net.networkPort = this.SocketInfo.PORT + 1;
-		//net.StartServer();
-		// Actually try both....
 		net.useWebSockets = false;
 		net.networkPort = this.SocketInfo.PORT;
-		nc = net.StartHost();
-		net.RegisterHandler(BuiltinMsgTypes.Connectioninformation, HandleName);
+        nc = net.StartHost();
+        NetworkTransport.AddWebsocketHost(NetworkServer.hostTopology, this.SocketInfo.PORT+1, null); // :3 Probs gonna regret this....
+        net.RegisterHandler(BuiltinMsgTypes.Connectioninformation, HandleName);
 
 		StartCoroutine(SendNameSoon());
 #endif
 	}
+
+    public void StartSPServer(int Port, CampaignManagerMP CMMP)
+    {
+        CLPS = CMMP;
+        Debug.Log("Starting Server...");
+        this.SocketInfo = new IPAP("127.0.0.1:" + Port);
+        net.networkAddress = "localhost";
+        net.networkPort = this.SocketInfo.PORT;
+        net.maxConnections = 1;
+        // Regardless..just start one with a simple port...
+        net.useWebSockets = false;
+        nc = net.StartHost(); // You can start a non-websocketed host. It is just that nothing can CONNECT to it (if you are in a web client)
+        net.RegisterHandler(BuiltinMsgTypes.Connectioninformation, HandleName);
+        net.AcceptingConnections = false;
+        StartCoroutine(SendNameSoon());
+    }
 
 	public IEnumerator SendNameSoon()
 	{
@@ -292,7 +301,11 @@ public class NetworkManagerBridge : MonoBehaviour
 
 		net.OnClientConnected += Net_OnClientConnected;
 		net.OnRemoteDisconnected += removeUserName;
-		/*Networker.Init();
+
+       
+
+
+        /*Networker.Init();
 		instance = this;
 		DontDestroyOnLoad(gameObject);
 		Networker.OnClientConnect += Network_ClientDC;
@@ -304,7 +317,7 @@ public class NetworkManagerBridge : MonoBehaviour
 		NetChannels.Add(Networker.AddChannel(UnityEngine.Networking.QosType.ReliableStateUpdate), UnityEngine.Networking.QosType.ReliableStateUpdate);
 		NetChannels.Add(Networker.AddChannel(UnityEngine.Networking.QosType.StateUpdate), UnityEngine.Networking.QosType.StateUpdate);
 		NetChannels.Add(Networker.AddChannel(UnityEngine.Networking.QosType.ReliableSequenced), UnityEngine.Networking.QosType.ReliableSequenced);*/
-	}
+    }
 
 	private void Net_OnClientConnected(long userID)
 	{

@@ -14,7 +14,7 @@ public class PlayerMovementMP : NetworkBehaviour
 	public float turnSpeed;
 	public Rigidbody rb;
 	public CameraController cam;
-	private Vector2 movement = new Vector2();
+	private Vector3 movement = new Vector3();
 	public Text nameTemplate;
 	public Transform childCameraPosition;
 	void Start()
@@ -62,8 +62,8 @@ public class PlayerMovementMP : NetworkBehaviour
 	void GetInput()
 	{
 		//Get movement inputs
-		movement.x = Input.GetAxisRaw("Vertical");
-		movement.y = Input.GetAxisRaw("Horizontal");
+		movement.z = Input.GetAxisRaw("Vertical");
+		movement.x = Input.GetAxisRaw("Horizontal");
 	}
 
 	void Move()
@@ -72,7 +72,9 @@ public class PlayerMovementMP : NetworkBehaviour
 			return;
 
 		movement.Normalize();
-		rb.velocity = movement * moveSpeed;
+        float ff = rb.velocity.y;
+		rb.velocity = rb.rotation*movement * moveSpeed + new Vector3(0,ff,0);
+        
 	}
 
 	//prevent player from rotating violently on collisions

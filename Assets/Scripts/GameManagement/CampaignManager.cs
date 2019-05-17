@@ -37,8 +37,12 @@ public class CampaignManager : CampaignManagerMP
 		erooms = eerooms.ToArray<EscapeRoom>();
 
 	}
-
-	public override void Go(int id)
+    public new void Start()
+    {
+        HideUI();
+        DontDestroyOnLoad(this.gameObject);
+    }
+    public override void Go(int id)
 	{
 		foreach (Button bb in Campaigns)
 			bb.interactable = false;
@@ -47,16 +51,33 @@ public class CampaignManager : CampaignManagerMP
 		ActiveID = id;
 
 		Port = -1;
-		// Now actually launch it.
-		Debug.Log("Launching campaign ID " + ActiveID + " in 3...2....1...JUMP");
+        instance = this;
+        // Now actually launch it.
+        Debug.Log("Launching campaign ID " + ActiveID + " in 3...2....1...JUMP");
 		PlayerAnimation.SetTrigger("GoToRoom");
 		doorAnimation.SetTrigger("Door");
 		holoAnimation.SetTrigger("ToDoor");
 		// Swap rooms....
 		// Actually, destroy the OTHER campaign manager :3
 		// the other will destroy this one...
-		Destroy(otherContestant);
+		Destroy(otherContestant.gameObject);
+        nm.StartSPServer(25565, this);
+        nm.net.ClientSceneChanged += this.SendServerReady;
+        // But actually you are hosting a single player world :D
+        StartCoroutine(TransferRooms());
 	}
+
+    public IEnumerator TransferRooms()
+    {
+        yield return new WaitForSecondsRealtime(9.37f/.8f);
+        //AOP = SceneManager.LoadSceneAsync(1);
+        if (nm.net.isHost)
+        {
+            // Send all clients the room details
+            nm.net.ServerChangeScene("Room 1");
+
+        }
+    }
 
 	public override void UpdateCampaignUI(int id)
 	{

@@ -289,7 +289,6 @@ public class Networker
             allocChannels[i] = config.AddChannel(channels[i]);
         }
         topo = new HostTopology(config, max_users);
-        
         hostID = NetworkTransport.AddHost(topo, port, null);
         webID = NetworkTransport.AddWebsocketHost(topo, web_port, null);
         isHost = true;

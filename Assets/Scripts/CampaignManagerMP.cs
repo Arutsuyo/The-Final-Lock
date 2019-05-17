@@ -325,8 +325,10 @@ public class CampaignManagerMP : MonoBehaviour
 
 	public IEnumerator CountDown()
 	{
-		Destroy(otherContestant);
-		lobbyWaiter.text = "Round starting in 3";
+		Destroy(otherContestant.gameObject);
+        instance = this;
+        nm.net.ClientSceneChanged += SendServerReady;
+        lobbyWaiter.text = "Round starting in 3";
 		for (int i = 3; i >= 1; i--)
 		{
 			yield return new WaitForSecondsRealtime(0.25f);
@@ -341,8 +343,8 @@ public class CampaignManagerMP : MonoBehaviour
 		lobbyWaiter.text += "!";
 
 		PlayerAnimation.SetTrigger("ToCampaign");
-		// Swap scenes to Room 1 empty...but for right now just to scene 2.
-
+        // Swap scenes to Room 1 empty...but for right now just to scene 2.
+        yield return new WaitForSecondsRealtime(1.3f);
 		//AOP = SceneManager.LoadSceneAsync(1);
 		if (nm.net.isHost)
 		{
@@ -390,16 +392,10 @@ public class CampaignManagerMP : MonoBehaviour
 
 	public void Start()
 	{
-		if (instance != null)
-		{
-			Destroy(this.gameObject);
-			return;
-		}
 		HideUI();
 		DontDestroyOnLoad(this.gameObject);
 
-		nm.net.ClientSceneChanged += SendServerReady;
-		instance = this;
+		
 	}
 	protected EscapeRoom ParseFile(XmlDocument x)
 	{

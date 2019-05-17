@@ -8029,7 +8029,7 @@ MonoBehaviour:
   DoorLerpFactor: 1
   cameraLerpTime: 0.75
   cutsceneFinished: 0
-  randomize: 0
+  randomize: 1
 --- !u!114 &3106094191252410960
 MonoBehaviour:
   m_ObjectHideFlags: 0
