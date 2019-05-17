@@ -317,8 +317,7 @@ public class CampaignManagerMP : MonoBehaviour
         nm.net.SendToAllClients(MPMsgTypes.RoundStarting, new SimpleStringMessage() {payload="Round Starting!"});
         StartCoroutine(CountDown());
     }
-    private bool wasCancelled= false;
-    private bool isCounting = false;
+
     public IEnumerator CountDown()
     {
         Destroy(otherContestant);
