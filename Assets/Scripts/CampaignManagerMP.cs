@@ -52,6 +52,15 @@ public class CampaignManagerMP : MonoBehaviour
     
     public int Port;
     public Dictionary<long, GameObject> playerObjs = new Dictionary<long, GameObject>();
+    public RoomManager roomMngr;
+    public void AnnounceRoomManager()
+    {
+        roomMngr = RoomManager.instance;
+        if (nm.net.isHost)
+        {
+            roomMngr.roomTimer.StartTheTimers();
+        }
+    }
 
     [Header("Rooms Offered")]
     public string[] Rooms;

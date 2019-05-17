@@ -6,6 +6,7 @@ using UnityEngine.Networking;
 public class RoomManager : MonoBehaviour
 {
     public CampaignManagerMP CMMP;
+    public NetTimer roomTimer;
     public static RoomManager instance;
     public Dictionary<uint, Interactable> interactables = new Dictionary<uint, Interactable>();
 
@@ -47,6 +48,7 @@ public class RoomManager : MonoBehaviour
             CMMP = CMMP1.GetComponent<CampaignManagerMP>();
             CMMP.nm.net.RegisterHandler(MPMsgTypes.Interactions, HandleRiots);
             CMMP.nm.net.RegisterHandler(MPMsgTypes.FinInteractions, HandleFin);
+            CMMP.AnnounceRoomManager();
         }
 
     }

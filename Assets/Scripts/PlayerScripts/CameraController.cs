@@ -70,8 +70,8 @@ public class CameraController : MonoBehaviour
     }
     public void BanCursorFreedom()
     {
-       /* Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;*/
+       Cursor.lockState = CursorLockMode.Locked;
+       Cursor.visible = false;
     }
 
     // This function triggers the subscribed events on the target object in the 

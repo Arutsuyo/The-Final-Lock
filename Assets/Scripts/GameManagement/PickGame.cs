@@ -37,6 +37,9 @@ public class PickGame : MonoBehaviour
     public Transform pickTransform;
     public Transform handleTransform;
 
+    public LockPickUI PLUI;
+    public EnableDisableOverTime PLEDOT;
+
     void Start()
     {
         interact.lookEvent += LookAt;
@@ -58,7 +61,7 @@ public class PickGame : MonoBehaviour
             isLatched[i] = false;
             pinPositions[i] = Random.Range(0.0f, 1.0f);
             origPinHeights[i] = pinHeights[i];
-            pinTolerance[i] = Random.Range(0.1f, 0.2f);
+            pinTolerance[i] = Random.Range(0.01f, 0.05f);
         }
     }
     IEnumerator PlayZoomInForward()
@@ -136,6 +139,15 @@ public class PickGame : MonoBehaviour
             dj1.enabled = false;
             dj1.gameObject.SetActive(true);
             dj.gameObject.SetActive(true);
+            PLEDOT.StartChange();
+            PLUI.height = 0;
+            for (int i = 0; i < 8; i++) {
+                PLUI.pickPos = i+1;
+                PLUI.heldHead[i] = false;
+                PLUI.UpdatePins();
+            }
+            PLUI.pickPos = 1;
+            PLUI.UpdatePins();
             isKey = false;
         }
         isTryingObject = true;
@@ -184,6 +196,14 @@ public class PickGame : MonoBehaviour
         {
             Destroy(t.gameObject);
         }
+        PLEDOT.StartBackwards();
+        PLUI.height = 0;
+        for (int i = 0; i < 8; i++)
+        {
+            PLUI.pickPos = i + 1;
+            PLUI.heldHead[i] = false;
+            PLUI.UpdatePins();
+        }
     }
     private void PickFin()
     {
@@ -216,6 +236,14 @@ public class PickGame : MonoBehaviour
                 {
                     Destroy(t.gameObject);
                 }
+                PLEDOT.StartBackwards();
+                PLUI.height = 0;
+                for (int i = 0; i < 8; i++)
+                {
+                    PLUI.pickPos = i + 1;
+                    PLUI.heldHead[i] = false;
+                    PLUI.UpdatePins();
+                }
             }
             
             if (Input.GetMouseButton(0))
@@ -237,10 +265,14 @@ public class PickGame : MonoBehaviour
                         {
                             Debug.Log("Click!");
                             isLatched[testingPinID] = true;
+                            PLUI.heldHead[testingPinID] = true;
                             tumblerPosition += turnSpeed;
+
                             vr = new Vector3(0, tumblerPosition * 10, 0);
                             //PinHolderPos.transform.localRotation = Quaternion.Euler(vr);
+                            float ffv = pinHeights[testingPinID];
                             findNextBinding();
+                            pinHeights[testingPinID] = ffv;
                         }
                     }
                 }
@@ -264,6 +296,14 @@ public class PickGame : MonoBehaviour
                     {
                         Destroy(t.gameObject);
                     }
+                    PLEDOT.StartBackwards();
+                    PLUI.height = 0;
+                    for (int i = 0; i < 8; i++)
+                    {
+                        PLUI.pickPos = i + 1;
+                        PLUI.heldHead[i] = false;
+                        PLUI.UpdatePins();
+                    }
                 }
                 
                 PinHolderPos.transform.localRotation = Quaternion.Euler(vr);
@@ -279,6 +319,9 @@ public class PickGame : MonoBehaviour
                     }
                     pinHeights[testingPinID] = origPinHeights[testingPinID];
                     testingPinID++;
+                    PLUI.pickPos = testingPinID + 1;
+                    PLUI.height = 0;
+                    PLUI.UpdatePins();
                     Debug.Log("Moved to pin " + (testingPinID + 1));
                     PickTrans.localPosition += new Vector3(0, -0.015f, 0);
                 }
@@ -291,6 +334,9 @@ public class PickGame : MonoBehaviour
                     }
                     pinHeights[testingPinID] = origPinHeights[testingPinID];
                     testingPinID--;
+                    PLUI.pickPos = testingPinID + 1;
+                    PLUI.height = 0;
+                    PLUI.UpdatePins();
                     Debug.Log("Moved to pin " + (testingPinID + 1));
                     PickTrans.localPosition += new Vector3(0, 0.015f, 0);
                 }
@@ -303,30 +349,38 @@ public class PickGame : MonoBehaviour
                     if (testingPinID == bindingPin && Mathf.Abs(tumblerPosition - pinPositions[bindingPin]) < 0.0001f && Input.GetMouseButton(0))
                     {
                         Debug.Log("This pin is binding!");
+                        //TODO
                     }
                     else
                     {
                         Debug.Log("This pin is free.");
+                        // TODO
                     }
                 }
                 if (Input.GetKey(KeyCode.G))
                 {
                     if (Input.GetMouseButton(0) && testingPinID == bindingPin && Mathf.Abs(tumblerPosition - pinPositions[bindingPin]) < 0.0001f)
                     {
-                        pinHeights[testingPinID] -= 0.005f;
+                        pinHeights[testingPinID] -= 0.001f;
+                        PLUI.height = (origPinHeights[testingPinID] - pinHeights[testingPinID]) * 100.0f / 0.95f;
+                        PLUI.UpdatePins();
                     }
                     else if (testingPinID == bindingPin && Mathf.Abs(tumblerPosition - pinPositions[bindingPin]) < 0.0001f)
                     {
-                        pinHeights[testingPinID] -= 0.01f;
-                        
+                        pinHeights[testingPinID] -= 0.015f;
+                        PLUI.height = (origPinHeights[testingPinID] - pinHeights[testingPinID]) * 100.0f / 0.95f;
+                        PLUI.UpdatePins();
                     }
                     else
                     {
-                        pinHeights[testingPinID] -= 0.01f;
+                        pinHeights[testingPinID] -= 0.0075f;
                         if (pinHeights[testingPinID] < -pinTolerance[testingPinID])
                         {
                             Debug.Log("This pin won't go up any further!");
+                            pinHeights[testingPinID] = -pinTolerance[testingPinID];
                         }
+                        PLUI.height = (origPinHeights[testingPinID] - pinHeights[testingPinID]) * 100.0f / 0.95f;
+                        PLUI.UpdatePins();
                     }
                 }
             }
