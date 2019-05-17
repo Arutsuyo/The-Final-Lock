@@ -197,7 +197,6 @@ public class CombinationLock : MonoBehaviour
 		curPlayer.cam.transform.position = lockPosition.position;
 		//curPlayer.cam.transform.localPosition = new Vector3(curPlayer.cam.transform.localPosition.x, curPlayer.cam.transform.localPosition.y, curPlayer.cam.transform.localPosition.z - 0.5f);
 		curPlayer.cam.transform.rotation = lockPosition.rotation * Quaternion.Euler(0.0f, -90.0f, 0.0f);
-		curPlayer.AllowMouse();
 		cutsceneFinished = true;
 		glow[current].EnableGlow();
 	} 
@@ -221,7 +220,6 @@ public class CombinationLock : MonoBehaviour
 		curPlayer.cam.transform.rotation = prevRotation;
 		curPlayer.isInCutscene = false;
 		curPlayer.ShowMarkers();
-		curPlayer.RestrictMouse();
 		curPlayer = null;
 	}
 

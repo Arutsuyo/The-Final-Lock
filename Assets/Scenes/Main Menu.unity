@@ -4775,7 +4775,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 2036233852}
   m_Direction: 2
   m_Value: 0
-  m_Size: 0.9999989
+  m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -4964,6 +4964,7 @@ MonoBehaviour:
   startControl: {fileID: 2147450805}
   ActiveID: 0
   Port: 0
+  roomMngr: {fileID: 0}
   Rooms: []
   RoomSearchPath: Rooms
   erooms: []
@@ -5548,6 +5549,7 @@ MonoBehaviour:
   startControl: {fileID: 0}
   ActiveID: 0
   Port: 0
+  roomMngr: {fileID: 0}
   Rooms: []
   RoomSearchPath: Rooms
   erooms: []
@@ -5597,7 +5599,7 @@ Light:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 662688654}
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 8
   m_Type: 2
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -7839,7 +7841,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.00036621094, y: 0.00039672852}
+  m_AnchoredPosition: {x: 0.00036621094, y: 0.00030517578}
   m_SizeDelta: {x: 0, y: 300}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &1019301146
@@ -20254,7 +20256,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.00000011303861, y: 0.000007672279}
+  m_AnchoredPosition: {x: 0.00000011303861, y: -0.00001533182}
   m_SizeDelta: {x: 0, y: 300}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &2139289758

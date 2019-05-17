@@ -61,21 +61,21 @@ public class CameraController : MonoBehaviour
 		return null;
 	}
 
-    public void AllowCursorFreedom()
-    {
-        Cursor.lockState = CursorLockMode.None;
-        Cursor.visible = true;
-    }
-    public void AllowCursorPrison()
-    {
-        Cursor.lockState = CursorLockMode.Confined;
-        Cursor.visible = true;
-    }
-    public void BanCursorFreedom()
-    {
-       Cursor.lockState = CursorLockMode.Locked;
-       Cursor.visible = false;
-    }
+	public void AllowCursorFreedom()
+	{
+		Cursor.lockState = CursorLockMode.None;
+		Cursor.visible = true;
+	}
+	public void AllowCursorPrison()
+	{
+		Cursor.lockState = CursorLockMode.Confined;
+		Cursor.visible = true;
+	}
+	public void BanCursorFreedom()
+	{
+	   Cursor.lockState = CursorLockMode.Locked;
+	   Cursor.visible = false;
+	}
 
 	public void ShowMarkers()
 	{
