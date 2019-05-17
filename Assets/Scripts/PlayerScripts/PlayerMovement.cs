@@ -5,6 +5,8 @@ using UnityEngine;
 //Freeze Rotation on movement: https://gamedev.stackexchange.com/questions/99094/how-to-move-a-cube-withour-rolling-it
 //Freeze rotation on collision source: https://answers.unity.com/questions/768581/stop-rotation-on-collision.html
 
+//Source for fixing glitching through objects: https://answers.unity.com/questions/869470/how-to-prevent-collider-from-shaking-when-collidin.html
+
 public class PlayerMovement : MonoBehaviour
 {
 	public float moveSpeed;
