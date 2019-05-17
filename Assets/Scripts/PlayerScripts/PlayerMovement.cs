@@ -5,14 +5,15 @@ using UnityEngine;
 //Freeze Rotation on movement: https://gamedev.stackexchange.com/questions/99094/how-to-move-a-cube-withour-rolling-it
 //Freeze rotation on collision source: https://answers.unity.com/questions/768581/stop-rotation-on-collision.html
 
+//Source for fixing glitching through objects: https://answers.unity.com/questions/869470/how-to-prevent-collider-from-shaking-when-collidin.html
+
 public class PlayerMovement : MonoBehaviour
 {
     public float moveSpeed;
     public float turnSpeed;
     public Rigidbody rb;
     public CameraController cam;
-    private float verticalInput;
-    private float horizontalInput;
+    private Vector3 movement = new Vector3();
 
     void Start()
     {
@@ -20,26 +21,27 @@ public class PlayerMovement : MonoBehaviour
         rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
     }
 
-    void Update()
-    {
-        //Get movement inputs
-        verticalInput = Input.GetAxis("Vertical");
-        horizontalInput = Input.GetAxis("Horizontal");
-    }
-
     void FixedUpdate()
     {
+        //Get Input
+        GetInput();
         //Update movement
         Move();
+    }
+
+    void GetInput()
+    {
+        //Get movement inputs
+        movement.x = Input.GetAxisRaw("Vertical");
+        movement.y = Input.GetAxisRaw("Horizontal");
     }
 
     void Move()
     {
         //Get movement values from speed and input
         if (cam.isInCutscene) { return; }
-        Vector3 verticalMovement = transform.forward * verticalInput * moveSpeed;
-        Vector3 HorizontalMovement = transform.right * horizontalInput * moveSpeed;
-        rb.MovePosition(rb.position + verticalMovement + HorizontalMovement);
+        movement.Normalize();
+        rb.velocity = movement * moveSpeed;
     }
 
     //prevent player from rotating violently on collisions
