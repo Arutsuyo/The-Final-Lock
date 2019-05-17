@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 5030384587746967847}
   - component: {fileID: 5414607678046607850}
   - component: {fileID: 7621604896025480803}
+  - component: {fileID: 1828376088}
   m_Layer: 0
   m_Name: Right Number
   m_TagString: Untagged
@@ -69,7 +70,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 327f863ddd9c5504ea5a7271a367f6b3, type: 2}
+  - {fileID: 2100000, guid: 681ed4626375dd74c82c9634d5e28191, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -968,6 +969,20 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 14
   m_Mesh: {fileID: 0}
+--- !u!114 &1828376088
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3377953827817167}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f8ec0fb3ff2a5454e8863609a58514d0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GlowColor: {r: 0.9245283, g: 0.6378406, b: 0.100302614, a: 0}
+  LerpFactor: 10
 --- !u!1 &157631903967746974
 GameObject:
   m_ObjectHideFlags: 0
@@ -1625,6 +1640,7 @@ GameObject:
   - component: {fileID: 7329622719364591407}
   - component: {fileID: 8028688466670838502}
   - component: {fileID: 4739206633505535698}
+  - component: {fileID: 2109274866}
   m_Layer: 0
   m_Name: Middle Number
   m_TagString: Untagged
@@ -1681,7 +1697,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 327f863ddd9c5504ea5a7271a367f6b3, type: 2}
+  - {fileID: 2100000, guid: 681ed4626375dd74c82c9634d5e28191, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -2580,6 +2596,20 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 14
   m_Mesh: {fileID: 0}
+--- !u!114 &2109274866
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2123458193316338952}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f8ec0fb3ff2a5454e8863609a58514d0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GlowColor: {r: 0.9245283, g: 0.6378406, b: 0.100302614, a: 0}
+  LerpFactor: 10
 --- !u!1 &2261721018588584843
 GameObject:
   m_ObjectHideFlags: 0
@@ -6046,6 +6076,7 @@ GameObject:
   - component: {fileID: 5390043805422742359}
   - component: {fileID: 7899990077450374406}
   - component: {fileID: 3973820527232041943}
+  - component: {fileID: 622954401}
   m_Layer: 0
   m_Name: Left Number
   m_TagString: Untagged
@@ -6102,7 +6133,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 327f863ddd9c5504ea5a7271a367f6b3, type: 2}
+  - {fileID: 2100000, guid: 681ed4626375dd74c82c9634d5e28191, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -7001,6 +7032,20 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 14
   m_Mesh: {fileID: 0}
+--- !u!114 &622954401
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5980600907366022878}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f8ec0fb3ff2a5454e8863609a58514d0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GlowColor: {r: 0.9245283, g: 0.6378406, b: 0.100302614, a: 0}
+  LerpFactor: 10
 --- !u!1 &6265869817707722790
 GameObject:
   m_ObjectHideFlags: 0
@@ -7933,6 +7978,7 @@ GameObject:
   - component: {fileID: 4344988954996319833}
   - component: {fileID: 3106094191252410960}
   - component: {fileID: 7755947373241974037}
+  - component: {fileID: 1307278742}
   m_Layer: 0
   m_Name: Combination Game
   m_TagString: Untagged
@@ -7969,20 +8015,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   combo: 040000000700000002000000
-  left: 3
-  middle: 5
-  right: 6
-  increment: 0.1
-  leftLock: {fileID: 5980600907366022878}
-  midLock: {fileID: 2123458193316338952}
-  rightLock: {fileID: 3377953827817167}
+  curState: 000000000000000000000000
+  current: 0
+  locks:
+  - {fileID: 5980600907366022878}
+  - {fileID: 2123458193316338952}
+  - {fileID: 3377953827817167}
+  glow: []
   door: {fileID: 4470642107444799294}
-  hit: {fileID: 0}
   lockPosition: {fileID: 6851769970333200729}
   curPlayer: {fileID: 0}
-  LerpTime: 1
+  spinnerLerpFactor: 5
+  DoorLerpFactor: 1
+  cameraLerpTime: 3
   cutsceneFinished: 0
-  randomize: 0
+  randomize: 1
 --- !u!114 &3106094191252410960
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8009,3 +8056,38 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc5fce68b3f325b43bb05b066b9c9705, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  NeedCheckOwner: 1
+  owner: -10
+--- !u!114 &1307278742
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8770855641748561529}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 372142912, guid: dc443db3e92b4983b9738c1131f555cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SceneId:
+    m_Value: 0
+  m_AssetId:
+    i0: 0
+    i1: 0
+    i2: 0
+    i3: 0
+    i4: 0
+    i5: 0
+    i6: 0
+    i7: 0
+    i8: 0
+    i9: 0
+    i10: 0
+    i11: 0
+    i12: 0
+    i13: 0
+    i14: 0
+    i15: 0
+  m_ServerOnly: 0
+  m_LocalPlayerAuthority: 0
