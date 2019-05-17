@@ -40,8 +40,8 @@ public class CombinationLock : MonoBehaviour
 	// Randomize values on Start()?
 	public bool randomize;
 
-	// Start is called before the first frame update
-	void Start()
+	// Made this Awake so the poster clue can initialize during start
+	void Awake()
 	{
 		isOpen = false;
 		inGame = false;
@@ -165,14 +165,17 @@ public class CombinationLock : MonoBehaviour
 		{
 			Quaternion target = 
 				Quaternion.Euler(-36.0f * curState[i] + 36.0f, 0.0f, -90.0f);
-			if(locks[i].transform.localRotation != target)
+			float angle = Quaternion.Angle(locks[i].transform.localRotation, target);
+			if (angle != 0)
 			{
 				locks[i].transform.localRotation = Quaternion.Slerp(
 					locks[i].transform.localRotation,
 					target,
 					spinnerLerpFactor * Time.deltaTime);
 			}
-			if (locks[i].transform.localRotation != targetStates[i])
+
+			angle = Quaternion.Angle(locks[i].transform.localRotation, targetStates[i]);
+			if (angle < 1f)
 			{
 				unlocked = false;
 			}
@@ -184,6 +187,7 @@ public class CombinationLock : MonoBehaviour
 	IEnumerator PlayZoomInForward()
 	{
 		curPlayer.HideMarkers();
+		curPlayer.BanCursorFreedom();
 		float StartLerpTime = Time.time;
 		float CurLerpTime = Time.time;
 		while(CurLerpTime - StartLerpTime < cameraLerpTime)
@@ -220,6 +224,7 @@ public class CombinationLock : MonoBehaviour
 		curPlayer.cam.transform.rotation = prevRotation;
 		curPlayer.isInCutscene = false;
 		curPlayer.ShowMarkers();
+		curPlayer.BanCursorFreedom();
 		curPlayer = null;
 	}
 
