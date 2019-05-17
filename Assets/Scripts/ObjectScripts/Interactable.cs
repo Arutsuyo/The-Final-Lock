@@ -61,6 +61,11 @@ public class Interactable : NetworkBehaviour
         RoomManager.instance.CMMP.nm.net.SendToServer(MPMsgTypes.FinInteractions, new InteractablePacket() { objectID = (int)this.netId.Value, playerRequesting = CampaignManagerMP.instance.nm.PLAYERUUID });
     }
 
+    public void SendAbort()
+    {
+        RoomManager.instance.CMMP.nm.net.SendToServer(MPMsgTypes.FinInteractions, new InteractablePacket() { objectID = (int)this.netId.Value, playerRequesting = -20});
+    }
+
     public void Update()
     {
         if (!hasAwaked)
@@ -86,6 +91,11 @@ public class Interactable : NetworkBehaviour
     [Command]
     public void CmdTryPickUp(long PLAYERUUID)
     {
+        if(PLAYERUUID == -20)
+        {
+            CmdReleaseHold();
+            return;
+        }
         Debug.Log("Player " + PLAYERUUID + " has contested!");
         if(owner == -10)
         {
@@ -96,10 +106,6 @@ public class Interactable : NetworkBehaviour
         {
             RpcPickupContest(owner);
         }
-    }
-    public void Finished()
-    {
-
     }
     [ClientRpc]
     public void RpcPickupContest(long winnerUUID)

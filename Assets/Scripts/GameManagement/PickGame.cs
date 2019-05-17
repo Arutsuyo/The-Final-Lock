@@ -219,10 +219,14 @@ public class PickGame : MonoBehaviour
                 cutsceneFinished = false;
                 isTryingObject = false;
                 StartCoroutine("PlayZoomInBackward");
-                interact.Finished();
+                
                 if (isPicked)
                 {
                     interact.SendSF();
+                }
+                else
+                {
+                    interact.SendAbort();
                 }
                 foreach (Transform t in keyTransform)
                 {
