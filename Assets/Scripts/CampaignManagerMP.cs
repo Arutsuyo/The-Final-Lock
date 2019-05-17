@@ -326,9 +326,9 @@ public class CampaignManagerMP : MonoBehaviour
 	public IEnumerator CountDown()
 	{
 		Destroy(otherContestant.gameObject);
-        instance = this;
-        nm.net.ClientSceneChanged += SendServerReady;
-        lobbyWaiter.text = "Round starting in 3";
+		instance = this;
+		nm.net.ClientSceneChanged += SendServerReady;
+		lobbyWaiter.text = "Round starting in 3";
 		for (int i = 3; i >= 1; i--)
 		{
 			yield return new WaitForSecondsRealtime(0.25f);
@@ -343,8 +343,8 @@ public class CampaignManagerMP : MonoBehaviour
 		lobbyWaiter.text += "!";
 
 		PlayerAnimation.SetTrigger("ToCampaign");
-        // Swap scenes to Room 1 empty...but for right now just to scene 2.
-        yield return new WaitForSecondsRealtime(1.3f);
+		// Swap scenes to Room 1 empty...but for right now just to scene 2.
+		yield return new WaitForSecondsRealtime(1.3f);
 		//AOP = SceneManager.LoadSceneAsync(1);
 		if (nm.net.isHost)
 		{

@@ -9,8 +9,8 @@ using UnityEngine.UI;
 public class CombinationLock : NetworkBehaviour
 {
 	//"Winning" combination
-	
-	public SyncListInt combo= new SyncListInt();
+
+	public SyncListInt combo = new SyncListInt();
 	//Current lock numbers
 	public int[] curState;
 	//Tracks which lock the player is turning
@@ -30,7 +30,7 @@ public class CombinationLock : NetworkBehaviour
 	private Vector3 prevPosition;
 	private Quaternion prevRotation;
 	public CameraController curPlayer;
-	private Interactable ia;
+	public Interactable ia;
 
 	// Lerp info
 	public float spinnerLerpFactor = 5f;
@@ -46,7 +46,6 @@ public class CombinationLock : NetworkBehaviour
 
 	// Randomize values on Start()?
 	public bool randomize;
-	public bool hasChanged = false;
 
 	public delegate void OnLockReady();
 	public event OnLockReady PuzzleReady = delegate { };
@@ -55,29 +54,28 @@ public class CombinationLock : NetworkBehaviour
 	public override void OnStartServer()
 	{
 		base.OnStartServer();
+
+		// Set starting Values
 		isOpen = false;
 		inGame = false;
 		current = 0;
 		curState = new int[3];
 		targetStates = new Quaternion[3];
 
-		glow = new GlowObject[] {
-			locks[0].GetComponent<GlowObject>(),
-			locks[1].GetComponent<GlowObject>(),
-			locks[2].GetComponent<GlowObject>()};
-
 		if (randomize)
 		{
 			for (int i = 0; i < 3; i++)
 			{
-				// Set current rotation
-				curState[i] = UnityEngine.Random.Range(0, 10);
-				locks[i].transform.localRotation = Quaternion.Euler(-36.0f * curState[i] + 36.0f, 0.0f, -90.0f);
-
 				// Set combo target
 				combo.Add(UnityEngine.Random.Range(0, 10));
 				targetStates[i] = Quaternion.Euler(-36.0f * combo[i] + 36.0f, 0.0f, -90.0f);
-				Debug.Log(combo[i] + " " + targetStates[i].ToString() + " " + locks[i].transform.localRotation.ToString() + " " +curState[i]);
+				Debug.Log(combo[i] + " " + targetStates[i].ToString() + " " + locks[i].transform.localRotation.ToString() + " " + curState[i]);
+
+				// Set current rotation
+				do
+					curState[i] = UnityEngine.Random.Range(0, 10);
+				while (curState[i] == combo[i]);
+				locks[i].transform.localRotation = Quaternion.Euler(-36.0f * curState[i] + 36.0f, 0.0f, -90.0f);
 			}
 		}
 		else
@@ -100,8 +98,19 @@ public class CombinationLock : NetworkBehaviour
 				Quaternion.Euler(-36.0f * combo[0] + 36.0f, 0.0f, -90.0f);
 		}
 
-		doorTarget = Quaternion.Euler(0.0f, -90.0f, 90.0f);
 		PuzzleReady();
+	}
+
+	void Awake()
+	{
+		curState = new int[3];
+		targetStates = new Quaternion[3];
+		glow = new GlowObject[] {
+			locks[0].GetComponent<GlowObject>(),
+			locks[1].GetComponent<GlowObject>(),
+			locks[2].GetComponent<GlowObject>()};
+		doorTarget = Quaternion.Euler(0.0f, -90.0f, 90.0f);
+		current = 0;
 		Subscribe();
 	}
 
@@ -109,26 +118,23 @@ public class CombinationLock : NetworkBehaviour
 	{
 		base.OnStartClient();
 		combo.Callback += CC;
-		if(combo.Count == 3) {
+		if (combo.Count == 3)
+		{
 			Debug.Log("Getting addition 31.");
-			for (int i =0; i < 3; i++)
-			{
+			for (int i = 0; i < 3; i++)
 				targetStates[i] = Quaternion.Euler(-36.0f * combo[i] + 36.0f, 0.0f, -90.0f);
-			}
 
 			StartCoroutine(SCC());
 		}
 	}
+
 	IEnumerator SCC()
 	{
-		while (RoomManager.instance==null || RoomManager.instance.CMMP == null)
-		{
+		while (RoomManager.instance == null || RoomManager.instance.CMMP == null)
 			yield return null;
-		}
+
 		if (!RoomManager.instance.CMMP.nm.net.isHost)
-		{
 			PuzzleReady();
-		}
 	}
 
 	void CC(SyncListInt.Operation op, int itemIndex)
@@ -138,14 +144,10 @@ public class CombinationLock : NetworkBehaviour
 		{
 			Debug.Log("Getting addition 3." + itemIndex);
 			for (int i = 0; i < 3; i++)
-			{
-
 				targetStates[i] = Quaternion.Euler(-36.0f * combo[i] + 36.0f, 0.0f, -90.0f);
-			}
+
 			if (!RoomManager.instance.CMMP.nm.net.isHost)
-			{
 				StartCoroutine(SCC());
-			}
 		}
 	}
 
@@ -153,7 +155,6 @@ public class CombinationLock : NetworkBehaviour
 	{
 		if (curPlayer != null)
 		{
-			hasChanged = false;
 			inGame = false;
 			Debug.Log("Stopping unlock attempt");
 			cutsceneFinished = false;
@@ -169,13 +170,12 @@ public class CombinationLock : NetworkBehaviour
 			if (isOpen || Input.GetKeyDown(KeyCode.Escape))
 			{
 				inGame = false;
-				hasChanged = false;
 				Debug.Log("Stopping unlock attempt");
 				cutsceneFinished = false;
 				StartCoroutine("PlayZoomInBackward");
+
 				if (!isOpen)
 					ia.SendAbort();
-
 				else
 					ia.SendSF();
 			}
@@ -186,7 +186,6 @@ public class CombinationLock : NetworkBehaviour
 			// Get inputs
 			if (Input.GetKeyDown(KeyCode.W))
 			{
-				hasChanged = true;
 				if (curState[current] == 9)
 					curState[current] = 0;
 				else
@@ -195,8 +194,6 @@ public class CombinationLock : NetworkBehaviour
 
 			if (Input.GetKeyDown(KeyCode.S))
 			{
-				hasChanged = true;
-
 				if (curState[current] == 0)
 					curState[current] = 9;
 				else
@@ -215,27 +212,32 @@ public class CombinationLock : NetworkBehaviour
 			if (Input.GetKeyDown(KeyCode.A))
 			{
 				glow[current].DisableGlow();
-				
+
 				current--;
 				if (current < 0)
 					current = 2;
 				glow[current].EnableGlow();
 			}
 
-			if (hasChanged && RotateLock())
+			if (RotateLock())
 				isOpen = true;
 		}
 	}
 
 	private void OpenTheDoor()
 	{
+		isOpen = true;
+		Debug.Log("Open the DOOR!");
 		StartCoroutine(OpenDoor());
 	}
 
 	IEnumerator OpenDoor()
 	{
 		while (isOpen &&
-			Quaternion.Angle(door.transform.localRotation, doorTarget) > 1f)
+			Mathf.Abs(
+				Quaternion.Angle(door.transform.localRotation, 
+				doorTarget)
+				) > 1f)
 		{
 			door.transform.localRotation = Quaternion.Slerp(
 				door.transform.localRotation,
@@ -281,13 +283,11 @@ public class CombinationLock : NetworkBehaviour
 		while (CurLerpTime - StartLerpTime < cameraLerpTime)
 		{
 			curPlayer.cam.transform.position = Vector3.Lerp(prevPosition, lockPosition.position, (CurLerpTime - StartLerpTime) / cameraLerpTime);
-			//curPlayer.cam.transform.localPosition = new Vector3(curPlayer.cam.transform.localPosition.x, curPlayer.cam.transform.localPosition.y, curPlayer.cam.transform.localPosition.z - 0.5f);
 			curPlayer.cam.transform.rotation = Quaternion.Slerp(prevRotation, lockPosition.rotation * Quaternion.Euler(0.0f, -90.0f, 0.0f), (CurLerpTime - StartLerpTime) / cameraLerpTime);
 			yield return null;
 			CurLerpTime = Time.time;
 		}
 		curPlayer.cam.transform.position = lockPosition.position;
-		//curPlayer.cam.transform.localPosition = new Vector3(curPlayer.cam.transform.localPosition.x, curPlayer.cam.transform.localPosition.y, curPlayer.cam.transform.localPosition.z - 0.5f);
 		curPlayer.cam.transform.rotation = lockPosition.rotation * Quaternion.Euler(0.0f, -90.0f, 0.0f);
 		cutsceneFinished = true;
 		glow[current].EnableGlow();
@@ -320,9 +320,6 @@ public class CombinationLock : NetworkBehaviour
 
 	public void Subscribe()
 	{
-		// Get the Interactable script reference
-		ia = gameObject.GetComponent<Interactable>();
-
 		// Make sure it's not null
 		if (ia)
 		{
@@ -336,9 +333,6 @@ public class CombinationLock : NetworkBehaviour
 
 	public void Unsubscribe()
 	{
-		// Get the Interactable script reference
-		ia = gameObject.GetComponent<Interactable>();
-
 		// Make sure it's not null
 		if (ia)
 		{

@@ -252,23 +252,23 @@ public class PickGame : MonoBehaviour
 
 			if (Input.GetMouseButton(0))
 			{
-                // Turn to binding pin...
-                //PinHolderPos.transform.localRotation.eulerAngles;
-                tumblerPosition += turnSpeed;
+				// Turn to binding pin...
+				//PinHolderPos.transform.localRotation.eulerAngles;
+				tumblerPosition += turnSpeed;
 				Vector3 vr = new Vector3(0, tumblerPosition * 10, 0);
 				if (!isKey)
 				{
 					if (bindingPin != -1)
-                    {
-                        
-                        if (tumblerPosition >= pinPositions[bindingPin] && !(Mathf.Abs(pinHeights[bindingPin]) < pinTolerance[bindingPin]))
+					{
+
+						if (tumblerPosition >= pinPositions[bindingPin] && !(Mathf.Abs(pinHeights[bindingPin]) < pinTolerance[bindingPin]))
 						{
 							tumblerPosition = pinPositions[bindingPin];
-                            if (Input.GetMouseButtonDown(0))
-                            {
-                                Debug.Log("A pin is binding!");
-                                PLUI.SetWarn(true);
-                            }
+							if (Input.GetMouseButtonDown(0))
+							{
+								Debug.Log("A pin is binding!");
+								PLUI.SetWarn(true);
+							}
 
 
 						}
@@ -315,11 +315,11 @@ public class PickGame : MonoBehaviour
 				}
 
 				PinHolderPos.transform.localRotation = Quaternion.Euler(vr);
-            }
-            else
-            {
-                PLUI.SetWarn(false);
-            }
+			}
+			else
+			{
+				PLUI.SetWarn(false);
+			}
 
 			if (isPicked == false && !isKey)
 			{
@@ -358,17 +358,17 @@ public class PickGame : MonoBehaviour
 					if (!Input.GetMouseButton(0))
 						Debug.Log("I can check a pin, but it won't do any good unless I apply some force on the pins.");
 
-                    if (testingPinID == bindingPin && Mathf.Abs(tumblerPosition - pinPositions[bindingPin]) < 0.0001f && Input.GetMouseButton(0))
-                    {
-                        Debug.Log("This pin is binding!");
-                        PLUI.SpawnGood();
-                    }
-                    else
-                    {
-                        Debug.Log("This pin is free.");
-                        PLUI.SpawnBad();
-                    }
-                    
+					if (testingPinID == bindingPin && Mathf.Abs(tumblerPosition - pinPositions[bindingPin]) < 0.0001f && Input.GetMouseButton(0))
+					{
+						Debug.Log("This pin is binding!");
+						PLUI.SpawnGood();
+					}
+					else
+					{
+						Debug.Log("This pin is free.");
+						PLUI.SpawnBad();
+					}
+
 				}
 
 				if (Input.GetKey(KeyCode.G))
@@ -376,12 +376,24 @@ public class PickGame : MonoBehaviour
 					if (Input.GetMouseButton(0) && testingPinID == bindingPin && Mathf.Abs(tumblerPosition - pinPositions[bindingPin]) < 0.0001f)
 					{
 						pinHeights[testingPinID] -= 0.001f;
+						if (-pinHeights[testingPinID] + origPinHeights[testingPinID] >= 0.95f)
+						{
+							Debug.Log("This pin won't go up any further!");
+							PLUI.SpawnEXC();
+							pinHeights[testingPinID] = origPinHeights[testingPinID] - .95f;
+						}
 						PLUI.height = (origPinHeights[testingPinID] - pinHeights[testingPinID]) * 100.0f / 0.95f;
 						PLUI.UpdatePins();
 					}
 					else if (testingPinID == bindingPin && Mathf.Abs(tumblerPosition - pinPositions[bindingPin]) < 0.0001f)
 					{
 						pinHeights[testingPinID] -= 0.015f;
+						if (-pinHeights[testingPinID] + origPinHeights[testingPinID] >= 0.95f)
+						{
+							Debug.Log("This pin won't go up any further!");
+							PLUI.SpawnEXC();
+							pinHeights[testingPinID] = origPinHeights[testingPinID] - .95f;
+						}
 						PLUI.height = (origPinHeights[testingPinID] - pinHeights[testingPinID]) * 100.0f / 0.95f;
 						PLUI.UpdatePins();
 					}
@@ -391,8 +403,8 @@ public class PickGame : MonoBehaviour
 						if (pinHeights[testingPinID] < -pinTolerance[testingPinID])
 						{
 							Debug.Log("This pin won't go up any further!");
-                            PLUI.SpawnEXC();
-                            pinHeights[testingPinID] = -pinTolerance[testingPinID];
+							PLUI.SpawnEXC();
+							pinHeights[testingPinID] = -pinTolerance[testingPinID];
 						}
 						PLUI.height = (origPinHeights[testingPinID] - pinHeights[testingPinID]) * 100.0f / 0.95f;
 						PLUI.UpdatePins();
