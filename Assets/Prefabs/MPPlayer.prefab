@@ -423,6 +423,7 @@ MonoBehaviour:
   cam: {fileID: 0}
   nameTemplate: {fileID: 1631827217969363872}
   childCameraPosition: {fileID: 6685616060871553484}
+  body: {fileID: 7313586250150068350}
 --- !u!114 &9190146212772777701
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -17,6 +17,7 @@ public class PlayerMovementMP : NetworkBehaviour
 	private Vector3 movement = new Vector3();
 	public Text nameTemplate;
 	public Transform childCameraPosition;
+	public GameObject body;
 
 	void Start()
 	{
@@ -36,6 +37,7 @@ public class PlayerMovementMP : NetworkBehaviour
 		cam.player = rb.gameObject;
 		cam.enabled = true;
 		nameTemplate.enabled = false;
+		body.GetComponent<MeshRenderer>().enabled = false;
 	}
 
 	[ClientRpc]
