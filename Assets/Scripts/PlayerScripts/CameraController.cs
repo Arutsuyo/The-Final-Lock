@@ -28,6 +28,9 @@ public class CameraController : MonoBehaviour
 	public float interactDistance = 20f;
 	public Image centerMarker; // Center Marker
 	public Image hitMarker; // Blue Interactable
+	public GameObject iconPick;
+	public GameObject iconTension;
+	public GameObject iconKey;
 	private bool showMarkers; // Set if going into a mini game
 
 	// Set during update to see if the player wants to interact.
@@ -46,6 +49,7 @@ public class CameraController : MonoBehaviour
 				" drop the disabled Hit child object into the hitMarker slot of the Camera Controller");
 		}
 	}
+
 	private Interactable DetermineifHit(Transform ob)
 	{
 		Interactable i = ob.GetComponent<Interactable>();

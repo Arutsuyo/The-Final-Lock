@@ -10,6 +10,10 @@ TagManager:
   - Wall Item X
   - Wall Item Z
   - Username
+  - CMMP
+  - Lockpick
+  - Tension
+  - Key
   layers:
   - Default
   - TransparentFX
