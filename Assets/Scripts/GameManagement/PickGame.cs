@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PickGame : MonoBehaviour
 {
@@ -38,6 +39,7 @@ public class PickGame : MonoBehaviour
 	public Transform pickTransform;
 	public Transform handleTransform;
 
+	public Text gameText;
 	public LockPickUI PLUI;
 	public EnableDisableOverTime PLEDOT;
 
@@ -81,10 +83,12 @@ public class PickGame : MonoBehaviour
 		curPlayer.cam.transform.rotation = pickPosition.rotation;
 		curPlayer.AllowCursorPrison();
 		cutsceneFinished = true;
+		gameText.gameObject.SetActive(true);
 	}
 
 	IEnumerator PlayZoomInBackward()
 	{
+		gameText.gameObject.SetActive(false);
 		StartLerpTime = Time.time;
 		CurLerpTime = Time.time;
 		while (CurLerpTime - StartLerpTime < LerpTime)
@@ -177,7 +181,7 @@ public class PickGame : MonoBehaviour
 			}
 		}
 		StartCoroutine("PlayZoomInForward");
-		Debug.Log("Information about minigame:\n Hold left mouse button down to apply tension. Release to allow for easier picks.\n Press and hold right mouse button to apply counter-rotation (useful for security pins).\n Press W to advance a pin. Press S to go back a pin.\nPress T to tap the pin (useful to check if binding or not)\nPress G to press the pin (pushes the pin up, remember to release tension).\nPress B for force a pin up, this will tell you if the pin can move or if it is jamming on something (it may be a security pin!) \n\nTo pick, you must exploit the fact that these locks aren't perfect, and that by forcing the interior of the lock to rotate, one pin will be \"pressed\" up against the cylinder. If you find this pin and can push it into the correct position, the cylinder will rotate, allowing the pin to be held up by the cylinder itself (hence removing it from the list to be picked).\n Some locks has security pins, which are meant to act as \"false sets\", these have to be tested for and it will never allow the pin to be pushed up all the way.\nHowever, normal pins can be pushed too far up the chamber, causing them to bind as well.\n\nIf you believe you have a security pin that is active, or if you accidently pushed a pin up too far (or both), you can perform a counter rotation to let the pins fall back into resting position (note, you technically can lose progress...).");
+		gameText.text = "Information about minigame:\n Hold left mouse button down to apply tension. Release to allow for easier picks.\n Press and hold right mouse button to apply counter-rotation (useful for security pins).\n Press W to advance a pin. Press S to go back a pin.\nPress T to tap the pin (useful to check if binding or not)\nPress G to press the pin (pushes the pin up, remember to release tension).\nPress B for force a pin up, this will tell you if the pin can move or if it is jamming on something (it may be a security pin!) \n\nTo pick, you must exploit the fact that these locks aren't perfect, and that by forcing the interior of the lock to rotate, one pin will be \"pressed\" up against the cylinder. If you find this pin and can push it into the correct position, the cylinder will rotate, allowing the pin to be held up by the cylinder itself (hence removing it from the list to be picked).\n Some locks has security pins, which are meant to act as \"false sets\", these have to be tested for and it will never allow the pin to be pushed up all the way.\nHowever, normal pins can be pushed too far up the chamber, causing them to bind as well.\n\nIf you believe you have a security pin that is active, or if you accidentally pushed a pin up too far (or both), you can perform a counter rotation to let the pins fall back into resting position (note, you technically can lose progress...).";
 		return true;
 		//cc.AllowCursorFreedom();
 	}
@@ -252,23 +256,23 @@ public class PickGame : MonoBehaviour
 
 			if (Input.GetMouseButton(0))
 			{
-                // Turn to binding pin...
-                //PinHolderPos.transform.localRotation.eulerAngles;
-                tumblerPosition += turnSpeed;
+				// Turn to binding pin...
+				//PinHolderPos.transform.localRotation.eulerAngles;
+				tumblerPosition += turnSpeed;
 				Vector3 vr = new Vector3(0, tumblerPosition * 10, 0);
 				if (!isKey)
 				{
 					if (bindingPin != -1)
-                    {
-                        
-                        if (tumblerPosition >= pinPositions[bindingPin] && !(Mathf.Abs(pinHeights[bindingPin]) < pinTolerance[bindingPin]))
+					{
+
+						if (tumblerPosition >= pinPositions[bindingPin] && !(Mathf.Abs(pinHeights[bindingPin]) < pinTolerance[bindingPin]))
 						{
 							tumblerPosition = pinPositions[bindingPin];
-                            if (Input.GetMouseButtonDown(0))
-                            {
-                                Debug.Log("A pin is binding!");
-                                PLUI.SetWarn(true);
-                            }
+							if (Input.GetMouseButtonDown(0))
+							{
+								Debug.Log("A pin is binding!");
+								PLUI.SetWarn(true);
+							}
 
 
 						}
@@ -315,11 +319,11 @@ public class PickGame : MonoBehaviour
 				}
 
 				PinHolderPos.transform.localRotation = Quaternion.Euler(vr);
-            }
-            else
-            {
-                PLUI.SetWarn(false);
-            }
+			}
+			else
+			{
+				PLUI.SetWarn(false);
+			}
 
 			if (isPicked == false && !isKey)
 			{
@@ -358,17 +362,17 @@ public class PickGame : MonoBehaviour
 					if (!Input.GetMouseButton(0))
 						Debug.Log("I can check a pin, but it won't do any good unless I apply some force on the pins.");
 
-                    if (testingPinID == bindingPin && Mathf.Abs(tumblerPosition - pinPositions[bindingPin]) < 0.0001f && Input.GetMouseButton(0))
-                    {
-                        Debug.Log("This pin is binding!");
-                        PLUI.SpawnGood();
-                    }
-                    else
-                    {
-                        Debug.Log("This pin is free.");
-                        PLUI.SpawnBad();
-                    }
-                    
+					if (testingPinID == bindingPin && Mathf.Abs(tumblerPosition - pinPositions[bindingPin]) < 0.0001f && Input.GetMouseButton(0))
+					{
+						Debug.Log("This pin is binding!");
+						PLUI.SpawnGood();
+					}
+					else
+					{
+						Debug.Log("This pin is free.");
+						PLUI.SpawnBad();
+					}
+
 				}
 
 				if (Input.GetKey(KeyCode.G))
@@ -376,12 +380,24 @@ public class PickGame : MonoBehaviour
 					if (Input.GetMouseButton(0) && testingPinID == bindingPin && Mathf.Abs(tumblerPosition - pinPositions[bindingPin]) < 0.0001f)
 					{
 						pinHeights[testingPinID] -= 0.001f;
+						if (-pinHeights[testingPinID] + origPinHeights[testingPinID] >= 0.95f)
+						{
+							Debug.Log("This pin won't go up any further!");
+							PLUI.SpawnEXC();
+							pinHeights[testingPinID] = origPinHeights[testingPinID] - .95f;
+						}
 						PLUI.height = (origPinHeights[testingPinID] - pinHeights[testingPinID]) * 100.0f / 0.95f;
 						PLUI.UpdatePins();
 					}
 					else if (testingPinID == bindingPin && Mathf.Abs(tumblerPosition - pinPositions[bindingPin]) < 0.0001f)
 					{
 						pinHeights[testingPinID] -= 0.015f;
+						if (-pinHeights[testingPinID] + origPinHeights[testingPinID] >= 0.95f)
+						{
+							Debug.Log("This pin won't go up any further!");
+							PLUI.SpawnEXC();
+							pinHeights[testingPinID] = origPinHeights[testingPinID] - .95f;
+						}
 						PLUI.height = (origPinHeights[testingPinID] - pinHeights[testingPinID]) * 100.0f / 0.95f;
 						PLUI.UpdatePins();
 					}
@@ -391,8 +407,8 @@ public class PickGame : MonoBehaviour
 						if (pinHeights[testingPinID] < -pinTolerance[testingPinID])
 						{
 							Debug.Log("This pin won't go up any further!");
-                            PLUI.SpawnEXC();
-                            pinHeights[testingPinID] = -pinTolerance[testingPinID];
+							PLUI.SpawnEXC();
+							pinHeights[testingPinID] = -pinTolerance[testingPinID];
 						}
 						PLUI.height = (origPinHeights[testingPinID] - pinHeights[testingPinID]) * 100.0f / 0.95f;
 						PLUI.UpdatePins();
