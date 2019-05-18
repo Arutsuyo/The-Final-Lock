@@ -18,7 +18,9 @@ public class MPMsgTypes
 	public static short GameFlow = (short)(MPMsgTypes.RoomInformation + 1);
 	public static short Interactions = (short)(MPMsgTypes.GameFlow + 1);
 	public static short FinInteractions = (short)(MPMsgTypes.Interactions + 1);
-	public static short Highest = FinInteractions;
+    public static short GameFailed = (short)(MPMsgTypes.FinInteractions + 1);
+    public static short GameSucceed = (short)(MPMsgTypes.GameFailed + 1);
+	public static short Highest = GameSucceed;
 }
 
 
@@ -44,8 +46,9 @@ public class CampaignManagerMP : MonoBehaviour
 	public Text lobbyWaiter;
 	public Camera cam;
 	public AsyncOperation AOP;
-
+    public DestroyEverything Thanos;
 	public GameObject SpawnPlayerPrefab;
+    public GameObject Reticle;
 	public int countDone = 0;
 	public Image startControl;
 	public int ActiveID = 0;
@@ -95,6 +98,51 @@ public class CampaignManagerMP : MonoBehaviour
 	{
 
 	}
+    public void Cleanup()
+    {
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
+        instance = null;
+        RoomManager.instance = null;
+        NetworkManagerBridge.instance = null;
+        NetworkServer.Shutdown();
+        NetworkServer.Reset();
+        try { NetworkClient.ShutdownAll(); } catch (Exception) { };
+        try { MDNetworker.singleton.StopServer(); } catch (Exception) { };
+        try { MDNetworker.singleton.StopClient(); } catch (Exception) { };
+        try { MDNetworker.singleton.StopHost(); } catch (Exception) { };
+        DestroyEverything NewThanos = Instantiate<DestroyEverything>(Thanos);
+        NewThanos.DoubleThanosSnap(0);
+    }
+    public void ShowLoseScreen(NetworkMessage nm1)
+    {
+        Reticle.SetActive(false);
+        Debug.Log("Hey Lose Screen!");
+        SimpleStringMessage ssm = nm1.ReadMessage<SimpleStringMessage>();
+        if(ssm.payload.Equals("You died."))
+        {
+            roomMngr.StartFail(Cleanup);
+        }
+        else
+        {
+            Debug.LogError("Unexpected lose screen verification!");
+        }
+    }
+    public void ShowWinScreen(NetworkMessage nm1)
+    {
+        Reticle.SetActive(false);
+        Debug.Log("Hey Win Screen!");
+        SimpleStringMessage ssm = nm1.ReadMessage<SimpleStringMessage>();
+        if(ssm.payload.Equals("You win."))
+        {
+            roomMngr.StartSucc(delegate { }, Cleanup);
+        }
+        else
+        {
+            Debug.LogError("Unexpected win screen verification!");
+        }
+    }
+
 	public void CountIncrementer()
 	{
 		// ASSUMES SYNCHRONIZED, WHICH IS DANGEROUS!
@@ -110,6 +158,11 @@ public class CampaignManagerMP : MonoBehaviour
 		}
 		return sb.ToString();
 	}
+    public void OutOfTime()
+    {
+        Debug.Log("Hey out of time!");
+        NetworkServer.SendByChannelToAll(MPMsgTypes.GameFailed, new SimpleStringMessage() { payload = "You died." }, 0);
+    }
 	public IEnumerator HandleWakeup()
 	{
 		if (cam != null && cam.gameObject != null)
@@ -147,16 +200,20 @@ public class CampaignManagerMP : MonoBehaviour
 				yield return null;
 			}
 			roomMngr.roomTimer.CmdStartTheTimers();
+            roomMngr.roomTimer.wallTimer.TimerExpired += OutOfTime;
 		}
 		else
 		{
 			nm.net.SendToServer(MPMsgTypes.GameFlow, new SimpleStringMessage() { payload = "Room Loaded." });
 		}
 		GameObject go = GameObject.FindGameObjectWithTag("MainCamera");
-		Debug.Log(go);
+        
+
+        Debug.Log(go);
 		go.GetComponent<Camera>().enabled = true;
-		// Enable character here...but need additional help.
-	}
+        Reticle = GameObject.FindGameObjectWithTag("HitMarkers");
+        // Enable character here...but need additional help.
+    }
 	public void GameFlowSM(NetworkMessage nm)
 	{
 		// Find the main camera, turn it on, disable your camera.
@@ -178,7 +235,11 @@ public class CampaignManagerMP : MonoBehaviour
 		nm.net.RegisterHandler(MPMsgTypes.RoundStarting, SimpleStringPayload);
 		nm.net.RegisterHandler(MPMsgTypes.RoomInformation, RoomGenerationAcceptor);
 		nm.net.RegisterHandler(MPMsgTypes.GameFlow, GameFlowSM);
+        nm.net.RegisterHandler(MPMsgTypes.GameFailed, ShowLoseScreen);
+        nm.net.RegisterHandler(MPMsgTypes.GameSucceed, ShowWinScreen);
 	}
+
+
 
 	public virtual void UpdateCampaignUI(int id)
 	{

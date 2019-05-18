@@ -7,8 +7,32 @@ public class RoomManager : MonoBehaviour
 {
 	public CampaignManagerMP CMMP;
 	public NetTimer roomTimer;
+
+    public FailScreenScript failedText;
+    public FailScreenImage failedImg;
+    public FailScreenImage succImg;
+    public FailScreenScript succText;
 	public static RoomManager instance;
 	public Dictionary<uint, Interactable> interactables = new Dictionary<uint, Interactable>();
+
+    public void StartSucc(FailScreenScript.SimpleDelegate Callback1, FailScreenScript.SimpleDelegate Callback2)
+    {
+        succImg.image.gameObject.SetActive(true);
+        succText.text.gameObject.SetActive(true);
+        succImg.Finished += Callback1;
+        succText.Finished += Callback2;
+        succImg.StartFadeIn();
+        succText.StartFadeIn();
+    }
+
+    public void StartFail(FailScreenScript.SimpleDelegate Callback)
+    {
+        failedText.text.gameObject.SetActive(true);
+        failedImg.image.gameObject.SetActive(true);
+        failedImg.StartFadeIn();
+        failedText.StartFadeIn();
+        failedText.Finished += Callback;
+    }
 
 	public void HandleRiots(NetworkMessage nm)
 	{

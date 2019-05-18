@@ -22,7 +22,9 @@ public class NetTimer : NetworkBehaviour
 	public void CmdStopTimer()
 	{
 		RpcStopTimer();
-		wallTimer.StopTimer();
+        NetworkServer.SendByChannelToAll(MPMsgTypes.GameSucceed, new SimpleStringMessage() { payload = "You win." }, 0);
+
+        wallTimer.StopTimer();
 	}
 
 	[ClientRpc]

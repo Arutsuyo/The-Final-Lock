@@ -44,6 +44,8 @@ public class WallTimer : MonoBehaviour
             StopAllCoroutines();
             isStopped = true;
             StartCoroutine(ClockFlash());
+            AUS.Stop();
+            Tick.Stop();
         }
     }
     private IEnumerator ClockFlash()
@@ -161,6 +163,7 @@ public class WallTimer : MonoBehaviour
         DIG2.ChangeUpdate();
         DIG3.ChangeUpdate();
         // Set it equal to 0...
+        TimerExpired();
     }
 
 }

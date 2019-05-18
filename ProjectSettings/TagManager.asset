@@ -14,6 +14,7 @@ TagManager:
   - Lockpick
   - Tension
   - Key
+  - HitMarkers
   layers:
   - Default
   - TransparentFX
