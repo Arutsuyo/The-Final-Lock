@@ -23,7 +23,16 @@ public class NetTimer : NetworkBehaviour
 	{
 		RpcStopTimer();
         NetworkServer.SendByChannelToAll(MPMsgTypes.GameSucceed, new SimpleStringMessage() { payload = "You win." }, 0);
+        // :D
 
+        //RoomManager.instance.CMMP.nm.net.SendToServer(MPMsgTypes.GameSucceed, new SimpleStringMessage() { payload = "You win." });
+        NetworkMessage nm = new NetworkMessage();
+        NetworkWriter nw = new NetworkWriter();
+        //nw.StartMessage(MPMsgTypes.GameSucceed);
+        new SimpleStringMessage() { payload = "You win." }.Serialize(nw);
+        //nw.FinishMessage();
+        nm.reader = new NetworkReader(nw);
+        RoomManager.instance.CMMP.ShowWinScreen(nm);
         wallTimer.StopTimer();
 	}
 

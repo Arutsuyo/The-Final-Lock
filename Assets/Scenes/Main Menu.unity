@@ -695,7 +695,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &58940364
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4775,7 +4775,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 2036233852}
   m_Direction: 2
   m_Value: 0
-  m_Size: 0.99999964
+  m_Size: 0.9999989
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -4941,6 +4941,7 @@ MonoBehaviour:
   otherContestant: {fileID: 1739394203}
   BackBtn: {fileID: 954943082}
   StartBtn: {fileID: 2054288473}
+  LobbyBack: {fileID: 748769209}
   CampaignRect: {fileID: 1726215920}
   CampaignsContent: {fileID: 1004039844}
   CampaignClone: {fileID: 2406826783293639648, guid: 323f5f4c7acd9d848b2e5f6ff1f5a80c,
@@ -4961,6 +4962,7 @@ MonoBehaviour:
   Thanos: {fileID: 2183841453741363161, guid: 0fa6ef7fa3b87624e94b9b3df6ae3e30, type: 3}
   SpawnPlayerPrefab: {fileID: 7313586251663542473, guid: 167ecc88af4077d429ad740e247d7c72,
     type: 3}
+  Reticle: {fileID: 0}
   countDone: 0
   startControl: {fileID: 2147450805}
   ActiveID: 0
@@ -7040,6 +7042,9 @@ MonoBehaviour:
   interactDistance: 20
   centerMarker: {fileID: 0}
   hitMarker: {fileID: 0}
+  iconPick: {fileID: 0}
+  iconTension: {fileID: 0}
+  iconKey: {fileID: 0}
 --- !u!95 &922488711
 Animator:
   serializedVersion: 3
@@ -7214,7 +7219,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.00036621094, y: 0.00030517578}
+  m_AnchoredPosition: {x: 0.00036621094, y: -0.000030517578}
   m_SizeDelta: {x: 0, y: 300}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &954943078
@@ -7798,7 +7803,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.00036621094, y: 0.00024414062}
+  m_AnchoredPosition: {x: 0.00036621094, y: 0.00036621094}
   m_SizeDelta: {x: 0, y: 300}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &1019301146
@@ -8144,7 +8149,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1549653886}
   m_Direction: 2
   m_Value: 0
-  m_Size: 1
+  m_Size: 0.13093862
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -9342,6 +9347,7 @@ GameObject:
   - component: {fileID: 1304135859}
   - component: {fileID: 1304135862}
   - component: {fileID: 1304135861}
+  - component: {fileID: 1304135863}
   - component: {fileID: 1304135860}
   m_Layer: 5
   m_Name: New Multiplayer Game
@@ -9482,6 +9488,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1304135858}
   m_CullTransparentMesh: 0
+--- !u!114 &1304135863
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1304135858}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68ef1ba9971574d4692694fcee3c013f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  btn: {fileID: 1304135860}
 --- !u!1 &1304586986
 GameObject:
   m_ObjectHideFlags: 0
@@ -11302,6 +11321,7 @@ GameObject:
   - component: {fileID: 1603660766}
   - component: {fileID: 1603660769}
   - component: {fileID: 1603660768}
+  - component: {fileID: 1603660770}
   - component: {fileID: 1603660767}
   m_Layer: 5
   m_Name: Snap
@@ -11309,7 +11329,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1603660766
 RectTransform:
   m_ObjectHideFlags: 0
@@ -11420,6 +11440,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1603660765}
   m_CullTransparentMesh: 0
+--- !u!114 &1603660770
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1603660765}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68ef1ba9971574d4692694fcee3c013f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  btn: {fileID: 1603660767}
 --- !u!1 &1606244892
 GameObject:
   m_ObjectHideFlags: 0
@@ -11577,8 +11610,8 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 329369602}
   m_HandleRect: {fileID: 329369601}
   m_Direction: 2
-  m_Value: 0
-  m_Size: 0.99999964
+  m_Value: 1
+  m_Size: 0.058083046
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -12421,6 +12454,7 @@ MonoBehaviour:
   otherContestant: {fileID: 600764731}
   BackBtn: {fileID: 1855045484}
   StartBtn: {fileID: 2043536145}
+  LobbyBack: {fileID: 0}
   CampaignRect: {fileID: 1753537054}
   CampaignsContent: {fileID: 940835707}
   CampaignClone: {fileID: 2406826783293639648, guid: 323f5f4c7acd9d848b2e5f6ff1f5a80c,
@@ -12438,9 +12472,10 @@ MonoBehaviour:
   holoAnimation: {fileID: 662688655}
   lobbyWaiter: {fileID: 0}
   cam: {fileID: 0}
-  Thanos: {fileID: 0}
+  Thanos: {fileID: 2183841453741363161, guid: 0fa6ef7fa3b87624e94b9b3df6ae3e30, type: 3}
   SpawnPlayerPrefab: {fileID: 7313586251663542473, guid: 167ecc88af4077d429ad740e247d7c72,
     type: 3}
+  Reticle: {fileID: 0}
   countDone: 0
   startControl: {fileID: 0}
   ActiveID: 0
@@ -12769,13 +12804,14 @@ GameObject:
   - component: {fileID: 1785237039}
   - component: {fileID: 1785237038}
   - component: {fileID: 1785237037}
+  - component: {fileID: 1785237040}
   m_Layer: 5
   m_Name: Start Server
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1785237036
 RectTransform:
   m_ObjectHideFlags: 0
@@ -12886,6 +12922,19 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1785237035}
   m_CullTransparentMesh: 0
+--- !u!114 &1785237040
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1785237035}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68ef1ba9971574d4692694fcee3c013f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  btn: {fileID: 1785237037}
 --- !u!1 &1786130143
 GameObject:
   m_ObjectHideFlags: 0
@@ -18424,7 +18473,7 @@ MonoBehaviour:
     m_HighlightedTrigger: Highlighted
     m_PressedTrigger: Pressed
     m_DisabledTrigger: Disabled
-  m_Interactable: 1
+  m_Interactable: 0
   m_TargetGraphic: {fileID: 1884552362}
   m_OnClick:
     m_PersistentCalls:
@@ -20498,7 +20547,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.00000011303861, y: -0.000020980286}
+  m_AnchoredPosition: {x: 0.00000011303861, y: 1.7845466}
   m_SizeDelta: {x: 0, y: 300}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &2139289758

@@ -7,8 +7,8 @@ public class Quit : MonoBehaviour
 	public static string webplayerQuitURL = "http://google.com";
 	public void QuitMe()
 	{
-#if UNITY_WEBPLAYER
-	Application.OpenURL(webplayerQuitURL);  
+#if UNITY_WEBGL && !UNITY_EDITOR
+		Application.OpenURL(webplayerQuitURL);  
 #elif UNITY_EDITOR
 		UnityEditor.EditorApplication.isPlaying = false;
 #else

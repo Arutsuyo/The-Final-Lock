@@ -31,6 +31,8 @@ public class CampaignManagerMP : MonoBehaviour
 	public CampaignManagerMP otherContestant; // Other CMMP to DESTROY! (If they go MP...that is)
 	public Button BackBtn;
 	public Button StartBtn;
+
+    public Button LobbyBack;
 	public ScrollRect CampaignRect;
 	public RectTransform CampaignsContent;
 	public Button CampaignClone;
@@ -139,7 +141,7 @@ public class CampaignManagerMP : MonoBehaviour
         }
         else
         {
-            Debug.LogError("Unexpected win screen verification!");
+            Debug.LogError("Unexpected win screen verification!" + ssm.payload);
         }
     }
 
@@ -364,7 +366,8 @@ public class CampaignManagerMP : MonoBehaviour
 		switch (ms.payload)
 		{
 			case "Round Starting!":
-				StartCoroutine(CountDown());
+                LobbyBack.interactable = false;
+                StartCoroutine(CountDown());
 				break;
 			default:
 				Debug.LogError("Uncaught simple string payload: " + ms.payload);
@@ -380,7 +383,8 @@ public class CampaignManagerMP : MonoBehaviour
 		nm.net.AcceptingConnections = false;
 		countDone = 0;
 		NetworkServer.SetAllClientsNotReady();
-		nm.net.SendToAllClients(MPMsgTypes.RoundStarting, new SimpleStringMessage() { payload = "Round Starting!" });
+        LobbyBack.interactable = false;
+        nm.net.SendToAllClients(MPMsgTypes.RoundStarting, new SimpleStringMessage() { payload = "Round Starting!" });
 		StartCoroutine(CountDown());
 	}
 
