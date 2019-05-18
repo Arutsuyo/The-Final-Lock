@@ -141,7 +141,7 @@ public class CampaignManagerMP : MonoBehaviour
         }
         else
         {
-            Debug.LogError("Unexpected win screen verification!");
+            Debug.LogError("Unexpected win screen verification!" + ssm.payload);
         }
     }
 

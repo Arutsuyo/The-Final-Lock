@@ -112,7 +112,7 @@ public class NetworkManagerBridge : MonoBehaviour
         this.SocketInfo = new IPAP("127.0.0.1:" + Port);
         net.networkAddress = "localhost";
         net.networkPort = this.SocketInfo.PORT;
-        net.maxConnections = 1;
+        net.maxConnections = 2;
         // Regardless..just start one with a simple port...
         net.useWebSockets = false;
         nc = net.StartHost(); // You can start a non-websocketed host. It is just that nothing can CONNECT to it (if you are in a web client)

@@ -7219,7 +7219,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.00036621094, y: 0.000030517578}
+  m_AnchoredPosition: {x: 0.00036621094, y: -0.000030517578}
   m_SizeDelta: {x: 0, y: 300}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &954943078
@@ -7803,7 +7803,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.00036621094, y: 0.0004272461}
+  m_AnchoredPosition: {x: 0.00036621094, y: 0.00036621094}
   m_SizeDelta: {x: 0, y: 300}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &1019301146
@@ -8149,7 +8149,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1549653886}
   m_Direction: 2
   m_Value: 0
-  m_Size: 0.99981296
+  m_Size: 0.13093862
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -11611,7 +11611,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 329369601}
   m_Direction: 2
   m_Value: 1
-  m_Size: 0.99999964
+  m_Size: 0.058083046
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -12472,7 +12472,7 @@ MonoBehaviour:
   holoAnimation: {fileID: 662688655}
   lobbyWaiter: {fileID: 0}
   cam: {fileID: 0}
-  Thanos: {fileID: 0}
+  Thanos: {fileID: 2183841453741363161, guid: 0fa6ef7fa3b87624e94b9b3df6ae3e30, type: 3}
   SpawnPlayerPrefab: {fileID: 7313586251663542473, guid: 167ecc88af4077d429ad740e247d7c72,
     type: 3}
   Reticle: {fileID: 0}
@@ -20547,7 +20547,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.00000011303861, y: -0.000024967925}
+  m_AnchoredPosition: {x: 0.00000011303861, y: 1.7845466}
   m_SizeDelta: {x: 0, y: 300}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &2139289758
