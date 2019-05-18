@@ -11,7 +11,4 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Room 1.unity
     guid: 8d05d761db695c54a8bd598f61820c97
-  - enabled: 1
-    path: Assets/Scenes/Testing Scenes/Noahs Scene.unity
-    guid: 81a0a17551ac3354ca6b0dada985ab9f
   m_configObjects: {}
