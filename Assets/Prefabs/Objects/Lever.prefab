@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 8725400281145697081}
   m_Layer: 0
   m_Name: Lever
-  m_TagString: Untagged
+  m_TagString: Tension
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -122,7 +122,7 @@ GameObject:
   - component: {fileID: 8725400281434705564}
   m_Layer: 0
   m_Name: Lever
-  m_TagString: Untagged
+  m_TagString: Tension
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -154,6 +154,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc5fce68b3f325b43bb05b066b9c9705, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  NeedCheckOwner: 1
   owner: -10
 --- !u!114 &8725400281434705567
 MonoBehaviour:
@@ -216,7 +217,7 @@ GameObject:
   - component: {fileID: 8725400282696351670}
   m_Layer: 0
   m_Name: Cube (2)
-  m_TagString: Untagged
+  m_TagString: Tension
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

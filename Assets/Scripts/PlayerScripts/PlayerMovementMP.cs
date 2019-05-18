@@ -17,6 +17,7 @@ public class PlayerMovementMP : NetworkBehaviour
 	private Vector3 movement = new Vector3();
 	public Text nameTemplate;
 	public Transform childCameraPosition;
+
 	void Start()
 	{
 		//Prevent the player from falling over when moving
@@ -72,9 +73,9 @@ public class PlayerMovementMP : NetworkBehaviour
 			return;
 
 		movement.Normalize();
-        float ff = rb.velocity.y;
+		float ff = rb.velocity.y;
 		rb.velocity = rb.rotation*movement * moveSpeed + new Vector3(0,ff,0);
-        
+		
 	}
 
 	//prevent player from rotating violently on collisions
