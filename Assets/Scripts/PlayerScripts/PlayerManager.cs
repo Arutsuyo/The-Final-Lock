@@ -4,6 +4,6 @@ using UnityEngine;
 
 public class PlayerManager : MonoBehaviour
 {
-    public Inventory inv;
-    
+	public Inventory inv;
+
 }

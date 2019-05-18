@@ -7,49 +7,48 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    public float moveSpeed;
-    public float turnSpeed;
-    public Rigidbody rb;
-    public CameraController cam;
-    private float verticalInput;
-    private float horizontalInput;
+	public float moveSpeed;
+	public float turnSpeed;
+	public Rigidbody rb;
+	public CameraController cam;
+	private Vector2 movement = new Vector2();
 
-    void Start()
-    {
-        //Prevent the player from falling over when moving
-        rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
-    }
+	void Start()
+	{
+		//Prevent the player from falling over when moving
+		rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
+	}
 
-    void Update()
-    {
-        //Get movement inputs
-        verticalInput = Input.GetAxis("Vertical");
-        horizontalInput = Input.GetAxis("Horizontal");
-    }
+	void FixedUpdate()
+	{
+		GetInput();
+		Move();
+	}
 
-    void FixedUpdate()
-    {
-        //Update movement
-        Move();
-    }
+	void GetInput()
+	{
+		//Get movement inputs
+		movement.x = Input.GetAxisRaw("Vertical");
+		movement.y = Input.GetAxisRaw("Horizontal");
+	}
 
-    void Move()
-    {
-        //Get movement values from speed and input
-        if (cam.isInCutscene) { return; }
-        Vector3 verticalMovement = transform.forward * verticalInput * moveSpeed;
-        Vector3 HorizontalMovement = transform.right * horizontalInput * moveSpeed;
-        rb.MovePosition(rb.position + verticalMovement + HorizontalMovement);
-    }
+	void Move()
+	{
+		if (cam.isInCutscene)
+			return;
 
-    //prevent player from rotating violently on collisions
-    void OnCollisionEnter ()
-    {
-        rb.angularVelocity= new Vector3(0,0,0);
-    }
+		movement.Normalize();
+		rb.velocity = movement * moveSpeed;
+	}
 
-    void OnCollisionStay ()
-    {
-        rb.angularVelocity = new Vector3(0,0,0);
-    }
+	//prevent player from rotating violently on collisions
+	void OnCollisionEnter()
+	{
+		rb.angularVelocity = new Vector3(0, 0, 0);
+	}
+
+	void OnCollisionStay()
+	{
+		rb.angularVelocity = new Vector3(0, 0, 0);
+	}
 }

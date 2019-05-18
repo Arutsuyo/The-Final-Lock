@@ -1,4 +1,7 @@
-﻿public static class NetID
+﻿using UnityEngine.Networking;
+
+#pragma warning disable CS0618 // Type or member is obsolete
+public static class NetID
 {
     public const byte None = 0;
     public const byte Buffer = 1;
@@ -10,7 +13,7 @@
 }
 
 [System.Serializable]
-public abstract class NETMSG
+public abstract class NETMSG : MessageBase
 {
     public byte OP { set; get; } // Operation code (Message ID)
     public int dataSize { set; get; } // Additional data size (added ontop of bytesize...)
@@ -68,3 +71,4 @@ public class FNETMSG : BNETMSG
     public new byte bufferType = BTYPE.fl;
 }
 
+#pragma warning restore CS0618 // Type or member is obsolete

@@ -2,6 +2,7 @@
 	<Name>Tutorial Room</Name>
 	<HoloName>Cog</HoloName>
 	<NumRooms>1</NumRooms>
+	<isSinglePlayer /> 
 	<SizeofRooms>
 		<RoomSize>1</RoomSize>
 	</SizeofRooms>

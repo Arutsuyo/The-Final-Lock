@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
@@ -30,7 +31,7 @@ public class Networker
     private static int connectionID;
     public static bool debugging = true;
     private static Dictionary<long, int> playerHID = new Dictionary<long, int>(); // given Id, actual id
-    private static Dictionary<long, int> playerIDs = new Dictionary<long, int>(); // Given id, actual id
+    public static Dictionary<long, int> playerIDs = new Dictionary<long, int>(); // Given id, actual id
     private static Dictionary<int, long> IDplayers = new Dictionary<int, long>(); // actual id, given id
     private static List<long> curPlayerIDs = new List<long>();
     private static long userUUID = 0; // OH this is a "current UUID"
@@ -115,6 +116,8 @@ public class Networker
         playerIDs.Clear();
     }
     public delegate void ArbHook(int op,int subop, ArbObj obj);
+    
+
     public static event ArbHook OnUserEvent;
     public static event ArbHook OnOtherEvent;
     private static long FetchUUID(int sid)
@@ -286,12 +289,21 @@ public class Networker
             allocChannels[i] = config.AddChannel(channels[i]);
         }
         topo = new HostTopology(config, max_users);
-        
         hostID = NetworkTransport.AddHost(topo, port, null);
         webID = NetworkTransport.AddWebsocketHost(topo, web_port, null);
         isHost = true;
         isStarted = true;
         hasRegistered = true;
+    }
+    public static ConnectionConfig GetHost()
+    {
+        ConnectionConfig config = new ConnectionConfig();
+        allocChannels = new byte[channels.Count];
+        for (int i = 0; i < channels.Count; i++)
+        {
+            allocChannels[i] = config.AddChannel(channels[i]);
+        }
+        return config;
     }
     public static void StartClient()
     {
@@ -392,6 +404,14 @@ public class Networker
                     break;
             }
         }
+    }
+    public static int GetConnectionID(long uuid)
+    {
+        if (!playerIDs.ContainsKey(uuid))
+        {
+            return -2;
+        }
+        return playerIDs[uuid];
     }
     private static void HandleConnectionEvent(int rec, int sID, int cID)
     {

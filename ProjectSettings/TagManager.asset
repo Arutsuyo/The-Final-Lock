@@ -9,6 +9,12 @@ TagManager:
   - Book
   - Wall Item X
   - Wall Item Z
+  - Username
+  - CMMP
+  - Lockpick
+  - Tension
+  - Key
+  - HitMarkers
   layers:
   - Default
   - TransparentFX
