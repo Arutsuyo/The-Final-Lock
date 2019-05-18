@@ -9,7 +9,6 @@ public class FailScreenImage : FailScreenScript
     public new event SimpleDelegate Finished = delegate { };
     public new void StartFadeIn()
     {
-        
         targColor = image.color;
         compColor = targColor;
         compColor.a = 0;
