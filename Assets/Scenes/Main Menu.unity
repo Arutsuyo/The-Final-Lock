@@ -4775,7 +4775,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 2036233852}
   m_Direction: 2
   m_Value: 0
-  m_Size: 0.99999964
+  m_Size: 0.9999989
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -4941,6 +4941,7 @@ MonoBehaviour:
   otherContestant: {fileID: 1739394203}
   BackBtn: {fileID: 954943082}
   StartBtn: {fileID: 2054288473}
+  LobbyBack: {fileID: 748769209}
   CampaignRect: {fileID: 1726215920}
   CampaignsContent: {fileID: 1004039844}
   CampaignClone: {fileID: 2406826783293639648, guid: 323f5f4c7acd9d848b2e5f6ff1f5a80c,
@@ -4961,6 +4962,7 @@ MonoBehaviour:
   Thanos: {fileID: 2183841453741363161, guid: 0fa6ef7fa3b87624e94b9b3df6ae3e30, type: 3}
   SpawnPlayerPrefab: {fileID: 7313586251663542473, guid: 167ecc88af4077d429ad740e247d7c72,
     type: 3}
+  Reticle: {fileID: 0}
   countDone: 0
   startControl: {fileID: 2147450805}
   ActiveID: 0
@@ -7040,6 +7042,9 @@ MonoBehaviour:
   interactDistance: 20
   centerMarker: {fileID: 0}
   hitMarker: {fileID: 0}
+  iconPick: {fileID: 0}
+  iconTension: {fileID: 0}
+  iconKey: {fileID: 0}
 --- !u!95 &922488711
 Animator:
   serializedVersion: 3
@@ -7214,7 +7219,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.00036621094, y: 0.00030517578}
+  m_AnchoredPosition: {x: 0.00036621094, y: 0.000030517578}
   m_SizeDelta: {x: 0, y: 300}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &954943078
@@ -7798,7 +7803,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.00036621094, y: 0.00024414062}
+  m_AnchoredPosition: {x: 0.00036621094, y: 0.0004272461}
   m_SizeDelta: {x: 0, y: 300}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &1019301146
@@ -11577,7 +11582,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 329369602}
   m_HandleRect: {fileID: 329369601}
   m_Direction: 2
-  m_Value: 0
+  m_Value: 1
   m_Size: 0.99999964
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -12421,6 +12426,7 @@ MonoBehaviour:
   otherContestant: {fileID: 600764731}
   BackBtn: {fileID: 1855045484}
   StartBtn: {fileID: 2043536145}
+  LobbyBack: {fileID: 0}
   CampaignRect: {fileID: 1753537054}
   CampaignsContent: {fileID: 940835707}
   CampaignClone: {fileID: 2406826783293639648, guid: 323f5f4c7acd9d848b2e5f6ff1f5a80c,
@@ -12441,6 +12447,7 @@ MonoBehaviour:
   Thanos: {fileID: 0}
   SpawnPlayerPrefab: {fileID: 7313586251663542473, guid: 167ecc88af4077d429ad740e247d7c72,
     type: 3}
+  Reticle: {fileID: 0}
   countDone: 0
   startControl: {fileID: 0}
   ActiveID: 0
@@ -20498,7 +20505,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.00000011303861, y: -0.000020980286}
+  m_AnchoredPosition: {x: 0.00000011303861, y: -0.000024967925}
   m_SizeDelta: {x: 0, y: 300}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &2139289758
