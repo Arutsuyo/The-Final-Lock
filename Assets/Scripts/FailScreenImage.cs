@@ -9,17 +9,25 @@ public class FailScreenImage : FailScreenScript
     public new event SimpleDelegate Finished = delegate { };
     public new void StartFadeIn()
     {
-        targColor = image.color;
-        compColor = targColor;
-        compColor.a = 0;
-        image.color=compColor;
+        
         StartCoroutine(LerpColors());
     }
 
     IEnumerator LerpColors()
     {
-        
-        yield return new WaitForSeconds(StartTime);
+        if (started)
+        {
+            yield break;
+        }
+        started = true;
+        targColor = image.color;
+        compColor = targColor;
+        compColor.a = 0;
+        image.color = compColor;
+        if (StartTime != 0)
+        {
+            yield return new WaitForSeconds(StartTime);
+        }
         float ST = Time.time;
         while (Time.time - ST < LerpTime)
         {

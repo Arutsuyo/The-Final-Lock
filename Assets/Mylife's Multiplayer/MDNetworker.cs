@@ -157,6 +157,19 @@ public class MDNetworker : NetworkManager
             clientConn.RegisterHandler(msgID, NMD);
         }
     }
+
+    public delegate void NetworkFunction(NetworkMessage m);
+    public void ForgeNetMessage(MessageBase nm, NetworkFunction f)
+    {
+        NetworkWriter w = new NetworkWriter();
+        // Don't actually use msg :D
+        nm.Serialize(w);
+        NetworkReader r = new NetworkReader(w);
+        NetworkMessage m = new NetworkMessage();
+        m.reader = r;
+        f(m);
+    }
+
     public void Reset()
     {
         if (!isFin) { return; }

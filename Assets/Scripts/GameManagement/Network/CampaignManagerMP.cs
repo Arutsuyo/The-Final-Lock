@@ -164,6 +164,8 @@ public class CampaignManagerMP : MonoBehaviour
     {
         Debug.Log("Hey out of time!");
         NetworkServer.SendByChannelToAll(MPMsgTypes.GameFailed, new SimpleStringMessage() { payload = "You died." }, 0);
+        nm.net.ForgeNetMessage(new SimpleStringMessage() { payload = "You died." }, ShowLoseScreen);
+
     }
 	public IEnumerator HandleWakeup()
 	{

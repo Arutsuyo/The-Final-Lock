@@ -27,8 +27,8 @@ public class RoomManager : MonoBehaviour
 
     public void StartFail(FailScreenScript.SimpleDelegate Callback)
     {
-        failedText.text.gameObject.SetActive(true);
-        failedImg.image.gameObject.SetActive(true);
+        failedText.text.enabled = true;
+        failedImg.image.enabled = true;
         failedImg.StartFadeIn();
         failedText.StartFadeIn();
         failedText.Finished += Callback;

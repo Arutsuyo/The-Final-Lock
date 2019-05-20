@@ -10,11 +10,12 @@ public class FailScreenScript : MonoBehaviour
     public event SimpleDelegate Finished = delegate { };
 
     public Text text;
-    protected Color targColor;
-    protected Color compColor;
+    public Color targColor;
+    public Color compColor;
     public float LerpTime = 2f;
     public float WaitTime = 5f;
     public float StartTime = 0f;
+    protected bool started = false;
     public void StartFadeIn()
     {
         if (endings.Length == 0) {
@@ -24,17 +25,30 @@ public class FailScreenScript : MonoBehaviour
         {
             text.text = endings[Random.Range(0, endings.Length)];
         }
-        targColor = text.color;
-        compColor = targColor;
-        compColor.a = 0;
-        text.color = compColor;
-
+        
         StartCoroutine(LerpColors());
     }
 
     IEnumerator LerpColors()
     {
-        yield return new WaitForSeconds(StartTime);
+        if (started)
+        {
+            yield break;
+        }
+
+        started = true;
+        targColor = text.color;
+        compColor = new Color();
+        compColor.r = targColor.r;
+        compColor.g = targColor.g;
+        compColor.b = targColor.b;
+        compColor.a = 0;
+        text.color = compColor;
+
+        if (StartTime != 0)
+        {
+            yield return new WaitForSeconds(StartTime);
+        }
         float ST = Time.time;
         while(Time.time - ST < LerpTime)
         {

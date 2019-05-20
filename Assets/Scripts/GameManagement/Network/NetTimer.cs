@@ -25,14 +25,8 @@ public class NetTimer : NetworkBehaviour
         NetworkServer.SendByChannelToAll(MPMsgTypes.GameSucceed, new SimpleStringMessage() { payload = "You win." }, 0);
         // :D
 
-        //RoomManager.instance.CMMP.nm.net.SendToServer(MPMsgTypes.GameSucceed, new SimpleStringMessage() { payload = "You win." });
-        NetworkMessage nm = new NetworkMessage();
-        NetworkWriter nw = new NetworkWriter();
-        //nw.StartMessage(MPMsgTypes.GameSucceed);
-        new SimpleStringMessage() { payload = "You win." }.Serialize(nw);
-        //nw.FinishMessage();
-        nm.reader = new NetworkReader(nw);
-        RoomManager.instance.CMMP.ShowWinScreen(nm);
+
+        RoomManager.instance.CMMP.nm.net.ForgeNetMessage(new SimpleStringMessage() { payload = "You win." }, RoomManager.instance.CMMP.ShowWinScreen);
         wallTimer.StopTimer();
 	}
 

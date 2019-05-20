@@ -533,7 +533,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-38444
+  m_Name: pb_Mesh-52298
   serializedVersion: 9
   m_SubMeshes:
   - serializedVersion: 2
@@ -1708,7 +1708,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &239578970
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1735,7 +1735,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 239578969}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: -765806418, guid: f70555f144d8491a825f0804e09c671c, type: 3}
   m_Name: 
@@ -2376,7 +2376,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-38354
+  m_Name: pb_Mesh-52208
   serializedVersion: 9
   m_SubMeshes:
   - serializedVersion: 2
@@ -3468,6 +3468,8 @@ MonoBehaviour:
   - Your time is up.
   - At least now you don't have to pay your taxes.
   text: {fileID: 772291097}
+  targColor: {r: 0, g: 0, b: 0, a: 0}
+  compColor: {r: 0, g: 0, b: 0, a: 0}
   LerpTime: 2
   WaitTime: 5
   StartTime: 0
@@ -3566,8 +3568,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   endings: []
   text: {fileID: 0}
+  targColor: {r: 0, g: 0, b: 0, a: 0}
+  compColor: {r: 0, g: 0, b: 0, a: 0}
   LerpTime: 0
-  WaitTime: 0
+  WaitTime: 5
   StartTime: 0
   image: {fileID: 239578971}
 --- !u!1 &630450624
@@ -3742,7 +3746,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-38356
+  m_Name: pb_Mesh-52210
   serializedVersion: 9
   m_SubMeshes:
   - serializedVersion: 2
@@ -3994,7 +3998,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-38422
+  m_Name: pb_Mesh-52276
   serializedVersion: 9
   m_SubMeshes:
   - serializedVersion: 2
@@ -4326,7 +4330,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh55814
+  m_Name: pb_Mesh63226
   serializedVersion: 9
   m_SubMeshes:
   - serializedVersion: 2
@@ -5061,7 +5065,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &772291097
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5069,7 +5073,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 772291096}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 708705254, guid: f70555f144d8491a825f0804e09c671c, type: 3}
   m_Name: 
@@ -5943,6 +5947,8 @@ MonoBehaviour:
   - You escaped with your life.
   - You escaped. Good job!
   text: {fileID: 0}
+  targColor: {r: 0, g: 0, b: 0, a: 0}
+  compColor: {r: 0, g: 0, b: 0, a: 0}
   LerpTime: 1
   WaitTime: 0
   StartTime: 1
@@ -5964,6 +5970,8 @@ MonoBehaviour:
   - You escaped. Good job!
   - The timer stops, and your journey continues.
   text: {fileID: 1146592603}
+  targColor: {r: 0, g: 0, b: 0, a: 0}
+  compColor: {r: 0, g: 0, b: 0, a: 0}
   LerpTime: 2
   WaitTime: 5
   StartTime: 2
@@ -6066,7 +6074,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-38446
+  m_Name: pb_Mesh-52300
   serializedVersion: 9
   m_SubMeshes:
   - serializedVersion: 2
@@ -6277,7 +6285,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh55994
+  m_Name: pb_Mesh63408
   serializedVersion: 9
   m_SubMeshes:
   - serializedVersion: 2
@@ -6762,7 +6770,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh55370
+  m_Name: pb_Mesh62784
   serializedVersion: 9
   m_SubMeshes:
   - serializedVersion: 2
@@ -8381,45 +8389,13 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 14
   m_Mesh: {fileID: 4300000, guid: f0291ba0e5a78446ab9a5494492da05f, type: 3}
---- !u!84 &1349057862
-RenderTexture:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: 
-  m_ImageContentsHash:
-    serializedVersion: 2
-    Hash: 00000000000000000000000000000000
-  m_ForcedFallbackFormat: 4
-  m_DownscaleFallback: 0
-  m_Width: 1444
-  m_Height: 449
-  m_AntiAliasing: 4
-  m_DepthFormat: 2
-  m_ColorFormat: 7
-  m_MipMap: 0
-  m_GenerateMips: 1
-  m_SRGB: 0
-  m_UseDynamicScale: 0
-  m_BindMS: 0
-  m_TextureSettings:
-    serializedVersion: 2
-    m_FilterMode: 1
-    m_Aniso: 1
-    m_MipBias: 0
-    m_WrapU: 1
-    m_WrapV: 1
-    m_WrapW: 1
-  m_Dimension: 2
-  m_VolumeDepth: 1
 --- !u!43 &1355260588
 Mesh:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh55724
+  m_Name: pb_Mesh63136
   serializedVersion: 9
   m_SubMeshes:
   - serializedVersion: 2
@@ -9440,7 +9416,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-38350
+  m_Name: pb_Mesh-52204
   serializedVersion: 9
   m_SubMeshes:
   - serializedVersion: 2
@@ -9695,7 +9671,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1588446342}
   - component: {fileID: 1588446344}
-  - component: {fileID: 1588446343}
   m_Layer: 0
   m_Name: Camera
   m_TagString: Untagged
@@ -9717,14 +9692,6 @@ Transform:
   m_Father: {fileID: 178535870620447556}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!81 &1588446343
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1588446341}
-  m_Enabled: 1
 --- !u!20 &1588446344
 Camera:
   m_ObjectHideFlags: 0
@@ -9773,7 +9740,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-38412
+  m_Name: pb_Mesh-52266
   serializedVersion: 9
   m_SubMeshes:
   - serializedVersion: 2
@@ -10237,7 +10204,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh55566
+  m_Name: pb_Mesh62978
   serializedVersion: 9
   m_SubMeshes:
   - serializedVersion: 2
@@ -10397,7 +10364,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-38346
+  m_Name: pb_Mesh-52200
   serializedVersion: 9
   m_SubMeshes:
   - serializedVersion: 2
@@ -11864,6 +11831,38 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2018935612}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!84 &2022452067
+RenderTexture:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 
+  m_ImageContentsHash:
+    serializedVersion: 2
+    Hash: 00000000000000000000000000000000
+  m_ForcedFallbackFormat: 4
+  m_DownscaleFallback: 0
+  m_Width: 1443
+  m_Height: 449
+  m_AntiAliasing: 4
+  m_DepthFormat: 2
+  m_ColorFormat: 7
+  m_MipMap: 0
+  m_GenerateMips: 1
+  m_SRGB: 0
+  m_UseDynamicScale: 0
+  m_BindMS: 0
+  m_TextureSettings:
+    serializedVersion: 2
+    m_FilterMode: 1
+    m_Aniso: 1
+    m_MipBias: 0
+    m_WrapU: 1
+    m_WrapV: 1
+    m_WrapW: 1
+  m_Dimension: 2
+  m_VolumeDepth: 1
 --- !u!1 &2072971387
 GameObject:
   m_ObjectHideFlags: 0
@@ -12405,7 +12404,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   wallTimer: {fileID: 723822322}
-  TimeAllotted: 500
+  TimeAllotted: 5
 --- !u!114 &2115898219
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -12445,7 +12444,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh55396
+  m_Name: pb_Mesh62808
   serializedVersion: 9
   m_SubMeshes:
   - serializedVersion: 2
@@ -12605,7 +12604,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-38348
+  m_Name: pb_Mesh-52202
   serializedVersion: 9
   m_SubMeshes:
   - serializedVersion: 2
@@ -12765,7 +12764,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh-38352
+  m_Name: pb_Mesh-52206
   serializedVersion: 9
   m_SubMeshes:
   - serializedVersion: 2
@@ -13072,7 +13071,7 @@ Camera:
     serializedVersion: 2
     m_Bits: 4294967295
   m_RenderingPath: -1
-  m_TargetTexture: {fileID: 1349057862}
+  m_TargetTexture: {fileID: 2022452067}
   m_TargetDisplay: 0
   m_TargetEye: 3
   m_HDR: 1
