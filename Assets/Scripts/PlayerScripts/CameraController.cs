@@ -32,7 +32,7 @@ public class CameraController : MonoBehaviour
 	public GameObject iconTension;
 	public GameObject iconKey;
 	private bool showMarkers; // Set if going into a mini game
-
+    public RawImage zoomCameraTarget;
 	// Set during update to see if the player wants to interact.
 	private bool interact = false;
 
@@ -176,6 +176,12 @@ public class CameraController : MonoBehaviour
 
 		// Interact with whatever we might be looking at after movement
 		CheckForObject();
-	}
+        if (isInCutscene)
+        {
+            return;
+        }
+        zoomCameraTarget.enabled = Input.GetAxis("ZoomKey") > 0.01;
+
+    }
 
 }
