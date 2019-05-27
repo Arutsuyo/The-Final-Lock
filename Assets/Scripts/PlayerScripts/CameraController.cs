@@ -153,9 +153,9 @@ public class CameraController : MonoBehaviour
 			//Apply camera adjustments
 			if (!isInCutscene)
 			{
-				transform.eulerAngles = new Vector3(pitch, yaw, 0.0f);
+				transform.localEulerAngles = new Vector3(pitch, 0.0f, 0.0f);
 				//Rotate player with camera
-				player.transform.rotation = Quaternion.Euler(player.transform.rotation.eulerAngles.x, transform.rotation.eulerAngles.y, player.transform.rotation.eulerAngles.z);
+				player.transform.rotation = Quaternion.Euler(player.transform.rotation.eulerAngles.x, yaw, player.transform.rotation.eulerAngles.z);
 			}
 
 			// This can be whatever "Use" input we want to accept
@@ -172,6 +172,7 @@ public class CameraController : MonoBehaviour
 
 	void Update()
 	{
+        if(player == null) { return; }
 		HandleInput();
 
 		// Interact with whatever we might be looking at after movement
@@ -180,6 +181,7 @@ public class CameraController : MonoBehaviour
         {
             return;
         }
+        if(zoomCameraTarget == null) { Debug.Log("What what?!"); return; }
         zoomCameraTarget.enabled = Input.GetAxis("ZoomKey") > 0.01;
 
     }

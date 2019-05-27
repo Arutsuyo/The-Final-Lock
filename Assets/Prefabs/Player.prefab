@@ -94,7 +94,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 178535869964050397}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 75b1d621bc458034a8895c75198f9b3b, type: 3}
   m_Name: 
@@ -108,7 +108,12 @@ MonoBehaviour:
   yaw: 0
   pitch: 0
   interactDistance: 20
+  centerMarker: {fileID: 0}
   hitMarker: {fileID: 0}
+  iconPick: {fileID: 0}
+  iconTension: {fileID: 0}
+  iconKey: {fileID: 0}
+  zoomCameraTarget: {fileID: 0}
 --- !u!114 &2972813301342622648
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -134,8 +139,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 54559fd3baf86a647a88c0954bc4015f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cc: {fileID: 0}
   items: []
   maxItems: 8
+  icons: []
 --- !u!114 &3920977282435817118
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4307,7 +4314,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 059ee31fbf240f44999ce74ff157c2fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 0.1
+  moveSpeed: 5
   turnSpeed: 3
   rb: {fileID: 178535871269747402}
   cam: {fileID: 178535869964050395}
@@ -4324,7 +4331,7 @@ Rigidbody:
   m_AngularDrag: 0
   m_UseGravity: 1
   m_IsKinematic: 0
-  m_Interpolate: 0
+  m_Interpolate: 1
   m_Constraints: 0
   m_CollisionDetection: 0
 --- !u!1 &4605027896272241173

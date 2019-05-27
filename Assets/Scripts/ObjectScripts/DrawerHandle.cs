@@ -14,7 +14,7 @@ public class DrawerHandle : MonoBehaviour
 	{
 		drawer.interactEvent += OpenDrawer;
 		drawer.gameInteractComplete += ToggleDrawer;
-		basePos = gameObject.transform.position;
+		basePos = gameObject.transform.localPosition;
 		drawer.NeedCheckOwner = false;
 	}
 	public void ToggleDrawer()
@@ -31,7 +31,7 @@ public class DrawerHandle : MonoBehaviour
 			while (TD < 2)
 			{
 				TD += Time.deltaTime;
-				gameObject.transform.position = basePos + Vector3.Lerp(posClosed, posOpened, TD / 2.0f);
+				gameObject.transform.localPosition = basePos + gameObject.transform.localRotation*Vector3.Lerp(posClosed, posOpened, TD / 2.0f);
 				yield return null;
 
 			}
@@ -41,7 +41,7 @@ public class DrawerHandle : MonoBehaviour
 			while (TD >= 0)
 			{
 				TD -= Time.deltaTime;
-				gameObject.transform.position = basePos + Vector3.Lerp(posClosed, posOpened, TD / 2.0f);
+				gameObject.transform.localPosition = basePos + gameObject.transform.localRotation * Vector3.Lerp(posClosed, posOpened, TD / 2.0f);
 				yield return null;
 			}
 		}

@@ -11,7 +11,7 @@ public class PlayerMovement : MonoBehaviour
 	public float turnSpeed;
 	public Rigidbody rb;
 	public CameraController cam;
-	private Vector2 movement = new Vector2();
+	private Vector3 movement = new Vector3();
 
 	void Start()
 	{
@@ -28,17 +28,18 @@ public class PlayerMovement : MonoBehaviour
 	void GetInput()
 	{
 		//Get movement inputs
-		movement.x = Input.GetAxisRaw("Vertical");
-		movement.y = Input.GetAxisRaw("Horizontal");
+		movement.z = Input.GetAxisRaw("Vertical");
+		movement.x = Input.GetAxisRaw("Horizontal");
 	}
 
 	void Move()
 	{
 		if (cam.isInCutscene)
 			return;
-
+        movement.y = 0;
 		movement.Normalize();
-		rb.velocity = movement * moveSpeed;
+        //movement.y = rb.velocity.y;
+		rb.velocity = rb.transform.forward*movement.z * moveSpeed + rb.transform.right*movement.x * moveSpeed + new Vector3(0,rb.velocity.y, 0);
 	}
 
 	//prevent player from rotating violently on collisions
