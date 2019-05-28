@@ -812,6 +812,9 @@ MonoBehaviour:
   left: 0
   mid: 0
   right: 0
+  LKey: {fileID: 1773331060233533891}
+  MKey: {fileID: 2026619300992883453}
+  RKey: {fileID: 1874393467950145498}
   leftID: star1
   midID: circle1
   rightID: square1
