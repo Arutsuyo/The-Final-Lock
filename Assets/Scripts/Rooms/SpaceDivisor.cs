@@ -46,7 +46,8 @@ public abstract class SpaceDivisor
                         break;
                     case 0:
                         c.tiles[pos + off] = new Tile(pos + off); // make it a fake one!
-                        c.tiles[pos + off].fake = true;
+                        c.tiles[pos + off].fake = false;
+                        c.tiles[pos + off].blank = true;
                         break;
                     
                     case 1:
@@ -59,17 +60,21 @@ public abstract class SpaceDivisor
                         // Left
                         // T_T need to modify for fake tiles :|
                         bb[0] = (!(((x == 0 || kernel[x - 1][y] == -1) && c.tiles[pos + off + new Vector3Int(-1, 0, 0)] != null
-                            && !c.tiles[pos + off + new Vector3Int(-1, 0, 0)].fake && !c.tiles[pos + off + new Vector3Int(-1, 0, 0)].walls[c.tiles[pos + off +
+                            && !c.tiles[pos + off + new Vector3Int(-1, 0, 0)].fake && !c.tiles[pos + off + new Vector3Int(-1, 0, 0)].blank 
+                            && !c.tiles[pos + off + new Vector3Int(-1, 0, 0)].walls[c.tiles[pos + off +
                             new Vector3Int(-1, 0, 0)].getWallFromDir(pos + off)]) || (x != 0 && kernel[x - 1][y] >= 1)));
                         bb[1] = (!(((x == kernel.Length-1 || kernel[x + 1][y] == -1) && c.tiles[pos + off + new Vector3Int(1, 0, 0)] != null
-                            && !c.tiles[pos + off + new Vector3Int(1, 0, 0)].fake && !c.tiles[pos + off + new Vector3Int(1, 0, 0)].walls[c.tiles[pos + off +
+                            && !c.tiles[pos + off + new Vector3Int(1, 0, 0)].fake && !c.tiles[pos + off + new Vector3Int(1, 0, 0)].blank 
+                            && !c.tiles[pos + off + new Vector3Int(1, 0, 0)].walls[c.tiles[pos + off +
                             new Vector3Int(1, 0, 0)].getWallFromDir(pos + off)]) || (x != kernel.Length-1 && kernel[x + 1][y] >=1)));
 
                         bb[2] = (!(((y == kernel[0].Length - 1 || kernel[x][y+1] == -1) && c.tiles[pos + off + new Vector3Int(0, 0, 1)] != null
-                            && !c.tiles[pos + off + new Vector3Int(0, 0, 1)].fake && !c.tiles[pos + off + new Vector3Int(0, 0, 1)].walls[c.tiles[pos + off +
+                            && !c.tiles[pos + off + new Vector3Int(0, 0, 1)].fake && !c.tiles[pos + off + new Vector3Int(0, 0, 1)].blank 
+                            && !c.tiles[pos + off + new Vector3Int(0, 0, 1)].walls[c.tiles[pos + off +
                             new Vector3Int(0, 0, 1)].getWallFromDir(pos + off)]) || (y != kernel[0].Length - 1 && kernel[x][y+1] >=1)));
                         bb[3] = (!(((y == 0 || kernel[x][y - 1] == -1) && c.tiles[pos + off + new Vector3Int(0, 0, -1)] != null
-                            && !c.tiles[pos+off+new Vector3Int(0,0,-1)].fake && !c.tiles[pos + off + new Vector3Int(0, 0, -1)].walls[c.tiles[pos + off +
+                            && !c.tiles[pos+off+new Vector3Int(0,0,-1)].fake && !c.tiles[pos + off + new Vector3Int(0, 0, -1)].blank 
+                            && !c.tiles[pos + off + new Vector3Int(0, 0, -1)].walls[c.tiles[pos + off +
                             new Vector3Int(0, 0, -1)].getWallFromDir(pos + off)]) || (y != 0 && kernel[x][y - 1] >=1)));
                         // if 1 or 2 continue, otherwise break.
                         bool[] xx = new bool[4];
@@ -88,16 +93,16 @@ public abstract class SpaceDivisor
                             // Special case, we need to redo all the checks up above, and check to see if any are 0 (in which we KNOW that there is a wall...)
                             bb[0] = (x != 0 && kernel[x-1][y] == 0) || ((x == 0 || kernel[x - 1][y] == -1) && c.tiles[pos+off+new Vector3Int(-1,0,0)] != null &&
                                 (c.tiles[pos+off+new Vector3Int(-1,0,0)].fake||c.tiles[pos+off+new Vector3Int(-1,0,0)].walls[c.tiles[
-                                    pos + off + new Vector3Int(-1, 0, 0)].getWallFromDir(pos + off)]));
+                                    pos + off + new Vector3Int(-1, 0, 0)].getWallFromDir(pos + off)] || c.tiles[pos + off + new Vector3Int(-1, 0, 0)].blank));
                             bb[1] = (x != kernel.Length - 1 && kernel[x + 1][y] == 0) || ((x == kernel.Length - 1 || kernel[x + 1][y] == -1) && c.tiles[pos + off + new Vector3Int(1, 0, 0)] != null &&
                                 (c.tiles[pos + off + new Vector3Int(1, 0, 0)].fake || c.tiles[pos + off + new Vector3Int(1, 0, 0)].walls[c.tiles[
-                                    pos + off + new Vector3Int(1, 0, 0)].getWallFromDir(pos + off)]));
+                                    pos + off + new Vector3Int(1, 0, 0)].getWallFromDir(pos + off)] || c.tiles[pos + off + new Vector3Int(1, 0, 0)].blank));
                             bb[3] = (y != 0 && kernel[x][y-1] == 0) || ((y == 0 || kernel[x][y-1] == -1) && c.tiles[pos + off + new Vector3Int(0, 0, -1)] != null &&
                                 (c.tiles[pos + off + new Vector3Int(0, 0, -1)].fake || c.tiles[pos + off + new Vector3Int(0, 0, -1)].walls[c.tiles[
-                                    pos + off + new Vector3Int(0, 0, -1)].getWallFromDir(pos + off)]));
+                                    pos + off + new Vector3Int(0, 0, -1)].getWallFromDir(pos + off)] || c.tiles[pos + off + new Vector3Int(0, 0, -1)].blank));
                             bb[2] = (y != kernel[0].Length-1 && kernel[x][y + 1] == 0) || ((y == kernel[0].Length-1 || kernel[x][y + 1] == -1) && c.tiles[pos + off + new Vector3Int(0, 0, 1)] != null &&
                                 (c.tiles[pos + off + new Vector3Int(0, 0, 1)].fake || c.tiles[pos + off + new Vector3Int(0, 0, 1)].walls[c.tiles[
-                                    pos + off + new Vector3Int(0, 0, 1)].getWallFromDir(pos + off)]));
+                                    pos + off + new Vector3Int(0, 0, 1)].getWallFromDir(pos + off)] || c.tiles[pos + off + new Vector3Int(0, 0, 1)].blank));
                             Debug.Log(c.tiles[pos + off] + " " + x + " " + y + " " + PrintArray(bb));
                             // Basically if the bb is true, then there is a wall that needs to be placed...
                             c.GenerateWalls(c.tiles[pos + off], bb);
@@ -242,7 +247,9 @@ public abstract class SpaceDivisor
                     case 3:
                     case 0:
                         //Debug.Log(x + " " + y + " " + (pos - new Vector3Int(vp.x, 0, vp.y) + new Vector3Int(x, 0, y)) + " " + c.tiles[pos - new Vector3Int(vp.x, 0, vp.y) + new Vector3Int(x, 0, y)]);
-                        if((c.tiles[pos - new Vector3Int(vp.x, 0, vp.y) + new Vector3Int(x, 0, y)] == null || c.tiles[pos - new Vector3Int(vp.x, 0, vp.y) + new Vector3Int(x, 0, y)].fake))
+                        if((c.tiles[pos - new Vector3Int(vp.x, 0, vp.y) + new Vector3Int(x, 0, y)] == null || 
+                            c.tiles[pos - new Vector3Int(vp.x, 0, vp.y) + new Vector3Int(x, 0, y)].fake || 
+                            (c.tiles[pos - new Vector3Int(vp.x, 0, vp.y) + new Vector3Int(x, 0, y)].blank && kernel[x][y] == 0)))
                         {
                             // pass :|
                         }
@@ -284,43 +291,63 @@ public abstract class SpaceDivisor
             Prop p = new Prop();
             if (!t.realWalls[0] && !t.realWalls[1] && !t.realWalls[2] && !t.realWalls[3] && t.wallsOcc() == 4)
                 p.anchorPos = new Vector3(0, 0, 0) + t.position;
+
             else if (t.realWalls[0] && !t.realWalls[1] && !t.realWalls[2] && !t.realWalls[3] && t.wallsOcc() == 4)
                 p.anchorPos = new Vector3(-.5f, 0, 0) + t.position;
+
             else if (!t.realWalls[0] && t.realWalls[1] && !t.realWalls[2] && !t.realWalls[3] && t.wallsOcc() == 4)
                 p.anchorPos = new Vector3(.5f, 0, 0) + t.position;
+
             else if (!t.realWalls[0] && !t.realWalls[1] && t.realWalls[2] && !t.realWalls[3] && t.wallsOcc() == 4)
                 p.anchorPos = new Vector3(0, 0, .5f) + t.position;
+
             else if (!t.realWalls[0] && !t.realWalls[1] && !t.realWalls[2] && t.realWalls[3] && t.wallsOcc() == 4)
                 p.anchorPos = new Vector3(0, 0, -.5f) + t.position;   
+
             else if (!t.realWalls[0] && !t.realWalls[1] && t.realWalls[2] && t.realWalls[3] && t.wallsOcc() == 4)
                 p.anchorPos = new Vector3(0, 0, Random.Range(-1f, 1f) >= 0 ? .5f : -.5f) + t.position;
+
             else if (t.realWalls[0] && t.realWalls[1] && !t.realWalls[2] && !t.realWalls[3] && t.wallsOcc() == 4)
                 p.anchorPos = new Vector3(Random.Range(-1f, 1f) >= 0 ? .5f : -.5f, 0, 0) + t.position;
+
             else if (t.realWalls[0] && !t.realWalls[1] && t.realWalls[2] && !t.realWalls[3] && t.wallsOcc() == 4)
-                p.anchorPos = (Random.Range(-1f, 1f) >= 0 ? new Vector3(-.5f,0,0) : new Vector3(0,0,.5f)) + t.position;
+                p.anchorPos = (Random.Range(0f,1f) <=.33f ? new Vector3(-.5f,0,.5f):(Random.Range(-1f, 1f) >= 0 ? 
+                    new Vector3(-.5f,0,0) : new Vector3(0,0,.5f))) + t.position;
+
             else if (t.realWalls[0] && !t.realWalls[1] && !t.realWalls[2] && t.realWalls[3] && t.wallsOcc() == 4)
-                p.anchorPos = (Random.Range(-1f, 1f) >= 0 ? new Vector3(-.5f, 0, 0) : new Vector3(0, 0, -.5f)) + t.position;
+                p.anchorPos = (Random.Range(0f,1f) <=.33f ?new Vector3(-.5f, 0,-.5f) :(Random.Range(-1f, 1f) >= 0 ? new Vector3(-.5f, 0, 0) : new Vector3(0, 0, -.5f))) + t.position;
+
             else if (!t.realWalls[0] && t.realWalls[1] && t.realWalls[2] && !t.realWalls[3] && t.wallsOcc() == 4)
-                p.anchorPos = (Random.Range(-1f, 1f) >= 0 ? new Vector3(.5f, 0, 0) : new Vector3(0, 0, .5f)) + t.position;
+                p.anchorPos = (Random.Range(0f,1f) <= .33f ?new Vector3(.5f, 0, .5f) :(Random.Range(-1f, 1f) >= 0 ? new Vector3(.5f, 0, 0) : new Vector3(0, 0, .5f))) + t.position;
+
             else if (!t.realWalls[0] && t.realWalls[1] && !t.realWalls[2] && t.realWalls[3] && t.wallsOcc() == 4)
-                p.anchorPos = (Random.Range(-1f, 1f) >= 0 ? new Vector3(.5f, 0, 0) : new Vector3(0, 0, -.5f)) + t.position;
+                p.anchorPos = (Random.Range(0f,1f) <= .33f ? new Vector3(.5f,0,-.5f): (Random.Range(-1f, 1f) >= 0 ? new Vector3(.5f, 0, 0) : new Vector3(0, 0, -.5f))) + t.position;
+
             else if (t.realWalls[0] && !t.realWalls[1] && t.realWalls[2] && t.realWalls[3] && t.wallsOcc() == 4)
                 p.anchorPos = (Random.Range(0, 1f) <= .33f ? new Vector3(-.5f, 0, 0) : (Random.Range(0,1f) >= .5f ?
                     new Vector3(0, 0, .5f) : new Vector3(0,0,-.5f))) + t.position;
+
             else if (!t.realWalls[0] && t.realWalls[1] && t.realWalls[2] && t.realWalls[3] && t.wallsOcc() == 4)
                 p.anchorPos = (Random.Range(0, 1f) <= .33f ? new Vector3(.5f, 0, 0) : (Random.Range(0, 1f) >= .5f ?
                     new Vector3(0, 0, .5f) : new Vector3(0, 0, -.5f))) + t.position;
+
             else if (t.realWalls[0] && t.realWalls[1] && !t.realWalls[2] && t.realWalls[3] && t.wallsOcc() == 4)
                 p.anchorPos = (Random.Range(0, 1f) <= .33f ? new Vector3(-.5f, 0, 0) : (Random.Range(0, 1f) >= .5f ?
                     new Vector3(.5f, 0, 0) : new Vector3(0, 0, -.5f))) + t.position;
+
             else if (t.realWalls[0] && t.realWalls[1] && t.realWalls[2] && !t.realWalls[3] && t.wallsOcc() == 4)
                 p.anchorPos = (Random.Range(0, 1f) <= .33f ? new Vector3(-.5f, 0, 0) : (Random.Range(0, 1f) >= .5f ?
                     new Vector3(.5f, 0, 0) : new Vector3(0, 0, .5f))) + t.position;
 
+
             Vector3 temp = p.anchorPos + new Vector3();
+            temp -= t.position;
+            Vector2Int vk = new Vector2Int(Mathf.RoundToInt(temp.x * 2.5f), Mathf.RoundToInt(temp.z * 2.5f));
+            p.alignment = vk;
             p.anchorPos.Scale(fs);
-            p.maxSize = new Vector3(2f, 2f, 2f);
-            p.spawnTemp(c.tempObject, new Vector3(0, -.5f, 0) + temp - t.position, true);
+            //p.maxSize = new Vector3(2f, 2f, 2f);
+            c.GenerateProp(p);
+            //p.spawnTemp(c.tempObject, new Vector3(0, -.5f, 0) + temp - t.position, true);
             return p;
         }
         return null;
@@ -331,7 +358,7 @@ public class Prop
 {
     public Vector3 maxSize;
     public Vector3 anchorPos; // This is the game position XD
-
+    public Vector2Int alignment =new Vector2Int(0,0); 
     public Quaternion rotations = Quaternion.identity;
     public void spawnTemp(GameObject temp, Vector3 oap, bool useScale)
     {
@@ -350,6 +377,11 @@ public class Prop
         bb.transform.localPosition += anchorPos;
         bb.SetActive(true);
     }
+}
+public class DoorwayObj
+{
+    public Vector3Int pos;
+    public bool UD = false; // Up/down doorway (z dir)
 }
 public class SpaceResult
 {

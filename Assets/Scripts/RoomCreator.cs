@@ -8,6 +8,7 @@ public class RoomCreator : MonoBehaviour
 	public ObjStrPair[] SpawnableObjects;
 	private Dictionary<string, SpaceDivisor> spawnables;
     public GameObject x1;
+    public GameObject doorwayTemp;
     public bool[][] map = new bool[50][];
     
     public List<GameObject> games = new List<GameObject>(); // Actual game objects in the game...
@@ -22,6 +23,7 @@ public class RoomCreator : MonoBehaviour
     public int tileCount = 5;
     public CameraController cc;
     public int height = 3;
+    public List<DoorwayObj> doorways = new List<DoorwayObj>();
 
     public int actualTileCount = 0;
     public Queue<Tile> canExpand = new Queue<Tile>();
@@ -60,15 +62,34 @@ public class RoomCreator : MonoBehaviour
         // Start with 2 tiles, one active, one inactive (the inactive is to create a wall that will house the timer...
 
         Tile bt = new Tile(new Vector3Int(0, 0, 0));
+        Tile bt1 = new Tile(new Vector3Int(0, 0, 1));
+        Tile bt2 = new Tile(new Vector3Int(1, 0, 0));
+        Tile bt3 = new Tile(new Vector3Int(1, 0, 1));
         GenerateFloor(bt.position);
+        GenerateFloor(bt1.position);
+        GenerateFloor(bt2.position);
+        GenerateFloor(bt3.position);
+        bt.fake = bt1.fake = bt2.fake = bt3.fake = false;
         GenerateWalls(bt, new bool[]{ true, false, false, false});
+        GenerateWalls(bt1, new bool[] { true, false, false, false });
+        bt.walls[2] = true;
+        bt.walls[1] = true;
+        bt1.walls[3] = true;
+        bt1.walls[1] = true;
+        bt2.walls[0] = true;
+        bt3.walls[0] = true;
+        bt2.walls[2] = true;
+        bt3.walls[3] = true;
         List<Vector3Int> gj = bt.getWallsOpen();
         foreach (Vector3Int g in gj)
         {
             Debug.Log("\t"+g);
         }
-        actualTileCount = 1;
+        actualTileCount = 4;
         canExpand.Enqueue(bt);
+        canExpand.Enqueue(bt1);
+        canExpand.Enqueue(bt2);
+        canExpand.Enqueue(bt3);
         if (playerSpawned) {
             ResetPlayer();
         }
@@ -79,7 +100,9 @@ public class RoomCreator : MonoBehaviour
         }
         
         tiles[bt.position] = bt;
-        
+        tiles[bt1.position] = bt1;
+        tiles[bt2.position] = bt2;
+        tiles[bt3.position] = bt3;
         while(canExpand.Count != 0)
         {
             counter++;
@@ -189,21 +212,12 @@ public class RoomCreator : MonoBehaviour
     }
     public void GenerateTimer(Vector3Int pos)
     {
-
+        // need to do this o-o
     }
-    // Literally builds the world itself..
-    public void GenerateElevator(Vector3Int pos)
-    {
-
-    }
-    public void GenerateStairway(Vector3Int pos)
-    {
-
-    }
-
+   
     public void GenerateWalls(Tile t, bool[] newWalls)
     {
-        if (t.fake)
+        if (t.fake || t.blank)
         {
             return;
         }
@@ -301,23 +315,58 @@ public class RoomCreator : MonoBehaviour
 
 
     }
-    public void GenerateCorridor(Vector3Int pos)
+    
+    public void GenerateDoorway(Vector3Int pos, bool dirIsUpDown)
     {
-
+        doorways.Add(new DoorwayObj() { pos = pos, UD = dirIsUpDown });
+        // Generate a doorway object?
+        GameObject go = Instantiate(doorwayTemp);
+        go.transform.localRotation = (dirIsUpDown ? new Quaternion() : Quaternion.Euler(0,90,0));
+        // Should be the right scale o-o
+        Vector3 vv = new Vector3(0,0,0) + pos;
+        vv.Scale(GetFloorScaling());
+        go.transform.localPosition = vv;
+        go.SetActive(true);
     }
-    public void GenerateDoorway(Vector3Int pos, Vector3Int dir)
+
+    [HideInInspector] public List<PropScript> puzzles;
+    [HideInInspector] public List<PropScript> simpleProps;
+    private PropScript nextProp = null;
+    public List<PropScript> allProps;
+    public int PropTrials = 10; // will simply randomly pick one this many times, if it fails beyond that it returns a failure.
+    // Ush
+
+    private void SpawnProp(Prop p)
     {
-
+        GameObject ggo = Instantiate(nextProp.gameObject);
+        ggo.transform.localPosition = p.anchorPos + nextProp.AnchorPoint + nextProp.GetFinalAnchor();
+        // Technically do more...
+        ggo.SetActive(true);
     }
-    // Literally fills the game with assets
-    public void GenerateFreestanding(Vector3Int pos)
+    public bool GenerateProp(Prop p)
     {
-
+        // Attempt to generate a prop given the position...however, we will scan for about
+        for(int i = 0; i < PropTrials; i++)
+        {
+            if(p.alignment.x == p.alignment.y && p.alignment.x == 0)
+            {
+                // Center
+                if (nextProp.Aff_Center.probPlaced >= Random.Range(Mathf.Epsilon, 1f))
+                {
+                    SpawnProp(p);
+                    return true;
+                }
+            }
+            PickNextProp();
+        }
+        return false;
     }
-    public void GenerateCorner(Vector3Int pos)
+
+    public void PickNextProp()
     {
-
+        nextProp = simpleProps[Random.Range(0,simpleProps.Count)];
     }
+
     public void GenerateFloor(Vector3Int pos)
     {
         GameObject go = Instantiate(x1);
@@ -381,8 +430,11 @@ public class RoomCreator : MonoBehaviour
     public void Start()
     {
         AddRS(new WallSpace(), 50);
-        AddRG(new Hallway(), 50);
-        AddRG(new SmallRoom(), 1);
+        AddRG(new Hallway(), 40);
+        AddRG(new SmallRoom(), 50);
+        AddRG(new Doorway(), 15);
+        nextProp = allProps[0];
+        simpleProps.AddRange(allProps);
         StartCoroutine(StartB());
     }
 }
@@ -413,7 +465,63 @@ public class WallSpace : SpaceDivisor
         return sr;
     }
 }
+public class Doorway : SpaceDivisor
+{
+    public override SpaceResult Generate(int param, Tile tiq, RoomCreator c)
+    {
+        SpaceResult sr = new SpaceResult();
+        int[][] kernel = new int[3][];
+        for(int i = 0; i < 3; i++)
+        {
+            kernel[i] = new int[3];
+        }
+        if (tiq.wallsOcc() == 4)
+        {
+            sr.success = false;
+            return sr;
+        }
+        List<Vector3Int> newWalls = tiq.getWallsOpen(c);
+        if (newWalls.Count == 0)
+        {
+            sr.success = false;
+            return sr;
+        }
 
+        int mc = newWalls.Count; // To ensure that you remove stuff :|
+        while (newWalls.Count != 0 && mc >= 0)
+        {
+            mc--;
+            Vector3Int dir = newWalls[Random.Range(0, newWalls.Count)] - tiq.position;
+            newWalls.Remove(dir);
+            if(dir.x != 0)
+            {
+                kernel[0][0] = kernel[0][2] = kernel[2][0] = kernel[2][2] = -1;
+                kernel[1][1] = 1;
+                kernel[1][0] = kernel[1][2] = 0;
+                kernel[0][1] = (dir.x == -1 ? 3 : 2);
+                kernel[2][1] = (dir.x == -1 ? 2 : 3);
+            }
+            else
+            {
+                kernel[0][0] = kernel[0][2] = kernel[2][0] = kernel[2][2] = -1;
+                kernel[1][1] = 1;
+                kernel[0][1] = kernel[2][1] = 0;
+                kernel[1][0] = (dir.z == -1 ? 3 : 2);
+                kernel[1][2] = (dir.z == -1 ? 2 : 3);
+            }
+
+            if (SpaceDivisor.CanGenerate(kernel, c, tiq.position + dir))
+            {
+                sr = SpaceDivisor.GenerateMap(kernel, c, tiq.position + dir);
+                tiq.walls[tiq.getWallFromDir(dir + tiq.position)] = true;
+                c.GenerateDoorway(tiq.position + dir + dir, dir.z != 0);
+                break;
+            }
+        }
+        
+        return sr;
+    }
+}
 public class SmallRoom : SpaceDivisor
 {
     public static float DoorDecr = .85f;
@@ -433,9 +541,9 @@ public class SmallRoom : SpaceDivisor
             kernel = new int[3][];
         }else if(size < .66f)
         {
-            kernel = new int[5][];
+            kernel = new int[4][];
         }else{
-            kernel = new int[8][];
+            kernel = new int[6][];
         }
         for(int i = 0; i < kernel.Length; i++)
         {
@@ -660,7 +768,8 @@ public class Tile
     //                                x-     x+      z+      z-
     public bool[] walls = new bool[]{false, false, false, false };
     public Vector3Int position;
-    public bool fake = false;
+    public bool fake = true;
+    public bool blank = false; // If it is blank, it shall never be a walkable tile!
     public bool[] realWalls = new bool[] {false, false, false, false }; // DO NOT CHANGE! Only read from these....
     public bool connectionPending = false;
     public Tile(Vector3Int pos)
