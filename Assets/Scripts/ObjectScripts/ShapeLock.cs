@@ -25,7 +25,7 @@ public class ShapeLock : MonoBehaviour
     public Transform midRest;
     public Transform rightRest;
 
-    public int insertSpeed;
+    public float insertSpeed;
 
     public Interactable ia;
 
@@ -34,7 +34,7 @@ public class ShapeLock : MonoBehaviour
         Subscribe();
     }
 
-    public void Animate(Transform insert, Transform rest, GameObject key)
+    private IEnumerator Animate(Transform insert, Transform rest, GameObject key)
     {
         float StartLerpTime = Time.time;
         float CurLerpTime = Time.time;
@@ -42,8 +42,10 @@ public class ShapeLock : MonoBehaviour
         key.SetActive(true);
         while (CurLerpTime - StartLerpTime < insertSpeed)
         {
-           key.transform.position = Vector3.Lerp(key.transform.position, rest.position, (CurLerpTime - StartLerpTime) / insertSpeed);
+            key.transform.position = Vector3.Lerp(insert.position, rest.position, (CurLerpTime - StartLerpTime) / insertSpeed);
+            yield return null;
             CurLerpTime = Time.time;
+            Debug.Log("CurLerpTime: " + CurLerpTime + " StartLerpTime: " + StartLerpTime);
         }
     }
 
@@ -80,19 +82,19 @@ public class ShapeLock : MonoBehaviour
         if (cc.playerMngr.inv.HasItem(leftID))
         {
             left = true;
-            Animate(leftInsert, leftRest, LKey);
+            StartCoroutine(Animate(leftInsert, leftRest, LKey));
             cc.playerMngr.inv.SilentDelete(cc.playerMngr.inv.GetItem(leftID));
         }
         if (cc.playerMngr.inv.HasItem(midID))
         {
             mid = true;
-            Animate(midInsert, midRest, MKey);
+            StartCoroutine(Animate(midInsert, midRest, MKey));
             cc.playerMngr.inv.SilentDelete(cc.playerMngr.inv.GetItem(midID));
         }
         if (cc.playerMngr.inv.HasItem(rightID))
         {
             right = true;
-            Animate(rightInsert, rightRest, RKey);
+            StartCoroutine(Animate(rightInsert, rightRest, RKey));
             cc.playerMngr.inv.SilentDelete(cc.playerMngr.inv.GetItem(rightID));
         }
         if (left && mid && right)

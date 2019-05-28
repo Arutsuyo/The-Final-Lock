@@ -40,7 +40,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3595520921491261900}
   m_Layer: 0
-  m_Name: Left Instert
+  m_Name: Right Insert
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -122,7 +122,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 9ac8b625019e6cf489223a86bcf2ad33, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -293,7 +293,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 974cbb2bc0f69064f9072cf5a97f47a2, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -464,7 +464,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 315776b746916b5419454ad9dead0a15, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -583,7 +583,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2063131734769393197}
   m_Layer: 0
-  m_Name: Right Insert
+  m_Name: Left Insert
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -616,7 +616,7 @@ GameObject:
   - component: {fileID: 9157330949085627060}
   - component: {fileID: 9157330949085627059}
   m_Layer: 0
-  m_Name: Item Picture
+  m_Name: Middle Item Picture
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -818,12 +818,12 @@ MonoBehaviour:
   leftID: star1
   midID: circle1
   rightID: square1
-  leftInsert: {fileID: 3595520921491261900}
+  leftInsert: {fileID: 2063131734769393197}
   midInsert: {fileID: 4924954375396774005}
-  rightInsert: {fileID: 2063131734769393197}
-  leftRest: {fileID: 9157330949969368815}
+  rightInsert: {fileID: 3595520921491261900}
+  leftRest: {fileID: 9157330950427044585}
   midRest: {fileID: 9157330949085627058}
-  rightRest: {fileID: 9157330950427044585}
+  rightRest: {fileID: 9157330949969368815}
   insertSpeed: 3
   ia: {fileID: 4272639474877196995}
 --- !u!114 &7035559995896741746
@@ -900,7 +900,7 @@ GameObject:
   - component: {fileID: 9157330949735895179}
   - component: {fileID: 9157330949735895178}
   m_Layer: 0
-  m_Name: Right
+  m_Name: Left
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -993,7 +993,7 @@ GameObject:
   - component: {fileID: 9157330949969368801}
   - component: {fileID: 9157330949969368800}
   m_Layer: 0
-  m_Name: Item Picture
+  m_Name: Right Item Picture
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1085,7 +1085,7 @@ GameObject:
   - component: {fileID: 9157330950427044587}
   - component: {fileID: 9157330950427044586}
   m_Layer: 0
-  m_Name: Item Picture
+  m_Name: Left Item Picture
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1177,7 +1177,7 @@ GameObject:
   - component: {fileID: 9157330950929090306}
   - component: {fileID: 9157330950929090305}
   m_Layer: 0
-  m_Name: Left
+  m_Name: Right
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
