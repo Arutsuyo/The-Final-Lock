@@ -75,7 +75,7 @@ GameObject:
   - component: {fileID: 6738786195259988787}
   - component: {fileID: 7298788001777831419}
   - component: {fileID: 2519151517695101723}
-  - component: {fileID: 7091378091574500718}
+  - component: {fileID: 3176740997736345150}
   m_Layer: 0
   m_Name: LKey
   m_TagString: Untagged
@@ -216,7 +216,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   NeedCheckOwner: 1
   owner: -10
---- !u!114 &7091378091574500718
+--- !u!114 &3176740997736345150
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -225,11 +225,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1773331060233533891}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f711498a3e33e044ab2c3dbf6e84763f, type: 3}
+  m_Script: {fileID: 11500000, guid: 3de78a20d414dfb48b162f70ad101689, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ID: star1
-  ia: {fileID: 2519151517695101723}
+  inter: {fileID: 2519151517695101723}
+  prevCC: {fileID: 0}
+  ItemName: star1
 --- !u!1 &1874393467950145498
 GameObject:
   m_ObjectHideFlags: 0
@@ -245,7 +246,7 @@ GameObject:
   - component: {fileID: 8080651497501966092}
   - component: {fileID: 7091756209687025486}
   - component: {fileID: 2380421786740327282}
-  - component: {fileID: 5194704417982148082}
+  - component: {fileID: 787240169618355304}
   m_Layer: 0
   m_Name: RKey
   m_TagString: Untagged
@@ -386,7 +387,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   NeedCheckOwner: 1
   owner: -10
---- !u!114 &5194704417982148082
+--- !u!114 &787240169618355304
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -395,11 +396,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 1874393467950145498}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f711498a3e33e044ab2c3dbf6e84763f, type: 3}
+  m_Script: {fileID: 11500000, guid: 3de78a20d414dfb48b162f70ad101689, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ID: square1
-  ia: {fileID: 2380421786740327282}
+  inter: {fileID: 2380421786740327282}
+  prevCC: {fileID: 0}
+  ItemName: square1
 --- !u!1 &2026619300992883453
 GameObject:
   m_ObjectHideFlags: 0
@@ -415,7 +417,7 @@ GameObject:
   - component: {fileID: 1743899725983324999}
   - component: {fileID: 8829853828950561786}
   - component: {fileID: 6454744832263392623}
-  - component: {fileID: 6876946825586228711}
+  - component: {fileID: 5421572010634452975}
   m_Layer: 0
   m_Name: MKey
   m_TagString: Untagged
@@ -556,7 +558,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   NeedCheckOwner: 1
   owner: -10
---- !u!114 &6876946825586228711
+--- !u!114 &5421572010634452975
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -565,11 +567,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 2026619300992883453}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f711498a3e33e044ab2c3dbf6e84763f, type: 3}
+  m_Script: {fileID: 11500000, guid: 3de78a20d414dfb48b162f70ad101689, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ID: circle1
-  ia: {fileID: 6454744832263392623}
+  inter: {fileID: 6454744832263392623}
+  prevCC: {fileID: 0}
+  ItemName: circle1
 --- !u!1 &4925950698676647738
 GameObject:
   m_ObjectHideFlags: 0

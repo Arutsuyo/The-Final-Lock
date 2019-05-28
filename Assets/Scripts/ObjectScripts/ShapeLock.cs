@@ -9,6 +9,10 @@ public class ShapeLock : MonoBehaviour
     public bool mid = false;
     public bool right = false;
 
+    public GameObject LKey;
+    public GameObject MKey;
+    public GameObject RKey;
+
     public string leftID;
     public string midID;
     public string rightID;
@@ -35,6 +39,7 @@ public class ShapeLock : MonoBehaviour
         float StartLerpTime = Time.time;
         float CurLerpTime = Time.time;
         key.transform.position = insert.position;
+        key.SetActive(true);
         while (CurLerpTime - StartLerpTime < insertSpeed)
         {
            key.transform.position = Vector3.Lerp(key.transform.position, rest.position, (CurLerpTime - StartLerpTime) / insertSpeed);
@@ -50,8 +55,6 @@ public class ShapeLock : MonoBehaviour
             // Subscribe to the event
             ia.lookEvent += LookedAt;
             ia.interactEvent += Interacted;
-            //ia.escapeInteractEvent += Ejection;
-            //ia.gameInteractComplete += OpenTheDoor;
         }
     }
 
@@ -63,8 +66,6 @@ public class ShapeLock : MonoBehaviour
             // Unsubscribe to the event
             ia.lookEvent -= LookedAt;
             ia.interactEvent -= Interacted;
-            //ia.escapeInteractEvent -= Ejection;
-            //ia.gameInteractComplete -= OpenTheDoor;
         }
     }
 
@@ -76,13 +77,26 @@ public class ShapeLock : MonoBehaviour
     private bool Interacted(CameraController cc)
     {
         // Check inventory for items
-
-        // Update items in puzzle
-
-        // Remove items from inventory
-
-        // Call insert animations 
-
+        if (cc.playerMngr.inv.HasItem(leftID))
+        {
+            left = true;
+            Animate(leftInsert, leftRest, LKey);
+            cc.playerMngr.inv.SilentDelete(cc.playerMngr.inv.GetItem(leftID));
+        }
+        if (cc.playerMngr.inv.HasItem(midID))
+        {
+            mid = true;
+            Animate(midInsert, midRest, MKey);
+            cc.playerMngr.inv.SilentDelete(cc.playerMngr.inv.GetItem(midID));
+        }
+        if (cc.playerMngr.inv.HasItem(rightID))
+        {
+            right = true;
+            Animate(rightInsert, rightRest, RKey);
+            cc.playerMngr.inv.SilentDelete(cc.playerMngr.inv.GetItem(rightID));
+        }
+        if (left && mid && right)
+            solved = true;
 
         if (solved)
             return false;
