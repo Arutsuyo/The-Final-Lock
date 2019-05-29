@@ -1,8 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 
-public class ShapeLock : MonoBehaviour
+#pragma warning disable CS0618 // Type or member is obsolete
+public class ShapeLock : NetworkBehaviour
 {
     public bool solved = false;
     public bool left = false;
@@ -29,9 +31,46 @@ public class ShapeLock : MonoBehaviour
 
     public Interactable ia;
 
+    public delegate void OnLockReady();
+    public event OnLockReady PuzzleReady = delegate { };
+
+    public override void OnStartServer()
+    {
+        base.OnStartServer();
+
+        // Set starting Values
+        left = false;
+        mid = false;
+        right = false;
+        solved = false;
+        
+        PuzzleReady();
+    }
+
     void Awake()
     {
         Subscribe();
+    }
+
+    public override void OnStartClient()
+    {
+        base.OnStartClient();
+        StartCoroutine(SCC());
+    }
+
+    IEnumerator SCC()
+    {
+        while (RoomManager.instance == null || RoomManager.instance.CMMP == null)
+            yield return null;
+
+        if (!RoomManager.instance.CMMP.nm.net.isHost)
+            PuzzleReady();
+    }
+
+    void CC(SyncListInt.Operation op, int itemIndex)
+    {
+        if (!RoomManager.instance.CMMP.nm.net.isHost)
+            StartCoroutine(SCC());
     }
 
     private IEnumerator Animate(Transform insert, Transform rest, GameObject key)
@@ -105,3 +144,5 @@ public class ShapeLock : MonoBehaviour
         return true;
     }
 }
+
+#pragma warning restore CS0618 // Type or member is obsolete
