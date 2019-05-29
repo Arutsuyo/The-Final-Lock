@@ -6,7 +6,7 @@ using UnityEngine.Networking;
 using UnityEngine.UI;
 
 #pragma warning disable CS0618 // Type or member is obsolete
-public class CombinationLock : NetworkBehaviour
+public class CombinationLock : PuzzleObj
 {
 	//"Winning" combination
 
@@ -365,6 +365,23 @@ public class CombinationLock : NetworkBehaviour
 		Debug.Log("Use W and S to scroll the locks. Use A and D to switch locks. Press ESC to exit.");
 		return true;
 	}
+
+    public override void GenerateAsProp(long propSeed)
+    {
+        // The combination lock can not be a prop!
+        throw new NotImplementedException();
+    }
+
+    public override Requires[] GenerateAsPuzzle(long puzzleSeed)
+    {
+        // Change to actually generate itself :|
+        throw new NotImplementedException();
+    }
+
+    public override void RpcGeneratePropWithState(string state)
+    {
+        throw new NotImplementedException();
+    }
 }
 
 #pragma warning restore CS0618 // Type or member is obsolete

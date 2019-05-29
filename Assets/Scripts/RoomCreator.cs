@@ -1,13 +1,14 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.Networking;
 public class RoomCreator : MonoBehaviour
 {
 	// Yeah...basically this spawns a room and handles trying to create it for other people as well.
 	public ObjStrPair[] SpawnableObjects;
 	private Dictionary<string, SpaceDivisor> spawnables;
     public GameObject x1;
+    
     public GameObject doorwayTemp;
     public bool[][] map = new bool[50][];
     
@@ -43,6 +44,7 @@ public class RoomCreator : MonoBehaviour
     [Header("Debugging/ToChangeToLoading")]
     public int numSections = 1;
     public int propCount = 2;
+    public NetworkManager NM;
     public int puzzleCount = 2;
     public int floorSquareSize = 13;
     public int tries = 1000;
@@ -339,9 +341,42 @@ public class RoomCreator : MonoBehaviour
     private void SpawnProp(Prop p)
     {
         GameObject ggo = Instantiate(nextProp.gameObject);
-        ggo.transform.localPosition = p.anchorPos + nextProp.AnchorPoint + nextProp.GetFinalAnchor();
+        
         // Technically do more...
+        if (nextProp.ShouldRotate)
+        {
+            if(p.alignment.x != p.alignment.y || p.alignment.x != 0) 
+            {
+                // UGH D:
+                // do an actual rotation by rotating the transform with a *=
+                Quaternion q = Quaternion.Euler(0, (p.alignment.x == -1 ? -90 : (p.alignment.x == 1 ? 90 : (p.alignment.y == -1 ? 180 : 0))), 0);
+                ggo.transform.rotation *= q;
+            }
+        }
+        ggo.transform.position = p.anchorPos + nextProp.AnchorPoint + nextProp.GetFinalAnchor();
         ggo.SetActive(true);
+        if (nextProp.isNetworked)
+        {
+            // Search and destroy T_T
+            NetworkIdentity[] dd = ggo.GetComponentsInChildren<NetworkIdentity>();
+            foreach(NetworkIdentity ni in dd)
+            {
+                NetworkServer.Spawn(ni.gameObject);
+                
+            }
+        }
+        if (nextProp.isPuzzle || nextProp.isDynamicProp)
+        {
+            if (nextProp.isDynamicProp || nextProp.isUsedAsProp)
+            {
+                ggo.GetComponent<PropScript>().puzzle.GenerateAsProp((long)Random.Range(0, 5555555));
+            }
+            else
+            {
+                Requires[] ss = ggo.GetComponent<PropScript>().puzzle.GenerateAsPuzzle((long)Random.Range(0, 5555555));
+                // TODO deal with the dependencies.. :|
+            }
+        }
     }
     public bool GenerateProp(Prop p)
     {
@@ -352,6 +387,71 @@ public class RoomCreator : MonoBehaviour
             {
                 // Center
                 if (nextProp.Aff_Center.probPlaced >= Random.Range(Mathf.Epsilon, 1f))
+                {
+                    SpawnProp(p);
+                    return true;
+                }
+            }
+            else if(p.alignment.x == 0 && p.alignment.y == -1)
+            {
+                // S
+                if (nextProp.Aff_South.probPlaced >= Random.Range(Mathf.Epsilon, 1f))
+                {
+                    SpawnProp(p);
+                    return true;
+                }
+            }
+            else if(p.alignment.x == 0 && p.alignment.y == 1)
+            {
+                if (nextProp.Aff_North.probPlaced >= Random.Range(Mathf.Epsilon, 1f))
+                {
+                    SpawnProp(p);
+                    return true;
+                }
+            }
+            else if (p.alignment.x == 1 && p.alignment.y == 1)
+            {
+                if (nextProp.Aff_NE.probPlaced >= Random.Range(Mathf.Epsilon, 1f))
+                {
+                    SpawnProp(p);
+                    return true;
+                }
+            }
+            else if (p.alignment.x == -1 && p.alignment.y == 1)
+            {
+                if (nextProp.Aff_NW.probPlaced >= Random.Range(Mathf.Epsilon, 1f))
+                {
+                    SpawnProp(p);
+                    return true;
+                }
+            }
+            else if (p.alignment.x == 1 && p.alignment.y == -1)
+            {
+                if (nextProp.Aff_SE.probPlaced >= Random.Range(Mathf.Epsilon, 1f))
+                {
+                    SpawnProp(p);
+                    return true;
+                }
+            }
+            else if (p.alignment.x == -1 && p.alignment.y == -1)
+            {
+                if (nextProp.Aff_SW.probPlaced >= Random.Range(Mathf.Epsilon, 1f))
+                {
+                    SpawnProp(p);
+                    return true;
+                }
+            }
+            else if (p.alignment.x == 1 && p.alignment.y == 0)
+            {
+                if (nextProp.Aff_East.probPlaced >= Random.Range(Mathf.Epsilon, 1f))
+                {
+                    SpawnProp(p);
+                    return true;
+                }
+            }
+            else if (p.alignment.x == -1 && p.alignment.y == 0)
+            {
+                if (nextProp.Aff_West.probPlaced >= Random.Range(Mathf.Epsilon, 1f))
                 {
                     SpawnProp(p);
                     return true;
@@ -435,6 +535,7 @@ public class RoomCreator : MonoBehaviour
         AddRG(new Doorway(), 15);
         nextProp = allProps[0];
         simpleProps.AddRange(allProps);
+        NM.StartHost();
         StartCoroutine(StartB());
     }
 }

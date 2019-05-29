@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: SciFi_Light2
+  m_Name: SciFi_Light3
   m_Shader: {fileID: 46, guid: 0000000000000000f000000000000000, type: 0}
   m_ShaderKeywords: _ALPHAPREMULTIPLY_ON _EMISSION
   m_LightmapFlags: 2
@@ -74,5 +74,5 @@ Material:
     - _UVSec: 0
     - _ZWrite: 0
     m_Colors:
-    - _Color: {r: 0.90588236, g: 0, b: 0.07058824, a: 0.797}
-    - _EmissionColor: {r: 439.08417, g: 0, b: 0, a: 1}
+    - _Color: {r: 0.9056604, g: 0.8501246, b: 0.8544521, a: 0.797}
+    - _EmissionColor: {r: 328.88272, g: 327.3314, b: 327.3314, a: 1}

@@ -13,10 +13,15 @@ public class PropScript : MonoBehaviour
     // The pre-offset for the displacement variance, basically added to before hand (useful for ensuring that the prop can 
     //    only display in the +x direction). 
     public Vector3 PositionVarianceOffset;
+    public bool isNetworked = false; // Set to TRUE if ANY network identities are attached!
     public bool isPuzzle = false;// If it is a puzzle prop, then we should probs treat it different.
+    public bool isDynamicProp = false; // If it has some logic when generating, set this to true.
+    public bool canBeProp = false; // If it is a puzzle prop, can it be generated as a simple prop (useful for hint props, actual puzzles should not have this...)
     [HideInInspector] public bool isUsedAsProp = false; // This is to let this prop know that it should NOT run it's puzzle
     //                                  code (the thing is for looks basically. This is useful for things like a painting).
     public bool ShouldRotate = false; // Note for corners, will orient itself to north or south facing (if SX or NX respectively)
+
+    public PuzzleObj puzzle;// Can be null if not a puzzle (should be checked above :|)
     [Header("Prop Placement Affinities")]
     public Affinity Aff_Center;
     public Affinity Aff_West;
