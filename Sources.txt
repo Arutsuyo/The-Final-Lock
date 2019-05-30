@@ -11,3 +11,6 @@ https://assetstore.unity.com/packages/3d/props/interior/books-3356
 
 Low Poly Megapack - Lite:
 https://assetstore.unity.com/packages/3d/environments/low-poly-megapack-lite-136629
+
+Simple Gems Ultimate
+https://assetstore.unity.com/packages/3d/props/simple-gems-ultimate-animated-customizable-pack-73764
