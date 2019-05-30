@@ -8,14 +8,15 @@ public class NetBookcase : PuzzleObj
 
     public GameObject[] bookInstances;
     public Transform bookParent;
+    public bool hasRan = false;
 
     public override void GenerateAsProp(long propSeed)
     {
         // First generate a number of books to place on each shelf..
         Random.InitState((int)propSeed);
-        int shelf1 = Random.Range(0, 20);
+        int shelf1 = Random.Range(0, 15);
         int shelf2 = Random.Range(0, 15);
-        int shelf3 = Random.Range(shelf1, 21);
+        int shelf3 = Random.Range(shelf1, 16);
         StringBuilder temp = new StringBuilder();
         temp.Append(propSeed + ";0;" + shelf1 + "," + shelf2 + "," + shelf3);
 
@@ -25,14 +26,14 @@ public class NetBookcase : PuzzleObj
         }
 
         state = temp.ToString();
-        Debug.Log(state);
+        // Debug.Log(state + " " + this.netId);
         RpcGeneratePropWithState(state);
     }
 
     [ClientRpc]
     public override void RpcGeneratePropWithState(string state)
     {
-        Debug.Log(state);
+        //Debug.Log(state);
         char[] ss = state.ToCharArray();
         int pos = 0;
         StringBuilder sbb = new StringBuilder();
@@ -75,6 +76,11 @@ public class NetBookcase : PuzzleObj
         sbb.Clear();
         while (ss[pos] != ',')
         {
+            if(ss[pos] == '0' && sbb.Length == 0)
+            {
+                sbb.Append(ss[pos++]);
+                break;
+            }
             sbb.Append(ss[pos++]);
         }
         c = int.Parse(sbb.ToString());
@@ -94,13 +100,19 @@ public class NetBookcase : PuzzleObj
             GameObject go = Instantiate(bookInstances[bs]);
             go.transform.parent = bookParent;
             // Offset of (ccp % 9)*1.5
-            go.transform.localPosition = new Vector3((ccp% 9) * 1.5f + (de + Random.Range(0f,0.15f)) * .3f - .864f, ypos, -.5f);
-            go.transform.localRotation = Quaternion.identity;
+            go.transform.localPosition = new Vector3((ccp% 9) * .2f + (de + Random.Range(0f,0.15f)) * .25f - .864f, ypos, -.5f);
+            go.transform.localRotation = Quaternion.Euler(0,180,0);
             go.SetActive(true);
         }
+        hasRan = true;
 
     }
-    public override Requires[] GenerateAsPuzzle(long puzzleSeed)
+    public override void GenerateAsPuzzle(long puzzleSeed)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public override void GenerateAsProp(PuzzleObj po, PuzzleType pt)
     {
         throw new System.NotImplementedException();
     }

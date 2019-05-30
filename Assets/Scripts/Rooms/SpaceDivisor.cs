@@ -34,12 +34,14 @@ public abstract class SpaceDivisor
                 }
             }
         }
+        Debug.Log("Kernel size: " + kernel.Length + " " + kernel[0].Length);
         Vector3Int off = new Vector3Int(-vp.x, 0, -vp.y);
         for(int x = 0; x < kernel.Length; x++)
         {
-            for(int y = 0; y < kernel[0].Length; y++)
+            for(int y = 0; y < kernel[x].Length; y++)
             {
                 pos += new Vector3Int(x, 0, y);
+                Debug.Log("Switching on tile " + (pos + off) + " " + sr.toAddToMaster.Count + " " + kernel[x][y]);
                 switch (kernel[x][y])
                 {
                     case -1:
@@ -54,7 +56,10 @@ public abstract class SpaceDivisor
                     case 2:
                     case 3:
                         c.tiles[pos + off] = new Tile(pos + off);
+                        Debug.Log("Spawning/Adding tile " + c.tiles[pos + off] + " " + sr.toAddToMaster.Count);
+                        sr.toAddToMaster.Add(c.tiles[pos + off]);
                         c.tiles[pos + off].fake = false;
+                        c.tiles[pos + off].blank = false;
                         List<Vector3Int> wp = c.tiles[pos + off].getWallsOpen();
                         bool[] bb = new bool[4];
                         // Left
@@ -82,7 +87,7 @@ public abstract class SpaceDivisor
                         {
                             xx[i] = !bb[i];
                         }
-                        c.GenerateFloor(pos + off);
+                        //c.GenerateFloor(pos + off,0);
                         c.tiles[pos + off].walls = xx;
                         if (kernel[x][y] != 3)
                         {
@@ -107,7 +112,7 @@ public abstract class SpaceDivisor
                             // Basically if the bb is true, then there is a wall that needs to be placed...
                             c.GenerateWalls(c.tiles[pos + off], bb);
                         }
-                        sr.toAddToMaster.Add(c.tiles[pos + off]);
+                        
                         if (kernel[x][y] == 3 && c.tiles[pos + off].wallsOcc() != 4)
                         {
                             c.tiles[pos + off].connectionPending = true; // Aka, do a final pass with these items to generate props
@@ -117,6 +122,7 @@ public abstract class SpaceDivisor
                         Debug.Log(c.tiles[pos + off] + " " + x + " " + y + " " + kernel[x][y]);
                         break;
                 }
+                Debug.Log("I'm here.");
                 pos -= new Vector3Int(x, 0, y);
             }
         }
@@ -289,6 +295,7 @@ public abstract class SpaceDivisor
             Debug.Log("Wall PROP: " + t.position);
             Debug.Log("PROP: " + t.position);
             Prop p = new Prop();
+            p.tilePos = t.position;
             if (!t.realWalls[0] && !t.realWalls[1] && !t.realWalls[2] && !t.realWalls[3] && t.wallsOcc() == 4)
                 p.anchorPos = new Vector3(0, 0, 0) + t.position;
 
@@ -346,7 +353,7 @@ public abstract class SpaceDivisor
             p.alignment = vk;
             p.anchorPos.Scale(fs);
             //p.maxSize = new Vector3(2f, 2f, 2f);
-            c.GenerateProp(p);
+            //c.GenerateProp(p);
             //p.spawnTemp(c.tempObject, new Vector3(0, -.5f, 0) + temp - t.position, true);
             return p;
         }
@@ -358,6 +365,7 @@ public class Prop
 {
     public Vector3 maxSize;
     public Vector3 anchorPos; // This is the game position XD
+    public Vector3Int tilePos;
     public Vector2Int alignment =new Vector2Int(0,0); 
     public Quaternion rotations = Quaternion.identity;
     public void spawnTemp(GameObject temp, Vector3 oap, bool useScale)
@@ -382,6 +390,7 @@ public class DoorwayObj
 {
     public Vector3Int pos;
     public bool UD = false; // Up/down doorway (z dir)
+    public GameObject gogo;
 }
 public class SpaceResult
 {

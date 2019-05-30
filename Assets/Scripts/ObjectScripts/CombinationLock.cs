@@ -372,13 +372,18 @@ public class CombinationLock : PuzzleObj
         throw new NotImplementedException();
     }
 
-    public override Requires[] GenerateAsPuzzle(long puzzleSeed)
+    public override void GenerateAsPuzzle(long puzzleSeed)
     {
         // Change to actually generate itself :|
         throw new NotImplementedException();
     }
 
     public override void RpcGeneratePropWithState(string state)
+    {
+        throw new NotImplementedException();
+    }
+
+    public override void GenerateAsProp(PuzzleObj po, PuzzleType pt)
     {
         throw new NotImplementedException();
     }

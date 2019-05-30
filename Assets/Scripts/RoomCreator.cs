@@ -7,9 +7,7 @@ public class RoomCreator : MonoBehaviour
 	// Yeah...basically this spawns a room and handles trying to create it for other people as well.
 	public ObjStrPair[] SpawnableObjects;
 	private Dictionary<string, SpaceDivisor> spawnables;
-    public GameObject x1;
     
-    public GameObject doorwayTemp;
     public bool[][] map = new bool[50][];
     
     public List<GameObject> games = new List<GameObject>(); // Actual game objects in the game...
@@ -22,12 +20,13 @@ public class RoomCreator : MonoBehaviour
     public float cutoff = 0.5f;
     public int samples = 10;
     public int tileCount = 5;
+    public int roomSize = 25;
     public CameraController cc;
     public int height = 3;
-    public List<DoorwayObj> doorways = new List<DoorwayObj>();
+    public Dictionary<Vector3Int, DoorwayObj> doorways = new Dictionary<Vector3Int, DoorwayObj>();
 
-    public int actualTileCount = 0;
-    public Queue<Tile> canExpand = new Queue<Tile>();
+    public List<int> actualTileCount = new List<int>();
+    public PriorityQueue<Tile> canExpand = new PriorityQueue<Tile>();
 
     public GameObject player;
     public GameObject tempObject;
@@ -44,11 +43,15 @@ public class RoomCreator : MonoBehaviour
     [Header("Debugging/ToChangeToLoading")]
     public int numSections = 1;
     public int propCount = 2;
+#pragma warning disable CS0618 // Type or member is obsolete
     public NetworkManager NM;
+#pragma warning restore CS0618 // Type or member is obsolete
     public int puzzleCount = 2;
     public int floorSquareSize = 13;
     public int tries = 1000;
-    public int approxNumTiles;
+    public GameObject x1;
+    public GameObject doorwayTemp;
+    public int roomTileCount;
     public bool continues = false;
     int counter = 0;
     public IEnumerator StartB()
@@ -67,10 +70,7 @@ public class RoomCreator : MonoBehaviour
         Tile bt1 = new Tile(new Vector3Int(0, 0, 1));
         Tile bt2 = new Tile(new Vector3Int(1, 0, 0));
         Tile bt3 = new Tile(new Vector3Int(1, 0, 1));
-        GenerateFloor(bt.position);
-        GenerateFloor(bt1.position);
-        GenerateFloor(bt2.position);
-        GenerateFloor(bt3.position);
+        bt.section = bt1.section = bt2.section = bt3.section = numSections;
         bt.fake = bt1.fake = bt2.fake = bt3.fake = false;
         GenerateWalls(bt, new bool[]{ true, false, false, false});
         GenerateWalls(bt1, new bool[] { true, false, false, false });
@@ -87,25 +87,22 @@ public class RoomCreator : MonoBehaviour
         {
             Debug.Log("\t"+g);
         }
-        actualTileCount = 4;
-        canExpand.Enqueue(bt);
-        canExpand.Enqueue(bt1);
-        canExpand.Enqueue(bt2);
-        canExpand.Enqueue(bt3);
-        if (playerSpawned) {
-            ResetPlayer();
-        }
-        else
+        actualTileCount.Add(0);
+        for(int i = 0; i < numSections; i++)
         {
-            SpawnPlayer();
-            playerSpawned = true;
+            actualTileCount.Add(0);
         }
+        actualTileCount[numSections] = 4;
+        canExpand.Enqueue(bt, numSections);
+        canExpand.Enqueue(bt1, numSections);
+        canExpand.Enqueue(bt2, numSections);
+        canExpand.Enqueue(bt3, numSections);
         
         tiles[bt.position] = bt;
         tiles[bt1.position] = bt1;
         tiles[bt2.position] = bt2;
         tiles[bt3.position] = bt3;
-        while(canExpand.Count != 0)
+        while(canExpand.actCount != 0)
         {
             counter++;
             if(counter % 5 == 0)
@@ -119,20 +116,67 @@ public class RoomCreator : MonoBehaviour
             }
             Tile VI = canExpand.Dequeue();
             
-            SpaceDivisor SD = GetDivisor();
+            SpaceDivisor SD = GetDivisor(VI.section);
             Debug.Log(VI + " " + SD.ToString());
-            SpaceResult sr =  SD.Generate(Random.Range(0,4), VI, this);
+            SpaceResult sr = new SpaceResult();
+            if ((SD.GetType() == typeof(Doorway) && numSections >= 1) || SD.GetType() != typeof(Doorway))
+            {
+                sr = SD.Generate(Random.Range(0, 4), VI, this);
+            }
+            else
+            {
+                sr.success = false;
+            }
+
             if (sr.success)
             {
+                
+                if (SD.GetType() == typeof(Doorway) && numSections >= 1 && sr.toAddToMaster.Count != 0)
+                {
+                    Debug.LogWarning("Type claimed: " + SD.GetType().Name + " " + sr.toAddToMaster.Count);
+                    numSections--;
+                    // Set the "other side" to the numSections...
+                    Tile tts = null;
+                    foreach(Tile t in sr.toAddToMaster)
+                    {
+                        Debug.Log((VI.position - t.position) + " " + VI.position + " " + t.position);
+                        if((VI.position - t.position).sqrMagnitude == 1)
+                        {
+                            tts = t;
+                            break;
+                        }
+                    }
+                    Vector3Int NVP = tts.position + (tts.position - VI.position) * 2;
+                    Tile tt2 = null;
+                    foreach (Tile t in sr.toAddToMaster)
+                    {
+                        Debug.Log((NVP - t.position) + " " + NVP + " " + t.position);
+                        if ((NVP - t.position).sqrMagnitude == 0)
+                        {
+                            tt2 = t;
+                            break;
+                        }
+                    }
+                    tt2.section = numSections;
+                }
                 Debug.Log("Success :D");
                 foreach (Tile t in sr.toAddToMaster)
                 {
                     tiles[t.position] = t;
-                    actualTileCount++;
+                    if(t.blank || t.fake) { continue; }
+                    if (t.section <= -1)
+                    {
+                        actualTileCount[VI.section]++;
+                        t.section = VI.section;
+                    }
+                    else
+                    {
+                        actualTileCount[t.section]++;
+                    }
                 }
                 foreach(Tile t in sr.toAddToQueue)
                 {
-                    canExpand.Enqueue(t);
+                    canExpand.Enqueue(t, t.section);
                 }
                 foreach(Prop p in sr.toAddToProps)
                 {
@@ -143,7 +187,7 @@ public class RoomCreator : MonoBehaviour
             {
                 // Try again with next generator...
                 Debug.Log("Failed D:");
-                canExpand.Enqueue(VI);
+                canExpand.Enqueue(VI, numSections+1);
             }
         }
         Debug.Log("Initiating filler algorithm!");
@@ -158,13 +202,138 @@ public class RoomCreator : MonoBehaviour
             }
         }
 
+        // Now lets do a room count... figure out what doors are COMPLETELY useless.
+        List<HashSet<Tile>> sections = new List<HashSet<Tile>>();
+        HashSet<Tile> seen = new HashSet<Tile>();
+        HashSet<Vector3Int> doors = new HashSet<Vector3Int>();
+        HashSet<Vector3Int> storedDoors = new HashSet<Vector3Int>();
+        Stack<Tile> toVisit = new Stack<Tile>();
+        Queue<Vector3Int> exploreQ = new Queue<Vector3Int>();
+        exploreQ.Enqueue(new Vector3Int(0, 0, 0));
+        while(exploreQ.Count != 0)
+        {
+            Vector3Int vv = exploreQ.Dequeue();
+            if((seen.Contains(tiles[vv]) && vv != new Vector3Int(0, 0, 0)) || tiles[vv].fake || tiles[vv].blank)
+            {
+                continue;
+            }
+            // Otherwise >:3
+            sections.Add(new HashSet<Tile>());
+            storedDoors.UnionWith(doors);
+            doors.Clear();
+            toVisit.Push(tiles[vv]);
+            while(toVisit.Count != 0)
+            {
+                counter++;
+                if (counter % 5 == 0)
+                {
+                    continues = true;
+                    do
+                    {
+                        yield return new WaitForSeconds(0.05f);
+                    } while (!continues);
+                    continues = false;
+                }
+                Tile tt = toVisit.Pop();
+                if (seen.Contains(tt)) { continue; }
+                if (doorways.ContainsKey(tt.position) && tt.position  != vv)
+                {
+                    // D:
+                    if (doors.Contains(tt.position)){
+                        // :D
+                        // Remove from door, call it a day.
+                        doors.Remove(tt.position);
+                        //Destroy(doorways[tt.position].gogo);
+                        doorways[tt.position].gogo.SetActive(false);
+                        // >:D
+                        //seen.Add(tiles[tt.position]);
+                        toVisit.Push(tiles[tt.position]);
+                    }
+                    else
+                    {
+                        doors.Add(tt.position);
+                    }
+                }
+                else
+                {
+                    seen.Add(tt);
+                    sections[sections.Count - 1].Add(tt);
+                    GenerateWallObjLastPass(tt, sections.Count - 1);
+                    GenerateFloor(tt.position, sections.Count - 1);
+                    // Now look at neighbors XD
+                    Tile u = tiles[tt.position + new Vector3Int(0, 0, 1)];
+                    Tile d = tiles[tt.position + new Vector3Int(0, 0, -1)];
+                    Tile l = tiles[tt.position + new Vector3Int(-1, 0, 0)];
+                    Tile r = tiles[tt.position + new Vector3Int(1, 0, 0)];
+                    Debug.Log(tt +  "::\n" + (u != null ? u + " " + u.blank : "")+"\n" + (d != null ? d + " " + d.blank :"") + "\n" + (l != null ? l + " " + l.blank : "")+ "\n" + (r != null ? r + " " + r.blank :""));
+                    if((!tt.realWalls[2]) && u != null && (!u.fake) && (!u.realWalls[3]) && (!u.blank))
+                    {
+                        toVisit.Push(u);
+                    }
+                    if((!tt.realWalls[3]) && d != null && (!d.fake) && (!d.realWalls[2]) && (!d.blank))
+                    {
+                        toVisit.Push(d);
+                    }
+                    if((!tt.realWalls[0]) && l != null && (!l.fake) && (!l.realWalls[1]) && (!l.blank))
+                    {
+                        toVisit.Push(l);
+                    }
+                    if((!tt.realWalls[1]) && r != null && (!r.fake) && (!r.realWalls[0]) && (!r.blank))
+                    {
+                        toVisit.Push(r);
+                    }
+                }
+
+            }
+            foreach(Vector3Int dor in doors)
+            {
+                Debug.Log("Got some doors: " + dor);
+                exploreQ.Enqueue(dor);
+            }
+        }
+        // Generate the search tree here....
+
+
+        // Just generate ....:|
+
+
+		foreach(Prop p in props){
+			GenerateProp(p);
+		}
+
         // Now for the pass of replacing props for valid stuff...
-	}
-    public SpaceDivisor GetDivisor()
+
+
+
+
+
+
+
+        // Finally, the player
+        if (playerSpawned)
+        {
+            ResetPlayer();
+        }
+        else
+        {
+            SpawnPlayer();
+            playerSpawned = true;
+        }
+
+    }
+    public SpaceDivisor GetDivisor(int section)
     {
-        float prob = Random.Range(-0.1f, 0.1f) + 1.0f / (1.0f + Mathf.Exp((Mathf.Sqrt(counter)/(approxNumTiles)) - (approxNumTiles - actualTileCount)/(Mathf.Sqrt(approxNumTiles))));
+        float prob = (roomTileCount - actualTileCount[section] / Mathf.Sqrt(roomTileCount)) - .5f;
+        if((roomTileCount - actualTileCount[section])/(roomTileCount) < -0.5f)
+        {
+            prob = -1;
+        }
         if(Random.Range(0,1f) > prob || tries < 0)
         {
+            if(numSections >= 1 && Random.Range(0, 1f) >= .35f + (Mathf.Sqrt(Mathf.Sqrt(numSections))/3f))
+            {
+                return new Doorway();
+            }
             int i = Random.Range(0, totalSeaWeight);
             for(int j = 0; j < roomSealers.Count; j++)
             {
@@ -251,18 +420,54 @@ public class RoomCreator : MonoBehaviour
         t.walls[2] = t.walls[2] || newWalls[2];
         t.walls[3] = t.walls[3] || newWalls[3];
     }
-    public void GenerateWallObj(Tile t, Vector2Int wallPos)
+    private void GenerateWallObjLastPass(Tile t, int refSection)
     {
-        // If Vector2Int.x/y is equal to 10, then it refers to BOTH sides
-        if (wallPos.x == -1 || wallPos.x == 10)
+        // Generates walls based off various designs. Will pick out a random wall design...
+        if(t.blank || t.fake) { return; }
+        if (t.realWalls[0])
         {
             GameObject go = Instantiate(x1);
             go.transform.localScale = new Vector3(floorSquareSize / 10.0f, 0.1f, 0.8f);
             go.transform.localRotation = Quaternion.Euler(new Vector3(90, 0, 90));
             go.transform.position = new Vector3((t.position.x - .5f) * floorSquareSize, t.position.y + 4f, t.position.z * floorSquareSize);
             go.SetActive(true);
-            t.realWalls[0] = true;
             games.Add(go);
+        }
+        if (t.realWalls[1])
+        {
+            GameObject go = Instantiate(x1);
+            go.transform.localScale = new Vector3(floorSquareSize / 10.0f, 0.1f, 0.8f);
+            go.transform.localRotation = Quaternion.Euler(new Vector3(90, 0, 90));
+            go.transform.position = new Vector3((t.position.x + .5f) * floorSquareSize, t.position.y + 4f, t.position.z * floorSquareSize);
+            go.SetActive(true);
+            games.Add(go);
+        }
+        if (t.realWalls[2])
+        {
+            GameObject go = Instantiate(x1);
+            go.transform.localScale = new Vector3(floorSquareSize / 10.0f, 0.1f, 0.8f);
+            go.transform.localRotation = Quaternion.Euler(new Vector3(90, 90, 90));
+            go.transform.position = new Vector3((t.position.x) * floorSquareSize, t.position.y + 4f, (t.position.z+.5f) * floorSquareSize);
+            go.SetActive(true);
+            games.Add(go);
+        }
+        if (t.realWalls[3])
+        {
+            GameObject go = Instantiate(x1);
+            go.transform.localScale = new Vector3(floorSquareSize / 10.0f, 0.1f, 0.8f);
+            go.transform.localRotation = Quaternion.Euler(new Vector3(90, 90, 90));
+            go.transform.position = new Vector3((t.position.x)* floorSquareSize, t.position.y + 4f, (t.position.z - .5f) * floorSquareSize);
+            go.SetActive(true);
+            games.Add(go);
+        }
+
+    }
+    public void GenerateWallObj(Tile t, Vector2Int wallPos)
+    {
+        // If Vector2Int.x/y is equal to 10, then it refers to BOTH sides
+        if (wallPos.x == -1 || wallPos.x == 10)
+        {
+            t.realWalls[0] = true;
             if (tiles[t.position + new Vector3Int(-1, 0, 0)] != null)
             {
                 tiles[t.position + new Vector3Int(-1, 0, 0)].realWalls[1] = true;
@@ -271,13 +476,7 @@ public class RoomCreator : MonoBehaviour
         }
         if(wallPos.x == 1 || wallPos.x == 10)
         {
-            GameObject go = Instantiate(x1);
-            go.transform.localScale = new Vector3(floorSquareSize / 10.0f, 0.1f, 0.8f);
-            go.transform.localRotation = Quaternion.Euler(new Vector3(90, 0, 90));
-            go.transform.position = new Vector3((t.position.x + .5f) * floorSquareSize, t.position.y + 4f, t.position.z * floorSquareSize);
-            go.SetActive(true);
             t.realWalls[1] = true;
-            games.Add(go);
             if (tiles[t.position + new Vector3Int(1, 0, 0)] != null)
             {
                 tiles[t.position + new Vector3Int(1, 0, 0)].realWalls[0] = true;
@@ -286,13 +485,7 @@ public class RoomCreator : MonoBehaviour
         }
         if (wallPos.y == -1 || wallPos.y == 10)
         {
-            GameObject go = Instantiate(x1);
-            go.transform.localScale = new Vector3(floorSquareSize / 10.0f, 0.1f, 0.8f);
-            go.transform.localRotation = Quaternion.Euler(new Vector3(90, 90, 90));
-            go.transform.position = new Vector3((t.position.x) * floorSquareSize, t.position.y + 4f, (t.position.z-.5f) * floorSquareSize);
-            go.SetActive(true);
             t.realWalls[3] = true;
-            games.Add(go);
             if (tiles[t.position + new Vector3Int(0, 0, -1)] != null)
             {
                 tiles[t.position + new Vector3Int(0, 0, -1)].realWalls[2] = true;
@@ -301,26 +494,19 @@ public class RoomCreator : MonoBehaviour
         }
         if (wallPos.y == 1 || wallPos.y == 10)
         {
-            GameObject go = Instantiate(x1);
-            go.transform.localScale = new Vector3(floorSquareSize / 10.0f, 0.1f, 0.8f);
-            go.transform.localRotation = Quaternion.Euler(new Vector3(90, 90, 90));
-            go.transform.position = new Vector3((t.position.x)* floorSquareSize, t.position.y + 4f, (t.position.z + .5f) * floorSquareSize);
-            go.SetActive(true);
             t.realWalls[2] = true;
-            games.Add(go);
             if (tiles[t.position + new Vector3Int(0, 0, 1)] != null)
             {
                 tiles[t.position + new Vector3Int(0, 0, 1)].realWalls[3] = true;
                 tiles[t.position + new Vector3Int(0, 0, 1)].walls[3] = true;
             }
         }
-
-
+        //GenerateWallObjLastPass(t, 0);
     }
     
     public void GenerateDoorway(Vector3Int pos, bool dirIsUpDown)
     {
-        doorways.Add(new DoorwayObj() { pos = pos, UD = dirIsUpDown });
+        
         // Generate a doorway object?
         GameObject go = Instantiate(doorwayTemp);
         go.transform.localRotation = (dirIsUpDown ? new Quaternion() : Quaternion.Euler(0,90,0));
@@ -329,6 +515,7 @@ public class RoomCreator : MonoBehaviour
         vv.Scale(GetFloorScaling());
         go.transform.localPosition = vv;
         go.SetActive(true);
+        doorways.Add(pos, new DoorwayObj() { pos = pos, UD = dirIsUpDown ,gogo = go});
     }
 
     [HideInInspector] public List<PropScript> puzzles;
@@ -353,7 +540,8 @@ public class RoomCreator : MonoBehaviour
                 ggo.transform.rotation *= q;
             }
         }
-        ggo.transform.position = p.anchorPos + nextProp.AnchorPoint + nextProp.GetFinalAnchor();
+        ggo.transform.position = p.anchorPos;
+        ggo.transform.localPosition += ggo.transform.rotation *(nextProp.AnchorPoint + nextProp.GetFinalAnchor());
         ggo.SetActive(true);
         if (nextProp.isNetworked)
         {
@@ -373,7 +561,8 @@ public class RoomCreator : MonoBehaviour
             }
             else
             {
-                Requires[] ss = ggo.GetComponent<PropScript>().puzzle.GenerateAsPuzzle((long)Random.Range(0, 5555555));
+                //Requires[] ss = ggo.GetComponent<PropScript>().puzzle.GenerateAsPuzzle((long)Random.Range(0, 5555555));
+
                 // TODO deal with the dependencies.. :|
             }
         }
@@ -467,13 +656,15 @@ public class RoomCreator : MonoBehaviour
         nextProp = simpleProps[Random.Range(0,simpleProps.Count)];
     }
 
-    public void GenerateFloor(Vector3Int pos)
+    public void GenerateFloor(Vector3Int pos, int refSection)
     {
         GameObject go = Instantiate(x1);
         go.transform.localScale = new Vector3(floorSquareSize / 10.0f, 0.1f, floorSquareSize / 10.0f);
         go.transform.position = new Vector3(floorSquareSize*pos.x, pos.y * 5, floorSquareSize*pos.z);
         go.SetActive(true);
         go.name = "Floor (" + pos.x + ", "+ pos.y + ", " + pos.z+")";
+        Material m = go.GetComponentInChildren<MeshRenderer>().material;
+        m.color = Color.Lerp(new Color(1f, 0, 0), new Color(0, 1f, 1f), Mathf.Repeat(refSection / (5f + Mathf.PI), 1f));
         games.Add(go);
     }
     public Vector3 GetFloorScaling()
@@ -532,9 +723,20 @@ public class RoomCreator : MonoBehaviour
         AddRS(new WallSpace(), 50);
         AddRG(new Hallway(), 40);
         AddRG(new SmallRoom(), 50);
-        AddRG(new Doorway(), 15);
+        
         nextProp = allProps[0];
         simpleProps.AddRange(allProps);
+        foreach(PropScript p in allProps)
+        {
+            if (p.isPuzzle)
+            {
+                puzzles.Add(p);
+            }
+            else
+            {
+                simpleProps.Add(p);
+            }
+        }
         NM.StartHost();
         StartCoroutine(StartB());
     }
@@ -596,7 +798,7 @@ public class Doorway : SpaceDivisor
             newWalls.Remove(dir);
             if(dir.x != 0)
             {
-                kernel[0][0] = kernel[0][2] = kernel[2][0] = kernel[2][2] = -1;
+                kernel[0][0] = kernel[0][2] = kernel[2][0] = kernel[2][2] = 0;
                 kernel[1][1] = 1;
                 kernel[1][0] = kernel[1][2] = 0;
                 kernel[0][1] = (dir.x == -1 ? 3 : 2);
@@ -866,6 +1068,7 @@ public class Hallway : SpaceDivisor
 
 public class Tile
 {
+    public int section = -1; // <=-1 means whatever the reference tile is, any other is an actual value. (Should be decreasing...)
     //                                x-     x+      z+      z-
     public bool[] walls = new bool[]{false, false, false, false };
     public Vector3Int position;
@@ -883,7 +1086,7 @@ public class Tile
     }
     public override string ToString()
     {
-        return "Tile: " + position + " (L:" + walls[0] + ", R:" + walls[1]+ ", U:" + walls[2]+ ", D:" + walls[3]+").";
+        return "Tile: " + position + " (L:" + walls[0] + ", R:" + walls[1]+ ", U:" + walls[2]+ ", D:" + walls[3]+"). " + fake + " " + blank;
     }
     public int wallsOcc()
     {
@@ -985,6 +1188,89 @@ public class MDict<K,V> : Dictionary<K, V>
             {
                 base.Add(key, value);
             }
+        }
+    }
+}
+
+
+// FROM https://stackoverflow.com/questions/1937690/c-sharp-priority-queue
+public class PriorityQueue<T> 
+{
+    SortedList<Pair<int>, T> _list;
+    int count;
+    public int actCount { get; private set; }
+
+    public PriorityQueue()
+    {
+        _list = new SortedList<Pair<int>, T>(new PairComparer<int>());
+        actCount = 0;
+    }
+
+    public void Enqueue(T item, int priority)
+    {
+        _list.Add(new Pair<int>(priority, -count), item);
+        count++;
+        actCount++;
+    }
+    public T Peek()
+    {
+        T item = _list[_list.Keys[0]];
+        return item;
+    }
+    public bool isEmpty()
+    {
+        return actCount== 0;
+    }
+    public T Dequeue()
+    {
+        T item = _list[_list.Keys[0]];
+        _list.RemoveAt(0);
+        actCount--;
+        return item;
+    }
+}
+class Pair<T>
+{
+    public T First { get; private set; }
+    public T Second { get; private set; }
+
+    public Pair(T first, T second)
+    {
+        First = first;
+        Second = second;
+    }
+
+    public override int GetHashCode()
+    {
+        return First.GetHashCode() ^ Second.GetHashCode();
+    }
+
+    public override bool Equals(object other)
+    {
+        Pair<T> pair = other as Pair<T>;
+        if (pair == null)
+        {
+            return false;
+        }
+        return (this.First.Equals(pair.First) && this.Second.Equals(pair.Second));
+    }
+}
+
+class PairComparer<T> : IComparer<Pair<T>> where T : System.IComparable
+{
+    public int Compare(Pair<T> x, Pair<T> y)
+    {
+        if (x.First.CompareTo(y.First) < 0)
+        {
+            return -1;
+        }
+        else if (x.First.CompareTo(y.First) > 0)
+        {
+            return 1;
+        }
+        else
+        {
+            return x.Second.CompareTo(y.Second);
         }
     }
 }

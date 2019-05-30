@@ -5,10 +5,14 @@ using UnityEngine.Networking;
 #pragma warning disable CS0618 // Type or member is obsolete
 public abstract class PuzzleObj : NetworkBehaviour
 {
+    public Requires[] puzzleRequirements;
     [Server]
     public abstract void GenerateAsProp(long propSeed);
     [Server]
-    public abstract Requires[] GenerateAsPuzzle(long puzzleSeed);
+    public abstract void GenerateAsPuzzle(long puzzleSeed);
+    [Server]
+    public abstract void GenerateAsProp(PuzzleObj po, PuzzleType pt); // Literally when a puzzle uses this as a hint or 
+
 
     [SyncVar]
     public string state = "";
