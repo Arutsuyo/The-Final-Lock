@@ -295,9 +295,74 @@ public class RoomCreator : MonoBehaviour
 
 
         // Just generate ....:|
+        Node<Mix<PropScript, List<Requires>>> propTree = new Node<Mix<PropScript, List<Requires>>>();
+        propTree.node = new Mix<PropScript, List<Requires>>(null, new List<Requires>());
+        propTree.node.second.Add(new Requires() { isItem = false, pt=PuzzleType.PUZZLE });
+        propTree.node.second.Add(new Requires() { isItem = false, pt = PuzzleType.PUZZLE });
 
 
-		foreach(Prop p in props){
+        // Root node :P
+
+        Stack<Mix<Node<Mix<PropScript, List<Requires>>>, int>> treeSearch = new Stack<Mix<Node<Mix<PropScript, List<Requires>>>, int>>();
+        treeSearch.Push(new Mix<Node<Mix<PropScript, List<Requires>>>, int>(propTree, 0));
+        int puzzlesA = puzzleCount;
+        while(treeSearch.Count != 0)
+        {
+            if(puzzlesA == 0)
+            {
+                // :D
+                break;
+            }
+            // only pop if fails depth...
+            Node<Mix<PropScript, List<Requires>>> pq = treeSearch.Peek().first;
+            if(puzzlesA < pq.leafs.Count + treeSearch.Peek().second && Random.Range(0,1f) < Mathf.Atan(pq.leafs.Count / 5f) / (Mathf.PI/2f))
+            {
+                treeSearch.Pop();
+                continue;
+            }
+            else
+            {
+                // Add stuff o-o
+                // First determine if there is a requires... (main puzzle requires only 2...)
+                // If you have a choice, remove puzzles first.....
+                int RR = 0;
+                bool breaks = false;
+                Requires rrm = null;
+                foreach(Requires r in pq.node.second)
+                {
+                    if(r.pt == PuzzleType.PUZZLE)
+                    {
+                        // REMOVE THIS FIRST!
+                        breaks = true;
+                        rrm = r;
+                        break;
+                    }
+                    RR++;
+                }
+                Node<Mix<PropScript, List<Requires>>> mp = new Node<Mix<PropScript, List<Requires>>>();
+                if (breaks)
+                {
+                    pq.node.second.RemoveAt(RR);
+                    PropScript rp = puzzles[Random.Range(0, puzzles.Count)];
+                    Requires[] ss = rp.puzzle.puzzleRequirements;
+                    mp.node = new Mix<PropScript, List<Requires>>(rp, new List<Requires>(ss));
+                    pq.leafs.Add(mp);
+                    treeSearch.Push();
+                }
+                
+                
+                // If ss is null... :P
+
+            }
+        }
+
+        /*
+            [HideInInspector] public List<PropScript> puzzles;
+            [HideInInspector] public List<PropScript> simpleProps;
+            [HideInInspector] public List<PropScript> itemProps;
+            [HideInInspector] public List<PropScript> hintProps;
+         */
+        foreach (Prop p in props){
 			GenerateProp(p);
 		}
 
@@ -520,6 +585,9 @@ public class RoomCreator : MonoBehaviour
 
     [HideInInspector] public List<PropScript> puzzles;
     [HideInInspector] public List<PropScript> simpleProps;
+    [HideInInspector] public List<PropScript> itemProps;
+    [HideInInspector] public List<PropScript> hintProps;
+
     private PropScript nextProp = null;
     public List<PropScript> allProps;
     public int PropTrials = 10; // will simply randomly pick one this many times, if it fails beyond that it returns a failure.
@@ -732,13 +800,31 @@ public class RoomCreator : MonoBehaviour
             {
                 puzzles.Add(p);
             }
-            else
+            if (p.canHint)
             {
+                hintProps.Add(p);
+            }
+            if (p.canHoldItem)
+            {
+                itemProps.Add(p);
+            }
+            if (p.canBeProp) { 
                 simpleProps.Add(p);
             }
         }
         NM.StartHost();
         StartCoroutine(StartB());
+    }
+}
+
+public class Mix<M, N>
+{
+    public M first;
+    public N second;
+    public Mix(M m, N n)
+    {
+        first = m;
+        second = n;
     }
 }
 public class WallSpace : SpaceDivisor
@@ -1229,6 +1315,13 @@ public class PriorityQueue<T>
         return item;
     }
 }
+
+class Node<T>
+{
+    public T node;
+    public List<Node<T>> leafs = new List<Node<T>>();
+}
+
 class Pair<T>
 {
     public T First { get; private set; }

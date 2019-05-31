@@ -20,6 +20,8 @@ public class PropScript : MonoBehaviour
     [HideInInspector] public bool isUsedAsProp = false; // This is to let this prop know that it should NOT run it's puzzle
     //                                  code (the thing is for looks basically. This is useful for things like a painting).
     public bool ShouldRotate = false; // Note for corners, will orient itself to north or south facing (if SX or NX respectively)
+    public bool canHoldItem = false; // If true, it can be told to store an item (like a hint or an actual item)
+    public bool canHint = false; // If true, it can be told to be a hint for something...
 
     public PuzzleObj puzzle;// Can be null if not a puzzle (should be checked above :|)
     [Header("Prop Placement Affinities")]

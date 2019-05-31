@@ -998,7 +998,7 @@ Transform:
   m_Children:
   - {fileID: 1100944353}
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &937329201
 GameObject:
@@ -1806,7 +1806,7 @@ MonoBehaviour:
   cutoff: 0.5
   samples: 10
   tileCount: 5
-  roomSize: 10
+  roomSize: 5
   cc: {fileID: 1362789615}
   height: 3
   actualTileCount: 
@@ -1823,10 +1823,12 @@ MonoBehaviour:
   tries: 1000
   x1: {fileID: 2129660702}
   doorwayTemp: {fileID: 587530952}
-  roomTileCount: 25
+  roomTileCount: 5
   continues: 0
   puzzles: []
   simpleProps: []
+  itemProps: []
+  hintProps: []
   allProps:
   - {fileID: 2565243512511570148}
   - {fileID: 3773315733630962302}
