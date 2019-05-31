@@ -19,6 +19,13 @@ public class Item : MonoBehaviour
 
     public void DestroyFromNetwork()
     {
+
+        Debug.Log(RoomManager.instance);
+        Debug.Log(RoomManager.instance.Player);
+        Debug.Log(RoomManager.instance.Player.cam);
+
+        Debug.Log(RoomManager.instance.Player.cam.playerMngr);
+        Debug.Log(RoomManager.instance.Player.cam.playerMngr.inv);
         RoomManager.instance.Player.cam.playerMngr.inv.SilentDelete(this);
     }
     public void AskDestroy()

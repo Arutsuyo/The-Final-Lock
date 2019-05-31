@@ -172,6 +172,7 @@ public class CameraController : MonoBehaviour
 
 	void Update()
 	{
+
 		HandleInput();
 
 		// Interact with whatever we might be looking at after movement

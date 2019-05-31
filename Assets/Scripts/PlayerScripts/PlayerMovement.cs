@@ -5,22 +5,24 @@ using UnityEngine;
 //Freeze Rotation on movement: https://gamedev.stackexchange.com/questions/99094/how-to-move-a-cube-withour-rolling-it
 //Freeze rotation on collision source: https://answers.unity.com/questions/768581/stop-rotation-on-collision.html
 
-public class PlayerMovement : MonoBehaviour
+public class PlayerMovement : PlayerMovementMP
 {
-	public float moveSpeed;
-	public float turnSpeed;
-	public Rigidbody rb;
-	public CameraController cam;
 	private Vector2 movement = new Vector2();
 
 	void Start()
 	{
 		//Prevent the player from falling over when moving
 		rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
-	}
+        GameObject go = GameObject.FindGameObjectWithTag("MainCamera");
+        cam = go.GetComponent<CameraController>();
+        cam.player = rb.gameObject;
+        cam.enabled = true;
+    }
+
 
 	void FixedUpdate()
 	{
+        
 		GetInput();
 		Move();
 	}

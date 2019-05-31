@@ -10,92 +10,98 @@ using UnityEngine.UI;
 #pragma warning disable CS0618 // Type or member is obsolete
 public class PlayerMovementMP : NetworkBehaviour
 {
-	public float moveSpeed;
-	public float turnSpeed;
-	public Rigidbody rb;
-	public CameraController cam;
-	private Vector3 movement = new Vector3();
-	public Text nameTemplate;
-	public Transform childCameraPosition;
-	public GameObject body;
+    public float moveSpeed;
+    public float turnSpeed;
+    public Rigidbody rb;
+    public CameraController cam;
+    private Vector3 movement = new Vector3();
+    public Text nameTemplate;
+    public Transform childCameraPosition;
+    public GameObject body;
 
-	void Start()
-	{
-		//Prevent the player from falling over when moving
-		rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
-		Debug.Log(isLocalPlayer + " " + this.localPlayerAuthority);
-		if (!hasAuthority)
-			return;
+    void Start()
+    {
+        //Prevent the player from falling over when moving
+        rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
+        Debug.Log(isLocalPlayer + " " + this.localPlayerAuthority);
+        if (!hasAuthority)
+            return;
 
-		// Get the camera and place it right where it should be :D
-		GameObject go = GameObject.FindGameObjectWithTag("MainCamera");
-		cam = go.GetComponent<CameraController>();
+        // Get the camera and place it right where it should be :D
+        GameObject go = GameObject.FindGameObjectWithTag("MainCamera");
+        cam = go.GetComponent<CameraController>();
 
-		go.transform.SetParent(childCameraPosition);
-		go.transform.localPosition = Vector3.zero;
-		go.transform.localRotation = Quaternion.identity;
-		cam.player = rb.gameObject;
-		cam.enabled = true;
-		nameTemplate.enabled = false;
-        RoomManager.instance.Player = this;
-		body.GetComponent<MeshRenderer>().enabled = false;
-	}
+        go.transform.SetParent(childCameraPosition);
+        go.transform.localPosition = Vector3.zero;
+        go.transform.localRotation = Quaternion.identity;
+        cam.player = rb.gameObject;
+        cam.enabled = true;
+        nameTemplate.enabled = false;
+        body.GetComponent<MeshRenderer>().enabled = false;
+    }
+    public void Update()
+    {
+        if (RoomManager.instance != null && RoomManager.instance.Player == null)
+        {
+            RoomManager.instance.Player = this;
+        }
+    }
 
-	[ClientRpc]
-	public void RpcChangeName(string name)
-	{
-		nameTemplate.text = name;
-	}
-	public override void OnStartAuthority()
-	{
-		Debug.Log("AUTHORITY GRANTED!");
-		base.OnStartAuthority();
-		this.Start();
-	}
+    [ClientRpc]
+    public void RpcChangeName(string name)
+    {
+        nameTemplate.text = name;
+    }
+    public override void OnStartAuthority()
+    {
+        Debug.Log("AUTHORITY GRANTED!");
+        base.OnStartAuthority();
+        this.Start();
+    }
 
-	void FixedUpdate()
-	{
-		//Update movement
-		if (!hasAuthority)
-			return;
+    void FixedUpdate()
+    {
+        //Update movement
+        if (!hasAuthority)
+            return;
 
-		GetInput();
-		Move();
-	}
+        GetInput();
+        Move();
+    }
 
-	void GetInput()
-	{
-		//Get movement inputs
-		movement.z = Input.GetAxisRaw("Vertical");
-		movement.x = Input.GetAxisRaw("Horizontal");
-	}
+    void GetInput()
+    {
+        //Get movement inputs
+        movement.z = Input.GetAxisRaw("Vertical");
+        movement.x = Input.GetAxisRaw("Horizontal");
+    }
 
-	void Move()
-	{
-		if (!hasAuthority || cam.isInCutscene)
-			return;
+    void Move()
+    {
+        if (!hasAuthority || cam.isInCutscene)
+            return;
 
-		movement.Normalize();
-		float ff = rb.velocity.y;
-		rb.velocity = rb.rotation*movement * moveSpeed + new Vector3(0,ff,0);
-		
-	}
+        movement.Normalize();
+        float ff = rb.velocity.y;
+        rb.velocity = rb.rotation * movement * moveSpeed + new Vector3(0, ff, 0);
 
-	//prevent player from rotating violently on collisions
-	void OnCollisionEnter()
-	{
-		if (!hasAuthority)
-			return;
+    }
 
-		rb.angularVelocity = new Vector3(0, 0, 0);
-	}
+    //prevent player from rotating violently on collisions
+    void OnCollisionEnter()
+    {
+        if (!hasAuthority)
+            return;
 
-	void OnCollisionStay()
-	{
-		if (!hasAuthority)
-			return;
+        rb.angularVelocity = new Vector3(0, 0, 0);
+    }
 
-		rb.angularVelocity = new Vector3(0, 0, 0);
-	}
+    void OnCollisionStay()
+    {
+        if (!hasAuthority)
+            return;
+
+        rb.angularVelocity = new Vector3(0, 0, 0);
+    }
 }
 #pragma warning restore CS0618 // Type or member is obsolete
