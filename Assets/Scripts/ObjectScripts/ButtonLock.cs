@@ -5,6 +5,7 @@ using UnityEngine;
 public class ButtonLock : MonoBehaviour
 {
 	public Interactable button;
+    public GameLock gameLock;
 
 	public void Start()
 	{
@@ -14,11 +15,8 @@ public class ButtonLock : MonoBehaviour
 
 	public void finished()
 	{
-		if (RoomManager.instance.CMMP.nm.net.isHost)
-		{
-			RoomManager.instance.roomTimer.CmdStopTimer();
-		}
-	}
+        gameLock.GFinished(RoomManager.instance.Player.cam);
+    }
 
 	public bool interacted(CameraController cc)
 	{
