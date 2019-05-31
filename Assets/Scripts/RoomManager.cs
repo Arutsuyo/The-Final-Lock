@@ -14,10 +14,16 @@ public class RoomManager : MonoBehaviour
     public FailScreenScript succText;
     public PlayerMovementMP Player;
 	public static RoomManager instance;
+    public int countSFO = 0;
 	public Dictionary<uint, Interactable> interactables = new Dictionary<uint, Interactable>();
 
     public void StartSucc(FailScreenScript.SimpleDelegate Callback1, FailScreenScript.SimpleDelegate Callback2)
     {
+        if(countSFO != 0)
+        {
+            return;
+        }
+        countSFO++;
         succImg.image.gameObject.SetActive(true);
         succText.text.gameObject.SetActive(true);
         succImg.Finished += Callback1;
@@ -28,6 +34,11 @@ public class RoomManager : MonoBehaviour
 
     public void StartFail(FailScreenScript.SimpleDelegate Callback)
     {
+        if (countSFO != 0)
+        {
+            return;
+        }
+        countSFO++;
         failedText.text.gameObject.SetActive(true);
         failedImg.image.gameObject.SetActive(true);
         failedImg.StartFadeIn();
