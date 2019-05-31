@@ -12,6 +12,5 @@ public class OpenDoor : MonoBehaviour
         {
             gameObject.SetActive(false);
         }
-        gameObject.SetActive(true);
     }
 }
