@@ -37,6 +37,7 @@ public class PlayerMovementMP : NetworkBehaviour
 		cam.player = rb.gameObject;
 		cam.enabled = true;
 		nameTemplate.enabled = false;
+        RoomManager.instance.Player = this;
 		body.GetComponent<MeshRenderer>().enabled = false;
 	}
 

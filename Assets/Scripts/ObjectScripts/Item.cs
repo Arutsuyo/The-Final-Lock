@@ -21,16 +21,9 @@ public class Item : MonoBehaviour
 
 	private void Return()
 	{
-		if (prevCC != null)
-		{
-			prevCC.playerMngr.inv.SilentDelete(this);
-			// Already deleted :P
-		}
-		else
-		{
-			// Silently disable this...
-			gameObject.SetActive(false);
-		}
+        gameObject.SetActive(false);
+        /// Actually add it to inventory...
+        RoomManager.instance.Player.cam.playerMngr.inv.PickUpItem(this);
 	}
 
 	private bool InterAt(CameraController cc)

@@ -12,6 +12,7 @@ public class RoomManager : MonoBehaviour
     public FailScreenImage failedImg;
     public FailScreenImage succImg;
     public FailScreenScript succText;
+    public PlayerMovementMP Player;
 	public static RoomManager instance;
 	public Dictionary<uint, Interactable> interactables = new Dictionary<uint, Interactable>();
 
