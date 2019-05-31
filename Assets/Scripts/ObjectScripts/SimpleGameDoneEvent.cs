@@ -5,7 +5,6 @@ using UnityEngine;
 public class SimpleGameDoneEvent : MonoBehaviour
 {
     public GameLock locks;
-    public AnimationSet[] toPlay;
 
     void Start()
     {

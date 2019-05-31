@@ -6,6 +6,7 @@ public class ButtonLock : MonoBehaviour
 {
 	public Interactable button;
     public GameLock gameLock;
+    public bool finishedObj = false;
 
 	public void Start()
 	{
@@ -15,12 +16,18 @@ public class ButtonLock : MonoBehaviour
 
 	public void finished()
 	{
+        finishedObj = true;
         gameLock.GFinished(RoomManager.instance.Player.cam);
+
     }
 
 	public bool interacted(CameraController cc)
 	{
-		button.SendSF();
+        if (finishedObj)
+            return false;
+        finishedObj = true;
+        button.SendSF();
+
 		return false;
 	}
 }
