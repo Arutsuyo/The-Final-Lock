@@ -415,8 +415,10 @@ public class CampaignManagerMP : MonoBehaviour
 		//AOP = SceneManager.LoadSceneAsync(1);
 		if (nm.net.isHost)
 		{
-			// Send all clients the room details
-			nm.net.ServerChangeScene("Room 1");
+            // Send all clients the room details
+            Scene ss = SceneManager.GetSceneByBuildIndex(erooms[ActiveID].roomID);
+            
+			nm.net.ServerChangeScene(ss.name);
 
 		}
 	}
@@ -520,6 +522,7 @@ public class EscapeRoom
 	public int[] sizeofRooms;
 	public bool isRandom;
 	public bool isSP = false;
+    public int roomID = 1;
 	public Puzzle mainPuzzle;
 
 	public EscapeRoom(XmlElement xe)
@@ -537,6 +540,9 @@ public class EscapeRoom
 				case "issingleplayer":
 					isSP = true;
 					break;
+                case "roomid":
+                    roomID = int.Parse(ee.InnerText);
+                    break;
 				case "numrooms":
 					numRooms = int.Parse(ee.InnerText);
 					break;

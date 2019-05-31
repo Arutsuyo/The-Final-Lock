@@ -7,6 +7,7 @@ using System.Linq;
 
 using System.Xml;
 using System;
+using UnityEngine.SceneManagement;
 
 public class CampaignManager : CampaignManagerMP
 {
@@ -74,7 +75,11 @@ public class CampaignManager : CampaignManagerMP
         if (nm.net.isHost)
         {
             // Send all clients the room details
-            nm.net.ServerChangeScene("Room 1");
+            // Send all clients the room details
+            Scene ss = SceneManager.GetSceneByBuildIndex(erooms[ActiveID].roomID);
+
+            nm.net.ServerChangeScene(ss.name);
+
 
         }
     }
