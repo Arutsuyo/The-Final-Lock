@@ -8,6 +8,7 @@ public class SimpleEvent : MonoBehaviour
 	public GameObject[] toEnable;
 	public GameObject[] toDisable;
     public bool toggle = false;
+    
 	// Start is called before the first frame update
 	void Start()
 	{

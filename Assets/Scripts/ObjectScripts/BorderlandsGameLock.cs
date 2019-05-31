@@ -11,9 +11,13 @@ public class BorderlandsGameLock : MonoBehaviour
     public bool finished;
     public int SizeX;
     public int SizeY;
-
+    public float prob = 0f;
     public bool LightPuzzle; // If true, toggle neighbors, if false, don't
-
+    public IEnumerator SendDelayed(float f, int i)
+    {
+        yield return new WaitForSeconds(f);
+        toggleables[i].SendUpdate("1");
+    }
     public void Release() // Aka, allowed to generate....
     {
 
@@ -23,12 +27,13 @@ public class BorderlandsGameLock : MonoBehaviour
             throw new System.Exception("SizeX *SizeY, toggleables, toToggle do not match!");
         }
         b = new bool[SizeX][];
+        int num = 0;
         for(int i = 0; i < SizeX; i++)
         {
             b[i] = new bool[SizeY];
             for(int j = 0; j < SizeY; j++)
             {
-                b[i][j] = false;
+                b[i][j] = Random.Range(0,1f) <= prob / (num + 1.0f);
             }
         }
         // Register to each of their interacts.
@@ -38,6 +43,10 @@ public class BorderlandsGameLock : MonoBehaviour
             toggleables[i].interactEvent += (c => Interacted(c, k));
             toggleables[i].updateEvent += (c=>UpdatedEvent(c, k));
             toggleables[i].gameInteractComplete += GameFin;
+            if(b[i % SizeX][(i-(i % SizeX)) / SizeX])
+            {
+                StartCoroutine(SendDelayed(1, i));
+            }
         }
     }
 
@@ -95,7 +104,7 @@ public class BorderlandsGameLock : MonoBehaviour
             // Toggle
             Debug.Log("RUNNING ON " + vi);
             b[vi.x][vi.y] = !b[vi.x][vi.y];
-            toggleables[vi.x + (vi.y * SizeX)].SendUpdate(""+(b[vi.x][vi.y] ? "1" : "0"));
+            toggleables[vi.x + (vi.y * SizeX)].SendUpdate("" + (b[vi.x][vi.y] ? "1" : "0"));
         }
         // Could wait...or could do it now
         foreach(bool[] bg in b)
@@ -118,10 +127,14 @@ public class BorderlandsGameLock : MonoBehaviour
         // Final check see if everything toggled
         return false;
     }
-
-    public void Start()
+    bool hasUpdated = false;
+    public void Update()
     {
+        if (hasUpdated)
+            return;
+        hasUpdated = true;
         Release();
+
     }
 }
 [System.Serializable]

@@ -5108,6 +5108,7 @@ GameObject:
   - component: {fileID: 723822322}
   - component: {fileID: 723822323}
   - component: {fileID: 723822324}
+  - component: {fileID: 723822325}
   m_Layer: 0
   m_Name: WallTimer
   m_TagString: Untagged
@@ -5150,17 +5151,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   TimeToCountTo: 0
-  DIG0: {fileID: 1805197224}
-  DIG1: {fileID: 1611664475}
-  DIG2: {fileID: 48746264}
-  DIG3: {fileID: 1815328918}
-  TimeToRunFor: 0
-  TimeSpeed: 1
   Debug: 0
   Debug2: 0
   isStopped: 0
-  AUS: {fileID: 723822323}
-  Tick: {fileID: 723822324}
 --- !u!82 &723822323
 AudioSource:
   m_ObjectHideFlags: 0
@@ -5353,6 +5346,30 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &723822325
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 723822320}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 42bedc53cf63b5f4eb311fb737b80cee, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  WT: {fileID: 723822322}
+  DIG0: {fileID: 1805197224}
+  DIG1: {fileID: 1611664475}
+  DIG2: {fileID: 48746264}
+  DIG3: {fileID: 1815328918}
+  TimeToRunFor: 0
+  TimeSpeed: 1
+  AUS: {fileID: 723822323}
+  Tick: {fileID: 723822324}
+  isStopped: 0
+  TimeToCountTo: 0
+  prevTimeRem: 0
 --- !u!43 &724907639
 Mesh:
   m_ObjectHideFlags: 0
@@ -13281,6 +13298,38 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1661712870}
   m_Mesh: {fileID: 724907639}
+--- !u!84 &1687499264
+RenderTexture:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 
+  m_ImageContentsHash:
+    serializedVersion: 2
+    Hash: 00000000000000000000000000000000
+  m_ForcedFallbackFormat: 4
+  m_DownscaleFallback: 0
+  m_Width: 579
+  m_Height: 386
+  m_AntiAliasing: 4
+  m_DepthFormat: 2
+  m_ColorFormat: 7
+  m_MipMap: 0
+  m_GenerateMips: 1
+  m_SRGB: 0
+  m_UseDynamicScale: 0
+  m_BindMS: 0
+  m_TextureSettings:
+    serializedVersion: 2
+    m_FilterMode: 1
+    m_Aniso: 1
+    m_MipBias: 0
+    m_WrapU: 1
+    m_WrapV: 1
+    m_WrapW: 1
+  m_Dimension: 2
+  m_VolumeDepth: 1
 --- !u!1001 &1709112602
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -14384,38 +14433,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1971182500}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
---- !u!84 &1977181077
-RenderTexture:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: 
-  m_ImageContentsHash:
-    serializedVersion: 2
-    Hash: 00000000000000000000000000000000
-  m_ForcedFallbackFormat: 4
-  m_DownscaleFallback: 0
-  m_Width: 579
-  m_Height: 386
-  m_AntiAliasing: 4
-  m_DepthFormat: 2
-  m_ColorFormat: 7
-  m_MipMap: 0
-  m_GenerateMips: 1
-  m_SRGB: 0
-  m_UseDynamicScale: 0
-  m_BindMS: 0
-  m_TextureSettings:
-    serializedVersion: 2
-    m_FilterMode: 1
-    m_Aniso: 1
-    m_MipBias: 0
-    m_WrapU: 1
-    m_WrapV: 1
-    m_WrapW: 1
-  m_Dimension: 2
-  m_VolumeDepth: 1
 --- !u!1 &1978210130
 GameObject:
   m_ObjectHideFlags: 0
@@ -15912,7 +15929,7 @@ Camera:
     serializedVersion: 2
     m_Bits: 4294967295
   m_RenderingPath: -1
-  m_TargetTexture: {fileID: 1977181077}
+  m_TargetTexture: {fileID: 1687499264}
   m_TargetDisplay: 0
   m_TargetEye: 3
   m_HDR: 1

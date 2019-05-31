@@ -416,9 +416,13 @@ public class CampaignManagerMP : MonoBehaviour
 		if (nm.net.isHost)
 		{
             // Send all clients the room details
-            Scene ss = SceneManager.GetSceneByBuildIndex(erooms[ActiveID].roomID);
+            Debug.Log(ActiveID + " " + erooms);
+            int rid = erooms[ActiveID].roomID;
+            string ssb = SceneUtility.GetScenePathByBuildIndex(rid);
+            string ss = Path.GetFileNameWithoutExtension(ssb);
             
-			nm.net.ServerChangeScene(ss.name);
+            Debug.Log(ss + " " + rid);
+			nm.net.ServerChangeScene(ss);
 
 		}
 	}
@@ -463,7 +467,7 @@ public class CampaignManagerMP : MonoBehaviour
 	{
 		HideUI();
 		DontDestroyOnLoad(this.gameObject);
-
+        QueryRooms();
 		
 	}
 	protected EscapeRoom ParseFile(XmlDocument x)

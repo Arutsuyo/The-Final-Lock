@@ -76,9 +76,12 @@ public class CampaignManager : CampaignManagerMP
         {
             // Send all clients the room details
             // Send all clients the room details
-            Scene ss = SceneManager.GetSceneByBuildIndex(erooms[ActiveID].roomID);
+            int rid = erooms[ActiveID].roomID;
+            string ssb = SceneUtility.GetScenePathByBuildIndex(rid);
+            string ss = Path.GetFileNameWithoutExtension(ssb);
 
-            nm.net.ServerChangeScene(ss.name);
+            Debug.Log(ss + " " + rid);
+            nm.net.ServerChangeScene(ss);
 
 
         }
