@@ -5,8 +5,8 @@ using UnityEngine.UI;
 
 public class PickGame : MonoBehaviour
 {
-	// Please Organize this
-	public Interactable interact;
+    // Please Organize this -- :D Longue vie à la nature chaotique de la programmation!
+    public Interactable interact;
 	public GameLock gameLock;
 	public GameObject PinHolderPos;
 	public GameObject[] toDelete;

@@ -27,8 +27,11 @@ public class Inventory : MonoBehaviour
 
 	public void SilentDelete(Item c)
 	{
-		// the game object should still be inactive...
-		items.Remove(c);
+        // the game object should still be inactive...
+
+        if (items.Contains(c))
+            items.Remove(c);
+        c.gameObject.SetActive(false); // ASSUMES SOME THINGS
 	}
 
 	public bool HasItem(string itemName)

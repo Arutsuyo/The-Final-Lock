@@ -12,7 +12,19 @@ public class Item : MonoBehaviour
 		inter.lookEvent += LookAt;
 		inter.interactEvent += InterAt;
 		inter.escapeInteractEvent += Return;
-	}
+        inter.interactDestroyed += DestroyFromNetwork;
+    }
+
+
+
+    public void DestroyFromNetwork()
+    {
+        RoomManager.instance.Player.cam.playerMngr.inv.SilentDelete(this);
+    }
+    public void AskDestroy()
+    {
+        inter.DestroyFromNetwork(inter.owner);
+    }
 
 	private void LookAt(CameraController cc)
 	{

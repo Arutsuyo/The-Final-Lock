@@ -59,7 +59,31 @@ public class RoomManager : MonoBehaviour
 			Debug.Log("ID: " + IP.objectID + " WAS NOT PRESENT/REGISTERED!");
 		}
 	}
-	public void HandleFin(NetworkMessage nm)
+    public void HandleRem(NetworkMessage ms)
+    {
+        InteractablePacket IP = ms.ReadMessage<InteractablePacket>();
+        if (interactables.ContainsKey((uint)IP.objectID))
+        {
+            interactables[(uint)IP.objectID].CmdTryPickUp(IP.playerRequesting);
+        }
+        else
+        {
+            Debug.Log("ID: " + IP.objectID + " WAS NOT PRESENT/REGISTERED!");
+        }
+    }
+    public void HandleUpdate(NetworkMessage ms)
+    {
+        StatusUpdatePacket IP = ms.ReadMessage<StatusUpdatePacket>();
+        if (interactables.ContainsKey((uint)IP.objectID))
+        {
+            interactables[(uint)IP.objectID].UpdateEvent(IP.interactableStatus);
+        }
+        else
+        {
+            Debug.Log("ID: " + IP.objectID + " WAS NOT PRESENT/REGISTERED!");
+        }
+    }
+    public void HandleFin(NetworkMessage nm)
 	{
 		InteractablePacket IP = nm.ReadMessage<InteractablePacket>();
 		if (interactables.ContainsKey((uint)IP.objectID))
@@ -84,7 +108,10 @@ public class RoomManager : MonoBehaviour
 			CMMP = CMMP1.GetComponent<CampaignManagerMP>();
 			CMMP.nm.net.RegisterHandler(MPMsgTypes.Interactions, HandleRiots);
 			CMMP.nm.net.RegisterHandler(MPMsgTypes.FinInteractions, HandleFin);
-			CMMP.AnnounceRoomManager();
+            CMMP.nm.net.RegisterHandler(MPMsgTypes.InteractionsRemove, HandleRem);
+            CMMP.nm.net.RegisterHandler(MPMsgTypes.InteractionsUpdate, HandleUpdate);
+
+            CMMP.AnnounceRoomManager();
 		}
 
 	}

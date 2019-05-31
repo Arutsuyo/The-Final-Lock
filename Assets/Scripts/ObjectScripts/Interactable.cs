@@ -17,14 +17,17 @@ public class Interactable : NetworkBehaviour
 	// This is what the event subscriber should look like
 	public delegate void EventHandler(CameraController cc);
 	public delegate bool TryEventHandler(CameraController cc);
+    public delegate void UpdateHandler(string status);
 	public delegate void SimpleEventHandler();
+
 
 	// These are the 2 events, triggered by the player camera raycast
 	public event EventHandler lookEvent = delegate { };
 	public event TryEventHandler interactEvent;
 	public event SimpleEventHandler escapeInteractEvent = delegate { };
-
+    public event UpdateHandler updateEvent = delegate { };
 	public event SimpleEventHandler gameInteractComplete = delegate { };
+    public event SimpleEventHandler interactDestroyed = delegate { };
 
 	private GlowObject glow;
 	private bool inView;
@@ -52,11 +55,6 @@ public class Interactable : NetworkBehaviour
 		{
 			CmdReleaseHold();
 			RpcServerFinished();
-		}
-		else
-		{
-			// TODO: Change this
-			Debug.Log("Excuse me what the fuck? Hacker " + ID + " go home you got caught.");
 		}
 	}
 
@@ -165,6 +163,17 @@ public class Interactable : NetworkBehaviour
 		}
 	}
 
+    public void UpdateEvent(string status)
+    {
+        if (updateEvent != null)
+            updateEvent(status);
+    }
+
+    public void SendUpdate(string status)
+    {
+        RoomManager.instance.CMMP.nm.net.SendToServer(MPMsgTypes.InteractionsUpdate, new StatusUpdatePacket() { objectID = (int)this.netId.Value, interactableStatus = status});
+    }
+
 	// Fires Look event
 	public void LookingAt(CameraController cc)
 	{
@@ -173,6 +182,24 @@ public class Interactable : NetworkBehaviour
 		glow.EnableGlow();
 		inView = true;
 	}
+    [Command]
+    public void CmdRemFrom()
+    {
+        RpcRemFrom();
+    }
+    
+    [ClientRpc]
+    public void RpcRemFrom()
+    {
+        if(interactDestroyed != null) 
+            interactDestroyed();
+    }
+    public void DestroyFromNetwork(long pid)
+    {
+        RoomManager.instance.CMMP.nm.net.SendToServer(MPMsgTypes.InteractionsRemove, new InteractablePacket() { objectID = (int)this.netId.Value, playerRequesting = pid });
+    }
+
+
 }
 
 public class InteractablePacket : TaggedMessageBase
@@ -193,6 +220,26 @@ public class InteractablePacket : TaggedMessageBase
 		write.Write(objectID);
 		write.Write(playerRequesting);
 	}
+}
+
+public class StatusUpdatePacket : TaggedMessageBase
+{
+    public int objectID;
+    public string interactableStatus;
+
+    public override void Deserialize(NetworkReader reader)
+    {
+        TaggedMessageBase.BaseDeserialize(reader, this);
+        objectID = reader.ReadInt32();
+        interactableStatus = reader.ReadString();
+    }
+
+    public override void Serialize(NetworkWriter write)
+    {
+        TaggedMessageBase.BaseSerialize(write, this);
+        write.Write(objectID);
+        write.Write(interactableStatus);
+    }
 }
 
 /* How to subscribe to events!

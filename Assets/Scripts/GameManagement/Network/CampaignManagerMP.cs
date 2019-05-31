@@ -20,7 +20,9 @@ public class MPMsgTypes
 	public static short FinInteractions = (short)(MPMsgTypes.Interactions + 1);
     public static short GameFailed = (short)(MPMsgTypes.FinInteractions + 1);
     public static short GameSucceed = (short)(MPMsgTypes.GameFailed + 1);
-	public static short Highest = GameSucceed;
+    public static short InteractionsRemove = (short)(MPMsgTypes.GameSucceed + 1);
+    public static short InteractionsUpdate = (short)(MPMsgTypes.InteractionsRemove + 1);
+	public static short Highest = InteractionsUpdate;
 }
 
 
