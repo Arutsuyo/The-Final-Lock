@@ -205,7 +205,8 @@ public class CampaignManagerMP : MonoBehaviour
 				playerObjs.Add(ID, Instantiate(SpawnPlayerPrefab));
                 playerObjs[ID].transform.position = spawn.transform.position + new Vector3(UnityEngine.Random.Range(-2f, 2f), 0, UnityEngine.Random.Range(-2f, 2f));
 				NetworkServer.SpawnWithClientAuthority(playerObjs[ID], nm.net.connections[ID]);
-				playerObjs[ID].GetComponent<PlayerMovementMP>().RpcChangeName(nm.userNames[ID]);
+                playerObjs[ID].transform.position = spawn.transform.position + new Vector3(UnityEngine.Random.Range(-2f, 2f), 0, UnityEngine.Random.Range(-2f, 2f));
+                playerObjs[ID].GetComponent<PlayerMovementMP>().RpcChangeName(nm.userNames[ID]);
 			}
 			NetworkServer.SpawnObjects();
 			while (roomMngr == null)

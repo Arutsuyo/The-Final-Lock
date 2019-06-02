@@ -15,10 +15,13 @@ public class BigBadTimer : TimerScript
     public bool isStopped = false;
     public float TimeToCountTo;
     public float prevTimeRem = 0;
-    public override void Ticked(int timeRem)
+    public override void Ticked(float timeRem)
     {
-        Tick.Play();
-        if(timeRem <= 60f && prevTimeRem > 60f)
+        if(Mathf.Repeat(timeRem, 1f) > Mathf.Repeat(prevTimeRem, 1f))
+        {
+            Tick.Play();
+        }
+        if (timeRem <= 60f && prevTimeRem > 60f)
             AUS.Play();
         int LHS;
         int RHS;
@@ -51,6 +54,7 @@ public class BigBadTimer : TimerScript
         DIG1.ChangeUpdate();
         DIG2.ChangeUpdate();
         DIG3.ChangeUpdate();
+        prevTimeRem = timeRem;
     }
     public override void Stopped()
     {
@@ -66,7 +70,7 @@ public class BigBadTimer : TimerScript
 
     private IEnumerator ClockFlash()
     {
-        float ff = TimeToCountTo - Time.time;
+        float ff = prevTimeRem;
         int LHS = 0;
         int RHS = 0;
 

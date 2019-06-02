@@ -14,5 +14,5 @@ public abstract class TimerScript : MonoBehaviour
     }
 
     public abstract void Stopped();
-    public abstract void Ticked(int timeRem);
+    public abstract void Ticked(float timeRem);
 }

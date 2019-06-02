@@ -12,9 +12,6 @@ GameObject:
   - component: {fileID: 6584959064331843440}
   - component: {fileID: 6584959064330843568}
   - component: {fileID: 6584959064326735312}
-  - component: {fileID: 2141808658328274065}
-  - component: {fileID: 6249088866401822479}
-  - component: {fileID: 7742815805371852108}
   m_Layer: 0
   m_Name: Wall Shield
   m_TagString: Wall Item Z
@@ -31,7 +28,7 @@ Transform:
   m_GameObject: {fileID: 6584959064328842096}
   m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 5, y: 5, z: 5}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -98,43 +95,3 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 14
   m_Mesh: {fileID: 4300000, guid: fe8e7ba801faf4be8b9b4d03d9fe8a8d, type: 3}
---- !u!114 &2141808658328274065
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6584959064328842096}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: db8e5d0339251c145b404bf362515302, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  activated: 0
-  clue: 0
---- !u!114 &6249088866401822479
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6584959064328842096}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f8ec0fb3ff2a5454e8863609a58514d0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  GlowColor: {r: 0, g: 0, b: 0, a: 0}
-  LerpFactor: 10
---- !u!114 &7742815805371852108
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6584959064328842096}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bc5fce68b3f325b43bb05b066b9c9705, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 

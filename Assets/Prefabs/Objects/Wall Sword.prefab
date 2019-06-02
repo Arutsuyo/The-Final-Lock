@@ -12,9 +12,6 @@ GameObject:
   - component: {fileID: 7342147942410319203}
   - component: {fileID: 7342147942409189283}
   - component: {fileID: 7342147942413273027}
-  - component: {fileID: 6061348462302807563}
-  - component: {fileID: 2721362156019387515}
-  - component: {fileID: 8726685661268070524}
   m_Layer: 0
   m_Name: Wall Sword
   m_TagString: Wall Item Z
@@ -31,7 +28,7 @@ Transform:
   m_GameObject: {fileID: 7342147942406990179}
   m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 5, y: 5, z: 5}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -97,43 +94,3 @@ MeshCollider:
   m_Convex: 1
   m_CookingOptions: 14
   m_Mesh: {fileID: 4300000, guid: 5a13865907eb04d779d14a5525e62409, type: 3}
---- !u!114 &6061348462302807563
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7342147942406990179}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bc5fce68b3f325b43bb05b066b9c9705, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &2721362156019387515
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7342147942406990179}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f8ec0fb3ff2a5454e8863609a58514d0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  GlowColor: {r: 0, g: 0, b: 0, a: 0}
-  LerpFactor: 10
---- !u!114 &8726685661268070524
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7342147942406990179}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: db8e5d0339251c145b404bf362515302, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  activated: 0
-  clue: 0

@@ -9,7 +9,7 @@ public class WallTimer : MonoBehaviour
     public event SimpleDelegate TimerExpired;
     public event SimpleDelegate TimerPaused;
 
-    public delegate void TimeDelegate(int timeRem);
+    public delegate void TimeDelegate(float timeRem);
     public event TimeDelegate TimerTicked = delegate { };
 
     public bool Debug = false;
@@ -38,13 +38,8 @@ public class WallTimer : MonoBehaviour
         int prevTimeInt = Mathf.CeilToInt(TimeToCountTo - Time.time);
         while(TimeToCountTo - Time.time > 0)
         {
-            int id = Mathf.CeilToInt(TimeToCountTo - Time.time);
-            if (prevTimeInt != id)
-            {
-                prevTimeInt = id;
-                TimerTicked(id);
-            }
-            yield return new WaitForSeconds(0.25f);
+            TimerTicked(TimeToCountTo - Time.time);
+            yield return new WaitForSeconds(0.05f);
         }
         TimerTicked(0);
         TimerExpired();
