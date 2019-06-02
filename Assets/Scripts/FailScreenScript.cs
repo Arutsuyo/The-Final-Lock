@@ -18,6 +18,11 @@ public class FailScreenScript : MonoBehaviour
     protected bool started = false;
     public void StartFadeIn()
     {
+        if (started)
+        {
+            return;
+        }
+        started = true;
         if (endings.Length == 0)
         {
             text.text = "Your time is up.";
@@ -32,12 +37,7 @@ public class FailScreenScript : MonoBehaviour
 
     IEnumerator LerpColors()
     {
-        if (started)
-        {
-            yield break;
-        }
-
-        started = true;
+        
         targColor = text.color;
         compColor = new Color();
         compColor.r = targColor.r;

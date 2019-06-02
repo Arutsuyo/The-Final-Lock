@@ -18,6 +18,8 @@ public class PlayerMovementMP : NetworkBehaviour
     public Text nameTemplate;
     public Transform childCameraPosition;
     public GameObject body;
+    public Transform playerFeet;
+    public Transform playerBase;
 
     void Start()
     {
@@ -88,11 +90,19 @@ public class PlayerMovementMP : NetworkBehaviour
     }
 
     //prevent player from rotating violently on collisions
-    void OnCollisionEnter()
+    void OnCollisionEnter(Collision c)
     {
         if (!hasAuthority)
             return;
-
+        ContactPoint[] cp = new ContactPoint[c.contactCount];
+        c.GetContacts(cp);
+        foreach (ContactPoint c1 in cp)
+        {
+            if (c1.point.y <= playerFeet.position.y && c1.point.y >= playerBase.position.y)
+            {
+                rb.position += new Vector3(0, c1.point.y - playerBase.position.y, 0);
+            }
+        }
         rb.angularVelocity = new Vector3(0, 0, 0);
     }
 

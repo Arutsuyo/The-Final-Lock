@@ -66,7 +66,7 @@ public class BorderlandsGameLock : MonoBehaviour
     public void UpdatedEvent(string state, int pos)
     {
         // Forcably go through and update them :P
-        
+        b[pos % SizeX][(pos - (pos % SizeX)) / SizeX] = !b[pos % SizeX][(pos - (pos % SizeX)) / SizeX]; // o-o
         totoggle[pos].GToggleState(RoomManager.instance.Player.cam);
         
     }
@@ -103,7 +103,7 @@ public class BorderlandsGameLock : MonoBehaviour
                 continue;
             // Toggle
             Debug.Log("RUNNING ON " + vi);
-            b[vi.x][vi.y] = !b[vi.x][vi.y];
+            //b[vi.x][vi.y] = !b[vi.x][vi.y];
             toggleables[vi.x + (vi.y * SizeX)].SendUpdate("" + (b[vi.x][vi.y] ? "1" : "0"));
         }
         // Could wait...or could do it now

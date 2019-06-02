@@ -76,7 +76,7 @@ public class RoomManager : MonoBehaviour
         StatusUpdatePacket IP = ms.ReadMessage<StatusUpdatePacket>();
         if (interactables.ContainsKey((uint)IP.objectID))
         {
-            interactables[(uint)IP.objectID].UpdateEvent(IP.interactableStatus);
+            interactables[(uint)IP.objectID].CmdUpdateEvent(IP.interactableStatus);
         }
         else
         {

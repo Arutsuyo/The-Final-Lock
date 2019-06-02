@@ -12,7 +12,6 @@ GameObject:
   - component: {fileID: 33000014097340908}
   - component: {fileID: 23000012539122088}
   - component: {fileID: 114000012119898328}
-  - component: {fileID: 114000013408908766}
   m_Layer: 0
   m_Name: Heart
   m_TagString: Untagged
@@ -29,7 +28,7 @@ Transform:
   m_GameObject: {fileID: 1000010714891294}
   m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
   m_LocalPosition: {x: -8.84, y: 0.55, z: 0.0006417077}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -96,34 +95,10 @@ MonoBehaviour:
   isFloating: 1
   isScaling: 1
   rotationAngle: {x: 0, y: 0, z: 10}
-  rotationSpeed: 10
-  floatSpeed: 0.04
-  floatRate: 0.5
-  startScale: {x: 1, y: 1, z: 1}
-  endScale: {x: 1.5, y: 1.5, z: 1.5}
+  rotationSpeed: 1
+  floatSpeed: 0.01
+  floatRate: 0.1
+  startScale: {x: 0.1, y: 0.1, z: 0.1}
+  endScale: {x: 0.15, y: 0.15, z: 0.15}
   scaleSpeed: 1
   scaleRate: 0.5
---- !u!114 &114000013408908766
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1000010714891294}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9ff967b7ed48f2441bcf509edf6b889a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  isAnimated: 0
-  isRotating: 0
-  isFloating: 0
-  isScaling: 0
-  rotationAngle: {x: 0, y: 0, z: 0}
-  rotationSpeed: 0
-  floatSpeed: 0
-  floatRate: 0
-  startScale: {x: 0, y: 0, z: 0}
-  endScale: {x: 0, y: 0, z: 0}
-  scaleSpeed: 0
-  scaleRate: 0

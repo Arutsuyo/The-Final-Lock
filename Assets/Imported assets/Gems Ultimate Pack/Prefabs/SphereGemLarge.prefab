@@ -28,7 +28,7 @@ Transform:
   m_GameObject: {fileID: 1000010728489230}
   m_LocalRotation: {x: -0.7071068, y: 0, z: 0, w: 0.7071068}
   m_LocalPosition: {x: -7.11, y: 4.77, z: 0.0000003168416}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.06666667, y: 0.06666671, z: 0.06666671}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -95,10 +95,10 @@ MonoBehaviour:
   isFloating: 1
   isScaling: 1
   rotationAngle: {x: 0, y: 0, z: 10}
-  rotationSpeed: 10
-  floatSpeed: 0.04
-  floatRate: 0.5
-  startScale: {x: 1, y: 1, z: 1}
-  endScale: {x: 1.5, y: 1.5, z: 1.5}
+  rotationSpeed: 1
+  floatSpeed: 0.01
+  floatRate: 0.1
+  startScale: {x: 0.06, y: 0.06, z: 0.06}
+  endScale: {x: 0.08, y: 0.08, z: 0.08}
   scaleSpeed: 1
   scaleRate: 0.5

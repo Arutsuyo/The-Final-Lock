@@ -32,8 +32,10 @@ public class CombinationLock : NetworkBehaviour
 	public CameraController curPlayer;
 	public Interactable ia;
 
-	// Lerp info
-	public float spinnerLerpFactor = 5f;
+    public GameLock gameLock;
+
+    // Lerp info
+    public float spinnerLerpFactor = 5f;
 	public float DoorLerpFactor = 1f;
 	public float cameraLerpTime = 3f;
 	public bool cutsceneFinished = false;
@@ -59,12 +61,14 @@ public class CombinationLock : NetworkBehaviour
 		isOpen = false;
 		inGame = false;
 		current = 0;
-		curState = new int[3];
+        
+		
 		targetStates = new Quaternion[3];
 
 		if (randomize)
 		{
-			for (int i = 0; i < 3; i++)
+            curState = new int[3];
+            for (int i = 0; i < 3; i++)
 			{
 				// Set combo target
 				combo.Add(UnityEngine.Random.Range(0, 10));
@@ -80,30 +84,33 @@ public class CombinationLock : NetworkBehaviour
 		}
 		else
 		{
-			// Set DEBUG settings
-			curState[0] = 2;
-			curState[1] =
-				curState[2] = 1;
-			combo.Add(1);
-			combo.Add(1);
-			combo.Add(1);
-			locks[0].transform.localRotation =
-				Quaternion.Euler(-36.0f * curState[0] + 36.0f, 0.0f, -90.0f);
-			locks[1].transform.localRotation =
-				locks[2].transform.localRotation =
-				Quaternion.Euler(-36.0f * curState[1] + 36.0f, 0.0f, -90.0f);
-			targetStates[0] =
-				targetStates[1] =
-				targetStates[2] =
-				Quaternion.Euler(-36.0f * combo[0] + 36.0f, 0.0f, -90.0f);
-		}
+            Debug.LogWarning(curState[0] + " " + curState[1] + " " + curState[2]);
+			combo.Add(curState[0]);
+			combo.Add(curState[1]);
+			combo.Add(curState[2]);
+            for (int i = 0; i < 3; i++)
+            {
+                // Set combo target
+                targetStates[i] = Quaternion.Euler(-36.0f * combo[i] + 36.0f, 0.0f, -90.0f);
+                Debug.Log(combo[i] + " " + targetStates[i].ToString() + " " + locks[i].transform.localRotation.ToString() + " " + curState[i]);
+
+                // Set current rotation
+                do
+                    curState[i] = UnityEngine.Random.Range(0, 10);
+                while (curState[i] == combo[i]);
+                locks[i].transform.localRotation = Quaternion.Euler(-36.0f * curState[i] + 36.0f, 0.0f, -90.0f);
+            }
+        }
 
 		PuzzleReady();
 	}
 
 	void Awake()
 	{
-		curState = new int[3];
+        if(curState.Length != 3)
+        {
+            curState = new int[3];
+        }
 		targetStates = new Quaternion[3];
 		glow = new GlowObject[] {
 			locks[0].GetComponent<GlowObject>(),
@@ -121,10 +128,15 @@ public class CombinationLock : NetworkBehaviour
 		if (combo.Count == 3)
 		{
 			Debug.Log("Getting addition 31.");
-			for (int i = 0; i < 3; i++)
-				targetStates[i] = Quaternion.Euler(-36.0f * combo[i] + 36.0f, 0.0f, -90.0f);
-
-			StartCoroutine(SCC());
+            for (int i = 0; i < 3; i++)
+            {
+                targetStates[i] = Quaternion.Euler(-36.0f * combo[i] + 36.0f, 0.0f, -90.0f);
+                do
+                    curState[i] = UnityEngine.Random.Range(0, 10);
+                while (curState[i] == combo[i]);
+                locks[i].transform.localRotation = Quaternion.Euler(-36.0f * curState[i] + 36.0f, 0.0f, -90.0f);
+            }
+            StartCoroutine(SCC());
 		}
 	}
 
@@ -143,10 +155,15 @@ public class CombinationLock : NetworkBehaviour
 		if (combo.Count == 3)
 		{
 			Debug.Log("Getting addition 3." + itemIndex);
-			for (int i = 0; i < 3; i++)
-				targetStates[i] = Quaternion.Euler(-36.0f * combo[i] + 36.0f, 0.0f, -90.0f);
-
-			if (!RoomManager.instance.CMMP.nm.net.isHost)
+            for (int i = 0; i < 3; i++)
+            {
+                targetStates[i] = Quaternion.Euler(-36.0f * combo[i] + 36.0f, 0.0f, -90.0f);
+                do
+                    curState[i] = UnityEngine.Random.Range(0, 10);
+                while (curState[i] == combo[i]);
+                locks[i].transform.localRotation = Quaternion.Euler(-36.0f * curState[i] + 36.0f, 0.0f, -90.0f);
+            }
+            if (!RoomManager.instance.CMMP.nm.net.isHost)
 				StartCoroutine(SCC());
 		}
 	}
@@ -228,6 +245,7 @@ public class CombinationLock : NetworkBehaviour
 	{
 		isOpen = true;
 		Debug.Log("Open the DOOR!");
+        gameLock.GFinished(RoomManager.instance.Player.cam);
 		StartCoroutine(OpenDoor());
 	}
 

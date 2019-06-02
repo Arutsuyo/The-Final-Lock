@@ -162,13 +162,18 @@ public class Interactable : NetworkBehaviour
 			//CmdTryPickUp(CampaignManagerMP.instance.nm.PLAYERUUID);
 		}
 	}
+    [Command]
+    public void CmdUpdateEvent(string status)
+    {
+        RpcUpdateEvent(status);
+    }
 
-    public void UpdateEvent(string status)
+    [ClientRpc]
+    public void RpcUpdateEvent(string status)
     {
         if (updateEvent != null)
             updateEvent(status);
     }
-
     public void SendUpdate(string status)
     {
         RoomManager.instance.CMMP.nm.net.SendToServer(MPMsgTypes.InteractionsUpdate, new StatusUpdatePacket() { objectID = (int)this.netId.Value, interactableStatus = status});

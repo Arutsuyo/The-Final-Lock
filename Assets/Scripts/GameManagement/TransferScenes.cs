@@ -11,6 +11,7 @@ public class TransferScenes : MonoBehaviour
 	public LoadSceneMode LSM;
 	public GameObject toHold;
 	public bool DestroyOnLoad = true;
+    /*
 	public void Update()
 	{
 		// Gotta check it here :|
@@ -31,4 +32,5 @@ public class TransferScenes : MonoBehaviour
 	{
 		Debug.Log("Loaded new scene!");
 	}
+    */
 }

@@ -3744,7 +3744,7 @@ Transform:
   m_GameObject: {fileID: 4470642106857274569}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 2, y: 2, z: 2}
   m_Children:
   - {fileID: 4470642107273156036}
   - {fileID: 4470642105898557799}
@@ -8162,6 +8162,7 @@ GameObject:
   - component: {fileID: 3106094191252410960}
   - component: {fileID: 7755947373241974037}
   - component: {fileID: 1307278742}
+  - component: {fileID: 1491409866}
   m_Layer: 0
   m_Name: Combination Game
   m_TagString: Untagged
@@ -8197,7 +8198,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5091d682695007c4c91e14801e807152, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  curState: 000000000000000000000000
+  curState: 030000000500000001000000
   current: 0
   hintText: {fileID: 5251212152212223052}
   locks:
@@ -8209,11 +8210,12 @@ MonoBehaviour:
   lockPosition: {fileID: 6851769970333200729}
   curPlayer: {fileID: 0}
   ia: {fileID: 7755947373241974037}
+  gameLock: {fileID: 1491409866}
   spinnerLerpFactor: 5
   DoorLerpFactor: 1
   cameraLerpTime: 0.75
   cutsceneFinished: 0
-  randomize: 1
+  randomize: 0
 --- !u!114 &3106094191252410960
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8275,3 +8277,15 @@ MonoBehaviour:
     i15: 0
   m_ServerOnly: 0
   m_LocalPlayerAuthority: 1
+--- !u!114 &1491409866
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8770855641748561529}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b1446b4d6fbc52468ee2745f6b1e994, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

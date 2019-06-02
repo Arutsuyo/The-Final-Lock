@@ -15,6 +15,7 @@ TagManager:
   - Tension
   - Key
   - HitMarkers
+  - SpawnLocation
   layers:
   - Default
   - TransparentFX

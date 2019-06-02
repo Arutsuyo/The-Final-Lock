@@ -22,12 +22,12 @@ public class SimpleMovementEvent : MonoBehaviour
         if (dir)
         {
             a = ms.from;
-            b = ms.where;
+            b = ms.to;
         }
         else
         {
             b = ms.from;
-            a = ms.where;
+            a = ms.to;
         }
 
         Vector3 position = a.position, scale =a.localScale;
@@ -79,7 +79,7 @@ public class MovementSet
 {
     public GameObject who;
     public float when;
-    public Transform where;
+    public Transform to;
     public Transform from;
     public AnimationCurve how;
 }

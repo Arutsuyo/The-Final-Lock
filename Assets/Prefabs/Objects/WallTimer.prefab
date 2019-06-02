@@ -1251,9 +1251,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 911589824874390411}
-  - component: {fileID: 911589824874390408}
   - component: {fileID: 911589824874390409}
   - component: {fileID: 911589824874390414}
+  - component: {fileID: 6402583541089078203}
   m_Layer: 0
   m_Name: WallTimer
   m_TagString: Untagged
@@ -1270,7 +1270,7 @@ Transform:
   m_GameObject: {fileID: 911589824874390410}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 13.51, y: 4.73, z: -19.946}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 2, y: 2, z: 2}
   m_Children:
   - {fileID: 911589824860408664}
   - {fileID: 911589825404673211}
@@ -1283,30 +1283,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &911589824874390408
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 911589824874390410}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: c622a210038e223498379bcd84758f23, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  TimeToCountTo: 0
-  DIG0: {fileID: 911589825952488146}
-  DIG1: {fileID: 911589825860798753}
-  DIG2: {fileID: 911589824224086626}
-  DIG3: {fileID: 911589825929854444}
-  TimeToRunFor: 0
-  TimeSpeed: 1
-  Debug: 0
-  Debug2: 0
-  isStopped: 0
-  AUS: {fileID: 911589824874390409}
-  Tick: {fileID: 911589824874390414}
 --- !u!82 &911589824874390409
 AudioSource:
   m_ObjectHideFlags: 0
@@ -1499,6 +1475,30 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &6402583541089078203
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 911589824874390410}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 42bedc53cf63b5f4eb311fb737b80cee, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  WT: {fileID: 0}
+  DIG0: {fileID: 911589825952488146}
+  DIG1: {fileID: 911589825860798753}
+  DIG2: {fileID: 911589824224086626}
+  DIG3: {fileID: 911589825929854444}
+  TimeToRunFor: 0
+  TimeSpeed: 1
+  AUS: {fileID: 911589824874390409}
+  Tick: {fileID: 911589824874390414}
+  isStopped: 0
+  TimeToCountTo: 0
+  prevTimeRem: 0
 --- !u!1 &911589824881749219
 GameObject:
   m_ObjectHideFlags: 0

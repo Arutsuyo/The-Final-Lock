@@ -120,8 +120,9 @@ public class CampaignManagerMP : MonoBehaviour
     }
     public void ShowLoseScreen(NetworkMessage nm1)
     {
-        Reticle.SetActive(false);
         Debug.Log("Hey Lose Screen!");
+        Reticle.SetActive(false);
+        
         SimpleStringMessage ssm = nm1.ReadMessage<SimpleStringMessage>();
         if(ssm.payload.Equals("You died."))
         {
@@ -164,8 +165,10 @@ public class CampaignManagerMP : MonoBehaviour
 	}
     public void OutOfTime()
     {
-        Debug.Log("Hey out of time!");
-        NetworkServer.SendByChannelToAll(MPMsgTypes.GameFailed, new SimpleStringMessage() { payload = "You died." }, 0);
+        Debug.LogWarning("Hey out of time!");
+        bool bb = NetworkServer.SendByChannelToAll(MPMsgTypes.GameFailed, new SimpleStringMessage() { payload = "You died." }, 0);
+        //bool bb = nm.net.SendToAllClients(MPMsgTypes.GameFailed, new SimpleStringMessage() { payload = "You died." }, 0);
+        Debug.LogWarning(bb);
     }
 	public IEnumerator HandleWakeup()
 	{
@@ -183,7 +186,11 @@ public class CampaignManagerMP : MonoBehaviour
 			{
 				yield return null;
 			}
+            // Find prefab o-o
+            GameObject spawn = GameObject.FindGameObjectWithTag("SpawnLocation");
+
 			playerObjs.Add(-3, Instantiate(SpawnPlayerPrefab));
+            playerObjs[-3].transform.position = spawn.transform.position;
 			NetworkServer.Spawn(playerObjs[-3]);
 			playerObjs[-3].GetComponent<NetworkIdentity>().AssignClientAuthority(nm.net.connections[UUIDs[0]]);
 			Debug.Log("BOY: " + UUIDs[0]);
@@ -192,9 +199,11 @@ public class CampaignManagerMP : MonoBehaviour
 
 			foreach (long ID in UUIDs)
 			{
+
 				Debug.Log(ID + " " + nm.net.GetConnection(ID).ToString());
 				if (ID < 0) { continue; }
 				playerObjs.Add(ID, Instantiate(SpawnPlayerPrefab));
+                playerObjs[ID].transform.position = spawn.transform.position + new Vector3(UnityEngine.Random.Range(-2f, 2f), 0, UnityEngine.Random.Range(-2f, 2f));
 				NetworkServer.SpawnWithClientAuthority(playerObjs[ID], nm.net.connections[ID]);
 				playerObjs[ID].GetComponent<PlayerMovementMP>().RpcChangeName(nm.userNames[ID]);
 			}
@@ -203,6 +212,7 @@ public class CampaignManagerMP : MonoBehaviour
 			{
 				yield return null;
 			}
+            Debug.Log("Registering timers...");
 			roomMngr.roomTimer.CmdStartTheTimers();
             roomMngr.roomTimer.wallTimer.TimerExpired += OutOfTime;
 		}
@@ -234,13 +244,19 @@ public class CampaignManagerMP : MonoBehaviour
 		}
 	}
 
-	private void RegisterListenersHere()
+	protected void RegisterListenersHere()
 	{
+        Debug.LogWarning("Register listeners...");
 		nm.net.RegisterHandler(MPMsgTypes.RoundStarting, SimpleStringPayload);
-		nm.net.RegisterHandler(MPMsgTypes.RoomInformation, RoomGenerationAcceptor);
-		nm.net.RegisterHandler(MPMsgTypes.GameFlow, GameFlowSM);
+        Debug.LogWarning("1");
+        nm.net.RegisterHandler(MPMsgTypes.RoomInformation, RoomGenerationAcceptor);
+        Debug.LogWarning("2");
+        nm.net.RegisterHandler(MPMsgTypes.GameFlow, GameFlowSM);
+        Debug.LogWarning("3");
         nm.net.RegisterHandler(MPMsgTypes.GameFailed, ShowLoseScreen);
+        Debug.LogWarning("4");
         nm.net.RegisterHandler(MPMsgTypes.GameSucceed, ShowWinScreen);
+        Debug.LogWarning("5");
 	}
 
 
@@ -412,6 +428,7 @@ public class CampaignManagerMP : MonoBehaviour
 		PlayerAnimation.SetTrigger("ToCampaign");
 		// Swap scenes to Room 1 empty...but for right now just to scene 2.
 		yield return new WaitForSecondsRealtime(1.3f);
+        //SceneManager
 		//AOP = SceneManager.LoadSceneAsync(1);
 		if (nm.net.isHost)
 		{

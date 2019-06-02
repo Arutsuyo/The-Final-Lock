@@ -1,5 +1,5 @@
 <Room>
-	<Name>Tutorial Room</Name>
+	<Name>Room 1</Name>
 	<HoloName>Cog</HoloName>
 	<NumRooms>1</NumRooms>
 	<isSinglePlayer /> 

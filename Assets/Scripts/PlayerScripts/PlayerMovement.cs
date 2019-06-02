@@ -8,8 +8,8 @@ using UnityEngine;
 public class PlayerMovement : PlayerMovementMP
 {
 	private Vector2 movement = new Vector2();
-
-	void Start()
+    
+    void Start()
 	{
 		//Prevent the player from falling over when moving
 		rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
@@ -39,14 +39,24 @@ public class PlayerMovement : PlayerMovementMP
 		if (cam.isInCutscene)
 			return;
 
-		movement.Normalize();
-		rb.velocity = movement * moveSpeed;
-	}
+        movement.Normalize();
+        float ff = rb.velocity.y;
+        rb.velocity = rb.rotation * movement * moveSpeed + new Vector3(0, ff, 0);
+    }
 
 	//prevent player from rotating violently on collisions
-	void OnCollisionEnter()
+	void OnCollisionEnter(Collision c)
 	{
-		rb.angularVelocity = new Vector3(0, 0, 0);
+        ContactPoint[] cp = new ContactPoint[c.contactCount];
+        c.GetContacts(cp);
+        foreach(ContactPoint c1 in cp)
+        {
+            if(c1.point.y <= playerFeet.position.y && c1.point.y >= playerBase.position.y)
+            {
+                rb.position += new Vector3(0, c1.point.y - playerBase.position.y, 0);
+            }
+        }
+        rb.angularVelocity = new Vector3(0, 0, 0);
 	}
 
 	void OnCollisionStay()

@@ -65,6 +65,7 @@ public class CampaignManager : CampaignManagerMP
         nm.StartSPServer(25565, this);
         nm.net.ClientSceneChanged += this.SendServerReady;
         // But actually you are hosting a single player world :D
+        RegisterListenersHere();
         StartCoroutine(TransferRooms());
 	}
 

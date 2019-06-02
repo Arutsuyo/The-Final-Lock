@@ -247,7 +247,7 @@ MonoBehaviour:
   toPlay:
   - who: {fileID: 4840483047633011438}
     when: 0.2
-    where: {fileID: 4840483047455253894}
+    to: {fileID: 4840483047455253894}
     from: {fileID: 4840483049069969582}
     how:
       serializedVersion: 2
