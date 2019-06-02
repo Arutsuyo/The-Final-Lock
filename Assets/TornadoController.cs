@@ -9,7 +9,7 @@ public class TornadoController : MonoBehaviour
     public AudioSource heavyRain;
     public AudioSource wind;
     public AudioSource[] lightning;
-
+    public Light flasher;
     public WallTimer wt;
     // Start is called before the first frame update
     void Start()
@@ -52,6 +52,7 @@ public class TornadoController : MonoBehaviour
         // For 60% - 100% the wind's pitch will ramp up
         // Plus other world effects :D
         float ratio =1 - ( timeRem / startTime);
+        RenderSettings.fogDensity = Mathf.Lerp(0,0.15f,(ratio*ratio));
         if (ratio <= .3f)
         {
             lightRain.volume = Mathf.Lerp(0, 1f, ratio / .3f);
@@ -87,11 +88,30 @@ public class TornadoController : MonoBehaviour
                     if ((!au.isPlaying) && Mathf.Lerp(0, .5f, (ratio - .5f) / .5f) > Random.Range(0, 5f))
                     {
                         au.pitch = Random.Range(.95f, 1.05f);
+                        StartCoroutine(flash());
                         au.Play();
                     }
                 }
             }
         }
+    }
+    bool isRunning = false;
+    IEnumerator flash()
+    {
+        if (isRunning)
+        {
+            yield break;
+        }
+        isRunning = true;
+        float dt = 1.0f + Time.time;
+        flasher.intensity = 10f;
+        while(dt - Time.time >= 0)
+        {
+            flasher.intensity = Mathf.Lerp(0f, 10f, Mathf.Pow(Mathf.Max(0,(dt-Time.time-.5f)/.5f), 3));
+            yield return null;
+        }
+        flasher.intensity = 0f;
+        isRunning = false;
     }
 
     // Update is called once per frame
