@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FloodController : MonoBehaviour
+public class TutorialController : MonoBehaviour
 {
     public WallTimer wt;
-    public GameObject water;
-    public GameObject cam;
+    public GameObject tutorialText;
+    public int time;
 
     // Start is called before the first frame update
     void Start()
@@ -23,8 +23,9 @@ public class FloodController : MonoBehaviour
             startTime = timeRem;
         }
 
-        float ratio = 1 - (timeRem / startTime);
-
-        water.transform.position = Vector3.Lerp(new Vector3(0, 0, 0), new Vector3(0, 0.7f, 0), ratio);
+        if (startTime - timeRem > time)
+        {
+            tutorialText.SetActive(false);
+        }
     }
 }
