@@ -2,7 +2,7 @@
 	<Name>Light Puzzle Tutorial Room</Name>
 	<HoloName>Cog</HoloName>
 	<NumRooms>1</NumRooms>
-	<RoomID>2</RoomID>
+	<RoomID>5</RoomID>
 	<isSinglePlayer /> 
 	<SizeofRooms>
 		<RoomSize>1</RoomSize>

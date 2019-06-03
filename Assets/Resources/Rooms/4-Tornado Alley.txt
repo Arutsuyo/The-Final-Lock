@@ -1,6 +1,7 @@
 <Room>
-	<Name>Room 3</Name>
+	<Name>Tornado Alley</Name>
 	<HoloName>Cog</HoloName>
+	<RoomID>2</RoomID>
 	<NumRooms>1</NumRooms>
 	<isSinglePlayer /> 
 	<SizeofRooms>
@@ -9,11 +10,11 @@
 	<UseRandomGeneration>0</UseRandomGeneration>
 	<Puzzle>
 		<Mechanism>
-			<ID>1</ID>
+			<ID>2</ID>
 			<Keys>
 				<Key>
 					<Type>0</Type>
-					<ID>1</ID>
+					<ID>2</ID>
 					<Variant>1</Variant>
 				</Key>
 			</Keys>
