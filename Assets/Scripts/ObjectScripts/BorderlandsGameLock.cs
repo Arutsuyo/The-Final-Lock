@@ -8,6 +8,7 @@ public class BorderlandsGameLock : MonoBehaviour
     public GameLock gameLock; 
     public GameLock[] totoggle; // Must be of toggable variant...
     public bool[][] b;
+    public bool[] bbbb;
     public bool finished;
     public int SizeX;
     public int SizeY;
@@ -16,7 +17,23 @@ public class BorderlandsGameLock : MonoBehaviour
     public IEnumerator SendDelayed(float f, int i)
     {
         yield return new WaitForSeconds(f);
-        toggleables[i].SendUpdate("1");
+        toggleables[i].SendUpdate("1"); 
+    }
+    public void Start()
+    {
+        for (int i = 0; i < toggleables.Length; i++)
+        {
+            int k = i; // Ensures that k is the correct local value when creating below.
+            toggleables[i].interactEvent += (c => Interacted(c, k));
+            toggleables[i].updateEvent += (c => UpdatedEvent(c, k));
+            toggleables[i].gameInteractComplete += GameFin;
+        }
+        bbbb = new bool[SizeX * SizeY];
+        b = new bool[SizeX][];
+        for(int i =0; i < SizeX; i++)
+        {
+            b[i] = new bool[SizeY];
+        }
     }
     public void Release() // Aka, allowed to generate....
     {
@@ -40,14 +57,14 @@ public class BorderlandsGameLock : MonoBehaviour
         for(int i = 0; i < toggleables.Length; i++)
         {
             int k = i; // Ensures that k is the correct local value when creating below.
-            toggleables[i].interactEvent += (c => Interacted(c, k));
-            toggleables[i].updateEvent += (c=>UpdatedEvent(c, k));
-            toggleables[i].gameInteractComplete += GameFin;
             if(b[i % SizeX][(i-(i % SizeX)) / SizeX])
             {
-                StartCoroutine(SendDelayed(1, i));
+                StartCoroutine(SendDelayed(2f, i));
+                b[i % SizeX][(i - (i % SizeX)) / SizeX] = false; // will IMMEDIATELY be flipped back d:
             }
         }
+        
+        
     }
 
     public void GameFin()
@@ -68,7 +85,7 @@ public class BorderlandsGameLock : MonoBehaviour
         // Forcably go through and update them :P
         b[pos % SizeX][(pos - (pos % SizeX)) / SizeX] = !b[pos % SizeX][(pos - (pos % SizeX)) / SizeX]; // o-o
         totoggle[pos].GToggleState(RoomManager.instance.Player.cam);
-        
+        bbbb[pos] = b[pos % SizeX][(pos - (pos % SizeX)) / SizeX];
     }
 
     public bool Interacted(CameraController cc, int pos)
@@ -97,34 +114,40 @@ public class BorderlandsGameLock : MonoBehaviour
         // Finally flip me :D
         ptt.Add(new Vector2Int(X, Y));
 
-        foreach(Vector2Int vi in ptt)
+
+        // Could wait...or could do it now
+        bool CNA = true;
+
+        for (int i = 0; i < SizeX * SizeY; i++)
+        {
+            int x = i % SizeX;
+            int y = (i - x) / SizeX;
+            bool bj = b[x][y];
+            Debug.Log(x + " " + y + " " + bj + " " + ptt.Contains(new Vector2Int(x, y)));
+            if (CNA)
+            {
+
+                if ((ptt.Contains(new Vector2Int(x, y)) && (bj)) || ((!ptt.Contains(new Vector2Int(x, y))) && !bj))
+                {
+                    CNA = false;
+                }
+            }
+            
+        }
+                   
+        foreach (Vector2Int vi in ptt)
         {
             if (vi.x < 0 || vi.y < 0 || vi.x >= SizeX || vi.y >= SizeY)
                 continue;
             // Toggle
             Debug.Log("RUNNING ON " + vi);
             //b[vi.x][vi.y] = !b[vi.x][vi.y];
-            toggleables[vi.x + (vi.y * SizeX)].SendUpdate("" + (b[vi.x][vi.y] ? "1" : "0"));
+            toggleables[vi.x + (vi.y * SizeX)].SendUpdate("1");
         }
-        // Could wait...or could do it now
-        int x = 0;
-        foreach(bool[] bg in b)
-        {
-            int y = 0;
-            foreach(bool bj in bg)
-            {
-                
-                if ((ptt.Contains(new Vector2Int(x,y)) && (bj))||(!ptt.Contains(new Vector2Int(x, y)) && !bj))
-                {
-                    return false;
-                }
-                y++;
-            }
-            x++;
-        }
+        if (!CNA) { return false; }
         // Done :D
         // We should get a SF back....
-        foreach(Interactable c in toggleables)
+        foreach (Interactable c in toggleables)
         {
             c.SendSF();
         }
@@ -132,11 +155,17 @@ public class BorderlandsGameLock : MonoBehaviour
         // Final check see if everything toggled
         return false;
     }
-    bool hasUpdated = false;
+    public bool hasUpdated = false;
     public void Update()
     {
-        if (hasUpdated)
+        if (hasUpdated || RoomManager.instance == null || RoomManager.instance.CMMP == null)
             return;
+        if (!RoomManager.instance.CMMP.nm.net.isHost && !hasUpdated)
+        {
+            hasUpdated = true;
+            // D:
+            return;
+        }
         hasUpdated = true;
         Release();
 

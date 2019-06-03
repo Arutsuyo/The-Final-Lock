@@ -31,7 +31,7 @@ public class Interactable : NetworkBehaviour
 
 	private GlowObject glow;
 	private bool inView;
-	public bool NeedCheckOwner = true;
+	public bool NeedCheckOwner = false;
 	private bool hasAwaked = false;
 	public long owner = -10; // Not used
 
