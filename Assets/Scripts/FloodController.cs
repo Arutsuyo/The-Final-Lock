@@ -26,6 +26,6 @@ public class FloodController : MonoBehaviour
 
         float ratio = 1 - (timeRem / startTime);
 
-        water.transform.position = Vector3.Lerp(new Vector3(0, 0, 0), new Vector3(0, 2, 0), ratio);
+        water.transform.position = Vector3.Lerp(new Vector3(0, 0, 0), new Vector3(0, 0.7f, 0), ratio);
     }
 }
