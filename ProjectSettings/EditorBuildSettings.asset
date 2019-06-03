@@ -17,4 +17,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Tornado Alley.unity
     guid: 90ff3235c06567f43ba2ce650b9c3733
+  - enabled: 1
+    path: Assets/Scenes/Flooded.unity
+    guid: c7a4fb584322f12478ac455350d2ed48
   m_configObjects: {}
