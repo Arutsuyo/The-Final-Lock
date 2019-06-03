@@ -1,7 +1,8 @@
 <Room>
-	<Name>Room 1</Name>
+	<Name>Tutorial</Name>
 	<HoloName>Cog</HoloName>
 	<NumRooms>1</NumRooms>
+	<RoomID>1</RoomID>
 	<isSinglePlayer /> 
 	<SizeofRooms>
 		<RoomSize>1</RoomSize>
