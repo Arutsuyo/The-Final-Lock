@@ -14,21 +14,21 @@ public class SimpleHopperEvent : MonoBehaviour
         locks.GameStateToggle += Locks_Toggle;
     }
 
-    private void Locks_GameFinished(CameraController cc)
+    private void Locks_GameFinished(CameraController cc, int _)
     {
         foreach(GameLock g in toHopTo)
         {
             g.GFinished(cc);
         }
     }
-    private void Locks_Set(CameraController cc, bool state)
+    private void Locks_Set(CameraController cc, bool state, int _)
     {
         foreach(GameLock g in toHopTo)
         {
             g.GSetState(cc, state);
         }
     }
-    private void Locks_Toggle(CameraController cc)
+    private void Locks_Toggle(CameraController cc, int _)
     {
         foreach(GameLock g in toHopTo)
         {

@@ -25,7 +25,7 @@ public class RendevousPuzzle : MonoBehaviour
         toFireUpon.GFinished(RoomManager.instance.Player.cam);
     }
 
-    private void Trigger_GameStateToggle(CameraController cc)
+    private void Trigger_GameStateToggle(CameraController cc, int _)
     {
         if (temp) { temp = false;  return; } // To prevent loopback :|
         if (FO)

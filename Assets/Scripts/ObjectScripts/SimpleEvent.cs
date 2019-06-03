@@ -17,7 +17,7 @@ public class SimpleEvent : MonoBehaviour
         locks.GameStateToggle += Locks_Toggle;
     }
 
-	private void Locks_GameFinished(CameraController cc)
+	private void Locks_GameFinished(CameraController cc, int _)
 	{
 		// Dispatch a game finished... o-o
 		foreach (GameObject go in toDisable)
@@ -26,7 +26,7 @@ public class SimpleEvent : MonoBehaviour
 		foreach (GameObject go in toEnable)
 			go.SetActive(true);
 	}
-    private void Locks_Set(CameraController cc, bool state)
+    private void Locks_Set(CameraController cc, bool state, int _)
     {
         if (toggle == state)
         {
@@ -38,7 +38,7 @@ public class SimpleEvent : MonoBehaviour
         foreach (GameObject go in toEnable)
             go.SetActive(state);
     }
-    private void Locks_Toggle(CameraController cc)
+    private void Locks_Toggle(CameraController cc, int _)
     {
         toggle = !toggle;
         foreach (GameObject go in toDisable)

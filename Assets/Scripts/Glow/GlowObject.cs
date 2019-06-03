@@ -23,8 +23,8 @@ public class GlowObject : MonoBehaviour
 	}
 
 	private List<Material> _materials = new List<Material>();
-	private Color _currentColor;
-	private Color _targetColor;
+	public Color _currentColor;
+	public Color _targetColor;
 
 	void Start()
 	{
@@ -58,7 +58,7 @@ public class GlowObject : MonoBehaviour
 		for (int i = 0; i < _materials.Count; i++)
 			_materials[i].SetColor("_GlowColor", _currentColor);
 
-		if (_currentColor.Equals(_targetColor))
-			enabled = false;
+//		if (_currentColor.Equals(_targetColor))
+	//		enabled = false;
 	}
 }

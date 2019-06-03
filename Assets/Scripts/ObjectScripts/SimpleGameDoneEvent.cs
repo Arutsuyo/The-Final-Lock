@@ -10,7 +10,7 @@ public class SimpleGameDoneEvent : MonoBehaviour
     {
         locks.GameFinished += Locks_GameFinished;
     }
-    private void Locks_GameFinished(CameraController cc)
+    private void Locks_GameFinished(CameraController cc, int _)
     {
         if (RoomManager.instance.CMMP.nm.net.isHost)
         {

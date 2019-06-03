@@ -15,14 +15,14 @@ public class SimpleAnimationEvent : MonoBehaviour
         locks.GameStateSet += Locks_Set;
         locks.GameStateToggle += Locks_Toggle;
     }
-    private void Locks_GameFinished(CameraController cc)
+    private void Locks_GameFinished(CameraController cc, int _)
     {
         foreach(AnimationSet ss in toPlay)
         {
             ss.anim.Play(ss.animationStateName);// :D
         }
     }
-    private void Locks_Set(CameraController cc, bool state)
+    private void Locks_Set(CameraController cc, bool state, int _)
     {
         if (toggle == state)
         {
@@ -33,7 +33,7 @@ public class SimpleAnimationEvent : MonoBehaviour
             ss.anim.Play(ss.animationStateName);
         }
     }
-    private void Locks_Toggle(CameraController cc)
+    private void Locks_Toggle(CameraController cc, int _)
     {
         toggle = !toggle;
         foreach (AnimationSet ss in (toggle ? toPlay : toPlayBackwards))

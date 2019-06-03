@@ -43,7 +43,7 @@ public class SimpleMovementEvent : MonoBehaviour
         ms.who.transform.localScale = b.localScale;
         ms.who.transform.rotation = b.rotation;
     }
-    private void Locks_GameFinished(CameraController cc)
+    private void Locks_GameFinished(CameraController cc, int _)
     {
         StopAllCoroutines();
         foreach (MovementSet ss in toPlay)
@@ -51,7 +51,7 @@ public class SimpleMovementEvent : MonoBehaviour
             StartCoroutine(smm(ss, true));
         }
     }
-    private void Locks_Set(CameraController cc, bool state)
+    private void Locks_Set(CameraController cc, bool state, int _)
     {
         if(toggle == state)
         {
@@ -63,7 +63,7 @@ public class SimpleMovementEvent : MonoBehaviour
             StartCoroutine(smm(ss, state));
         }
     }
-    private void Locks_Toggle(CameraController cc)
+    private void Locks_Toggle(CameraController cc, int _)
     {
         toggle = !toggle;
         StopAllCoroutines();
