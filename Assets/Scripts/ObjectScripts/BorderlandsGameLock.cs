@@ -107,15 +107,20 @@ public class BorderlandsGameLock : MonoBehaviour
             toggleables[vi.x + (vi.y * SizeX)].SendUpdate("" + (b[vi.x][vi.y] ? "1" : "0"));
         }
         // Could wait...or could do it now
+        int x = 0;
         foreach(bool[] bg in b)
         {
+            int y = 0;
             foreach(bool bj in bg)
             {
-                if (!bj)
+                
+                if ((ptt.Contains(new Vector2Int(x,y)) && (bj))||(!ptt.Contains(new Vector2Int(x, y)) && !bj))
                 {
                     return false;
                 }
+                y++;
             }
+            x++;
         }
         // Done :D
         // We should get a SF back....

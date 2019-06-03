@@ -17,4 +17,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Room 5.unity
     guid: 90ff3235c06567f43ba2ce650b9c3733
+  - enabled: 1
+    path: Assets/Scenes/Railway.unity
+    guid: 94da5f4f9a9544149836e75b5eae876a
   m_configObjects: {}
