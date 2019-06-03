@@ -18,3 +18,9 @@ https://assetstore.unity.com/packages/3d/props/simple-gems-ultimate-animated-cus
 Sounds:
 Fire:
 http://ccmixter.org/files/mindmapthat/49296
+
+Ocean:
+http://soundbible.com/1935-Ocean-Waves.html
+
+Waves Crashing: 
+http://soundbible.com/309-Wave-Crashing-At-Beach.html
