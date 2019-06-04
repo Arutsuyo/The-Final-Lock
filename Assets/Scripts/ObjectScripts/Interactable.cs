@@ -22,12 +22,12 @@ public class Interactable : NetworkBehaviour
 
 
 	// These are the 2 events, triggered by the player camera raycast
-	public event EventHandler lookEvent = delegate { };
-	public event TryEventHandler interactEvent;
-	public event SimpleEventHandler escapeInteractEvent = delegate { };
-    public event UpdateHandler updateEvent = delegate { };
-	public event SimpleEventHandler gameInteractComplete = delegate { };
-    public event SimpleEventHandler interactDestroyed = delegate { };
+	public virtual event EventHandler lookEvent = delegate { };
+	public virtual event TryEventHandler interactEvent;
+	public virtual event SimpleEventHandler escapeInteractEvent = delegate { };
+    public virtual event UpdateHandler updateEvent = delegate { };
+	public virtual event SimpleEventHandler gameInteractComplete = delegate { };
+    public virtual event SimpleEventHandler interactDestroyed = delegate { };
 
 	private GlowObject glow;
 	private bool inView;
@@ -43,7 +43,7 @@ public class Interactable : NetworkBehaviour
 	}
 
 	[ClientRpc]
-	public void RpcServerFinished()
+	public virtual void RpcServerFinished()
 	{
 		gameInteractComplete();
 	}
@@ -142,7 +142,7 @@ public class Interactable : NetworkBehaviour
 	}
 
 	// Fires Interact event
-	public void Interact(CameraController cc)
+	public virtual void Interact(CameraController cc)
 	{
 		//Debug.Log("Interacted with " + gameObject.name);
 		bool succ = false;
