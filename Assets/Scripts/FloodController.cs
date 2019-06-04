@@ -12,7 +12,6 @@ public class FloodController : MonoBehaviour
     void Start()
     {
         wt.TimerTicked += Wt_TimerTicked;
-
     }
 
     private float startTime = -1;

@@ -15,6 +15,15 @@ https://assetstore.unity.com/packages/3d/environments/low-poly-megapack-lite-136
 Simple Gems Ultimate
 https://assetstore.unity.com/packages/3d/props/simple-gems-ultimate-animated-customizable-pack-73764
 
-Sounds:
+SOUNDS
+Main Menu Music:
+https://www.bensound.com/royalty-free-music/track/the-lounge
+
 Fire:
 http://ccmixter.org/files/mindmapthat/49296
+
+Ocean:
+http://soundbible.com/1935-Ocean-Waves.html
+
+Waves Crashing: 
+http://soundbible.com/309-Wave-Crashing-At-Beach.html
