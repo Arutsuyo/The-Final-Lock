@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 8725400281145697074}
   - component: {fileID: 8725400281145697085}
   - component: {fileID: 8725400281145697084}
-  - component: {fileID: 8725400281145697087}
   - component: {fileID: 8725400281145697081}
   m_Layer: 0
   m_Name: Lever
@@ -80,19 +79,6 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!65 &8725400281145697087
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8725400281145697080}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &8725400281145697081
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -120,6 +106,7 @@ GameObject:
   - component: {fileID: 8725400281434705561}
   - component: {fileID: 8725400281434705567}
   - component: {fileID: 8725400281434705564}
+  - component: {fileID: 2259859178310116517}
   m_Layer: 0
   m_Name: Lever
   m_TagString: Tension
@@ -170,6 +157,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   GlowColor: {r: 0.10194911, g: 0.42557845, b: 0.745283, a: 0}
   LerpFactor: 10
+  _currentColor: {r: 0, g: 0, b: 0, a: 0}
+  _targetColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!114 &8725400281434705564
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -203,6 +192,19 @@ MonoBehaviour:
     i15: 0
   m_ServerOnly: 0
   m_LocalPlayerAuthority: 1
+--- !u!65 &2259859178310116517
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8725400281434705560}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.3, y: 0.1, z: 0.5}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &8725400282696351664
 GameObject:
   m_ObjectHideFlags: 0
@@ -214,7 +216,6 @@ GameObject:
   - component: {fileID: 8725400282696351665}
   - component: {fileID: 8725400282696351668}
   - component: {fileID: 8725400282696351671}
-  - component: {fileID: 8725400282696351670}
   m_Layer: 0
   m_Name: Cube (2)
   m_TagString: Tension
@@ -281,16 +282,3 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!65 &8725400282696351670
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8725400282696351664}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}

@@ -204,7 +204,7 @@ GameObject:
   - component: {fileID: 5137349646938055256}
   - component: {fileID: 551555730190020220}
   m_Layer: 0
-  m_Name: Shape Puzzle 1
+  m_Name: Shape Puzzle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -304,6 +304,12 @@ MonoBehaviour:
   left: 0
   mid: 0
   right: 0
+  timeCurve:
+    serializedVersion: 2
+    m_Curve: []
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
   LKey: {fileID: 0}
   MKey: {fileID: 0}
   RKey: {fileID: 0}
@@ -336,6 +342,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   GlowColor: {r: 0.110137075, g: 0.52151656, b: 0.7075472, a: 0}
   LerpFactor: 10
+  _currentColor: {r: 0, g: 0, b: 0, a: 0}
+  _targetColor: {r: 0, g: 0, b: 0, a: 0}
 --- !u!114 &4503335879523177415
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -410,6 +418,7 @@ MonoBehaviour:
   locks: {fileID: 5137349646938055256}
   toEnable: []
   toDisable: []
+  toggle: 0
 --- !u!1 &1558793885470686217
 GameObject:
   m_ObjectHideFlags: 0
