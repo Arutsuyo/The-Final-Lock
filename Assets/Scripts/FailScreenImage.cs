@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 public class FailScreenImage : FailScreenScript
 {
-    private new Text text;
+    private readonly new Text text;
     public Image image;
     public new event SimpleDelegate Finished = delegate { };
     public new void StartFadeIn()
