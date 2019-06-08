@@ -6,7 +6,6 @@ public class FloodController : MonoBehaviour
 {
     public WallTimer wt;
     public GameObject water;
-    public GameObject fire;
     public float waterLevel;
 
     // Start is called before the first frame update
@@ -27,8 +26,5 @@ public class FloodController : MonoBehaviour
         float ratio = 1 - (timeRem / startTime);
 
         water.transform.position = Vector3.Lerp(new Vector3(0, 0, 0), new Vector3(0, waterLevel, 0), ratio);
-
-        if (water.transform.position.y > fire.transform.position.y)
-            fire.transform.position = new Vector3(fire.transform.position.x, water.transform.position.y, fire.transform.position.z);
     }
 }
