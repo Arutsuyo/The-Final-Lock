@@ -24,6 +24,8 @@ public class CameraController : MonoBehaviour
 	public float yaw = 0.0f;
 	public float pitch = 0.0f;
 
+    public GameObject showZoomWindow;
+
 	[Header("Interactive Variables")]
 	public float interactDistance = 20f;
 	public Image centerMarker; // Center Marker
@@ -33,16 +35,39 @@ public class CameraController : MonoBehaviour
 	public GameObject iconKey;
 	private bool showMarkers; // Set if going into a mini game
 
+    [Header("Hints")]
+    public List<bool> hintRemoved = new List<bool>();
+    public List<string> hints = new List<string>();
+    public Dictionary<string, int> hintPos = new Dictionary<string, int>();
+    public Dictionary<int, float> decodedPercent = new Dictionary<int, float>();
+    public List<int> availableHints = new List<int>();
+    public HintCanvasSystem HCS;
 	// Set during update to see if the player wants to interact.
 	private bool interact = false;
+    
+    [Header("Starting GameLock")]
+    public GameLock startingLock;
+    public void RecalculateHints()
+    {
+        // UGH
+       // Tells the HCS to do stuff
+       if(availableHints.Count <= HCS.index)
+        {
+            HCS.SwapTheCards(-1);
+        }
+        else
+        {
+            HCS.SwapTheCards(-1);
+        }
+    }
 
 	private void Start()
 	{
 		Cursor.visible = false;
 		Cursor.lockState = CursorLockMode.Locked;
 		showMarkers = true;
-		//WavMusicConvert.register(WavMusicConvert.ConvertFromBytes(WavMusicConvert.ReadBytes("./Assets/Music/Censored.wav"), "Censored.wav"), "Censored.wav");
-
+        //WavMusicConvert.register(WavMusicConvert.ConvertFromBytes(WavMusicConvert.ReadBytes("./Assets/Music/Censored.wav"), "Censored.wav"), "Censored.wav");
+        startingLock.GFinished(this);
 		if (!hitMarker)
 		{
 			Debug.LogError("Add the UI/Markers prefab to the overlay canvas and" +
@@ -177,6 +202,21 @@ public class CameraController : MonoBehaviour
 
 		// Interact with whatever we might be looking at after movement
 		CheckForObject();
+
+        if (!isInCutscene)
+        {
+            if (Input.GetKeyDown(KeyCode.LeftControl))
+            {
+                showZoomWindow.SetActive(true);
+            }else if (Input.GetKeyUp(KeyCode.LeftControl))
+            {
+                showZoomWindow.SetActive(false);
+            }
+        }
+        else
+        {
+            showZoomWindow.SetActive(false);
+        }
 	}
 
 }

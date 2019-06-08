@@ -14,6 +14,9 @@ public class PlayerMovement : PlayerMovementMP
 		//Prevent the player from falling over when moving
 		rb.constraints = RigidbodyConstraints.FreezeRotationX | RigidbodyConstraints.FreezeRotationZ;
         GameObject go = GameObject.FindGameObjectWithTag("MainCamera");
+        go.transform.SetParent(childCameraPosition);
+        go.transform.localPosition = Vector3.zero;
+        go.transform.localRotation = Quaternion.identity;
         cam = go.GetComponent<CameraController>();
         cam.player = rb.gameObject;
         cam.enabled = true;
