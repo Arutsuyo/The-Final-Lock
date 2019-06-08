@@ -24,7 +24,7 @@ public class TutorialController : MonoBehaviour
             startTime = timeRem;
             cc = tutorial.color;
         }
-        tutorial.color = Color.Lerp(new Color(0, 0, 0, 0), cc, (startTime - timeRem) / ((float)time));
+        tutorial.color = Color.Lerp(new Color(0, 0, 0, 0), cc,1-( (startTime - timeRem) / ((float)time)));
         if (startTime - timeRem > time)
         {
             tutorialText.SetActive(false);
