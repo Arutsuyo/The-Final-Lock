@@ -29,6 +29,9 @@ public class HintCanvasSystem : MonoBehaviour
     public Text percent;
     public float swapSpeed = 1.25f;
 
+    [Header("Hint Speed")]
+    public float hintRevealSpeed = .25f;
+
     private bool isUpdating = false;
     public int index = 0;
     public void SwapTheCards(int dir)
@@ -175,7 +178,7 @@ public class HintCanvasSystem : MonoBehaviour
         }
         if (Input.GetKey(KeyCode.M) && direction1 == 1 && index != -1)
         {
-            cc.decodedPercent[cc.availableHints[index]] = Mathf.Min(1, cc.decodedPercent[cc.availableHints[index]] + Time.deltaTime * 0.1f);
+            cc.decodedPercent[cc.availableHints[index]] = Mathf.Min(1, cc.decodedPercent[cc.availableHints[index]] + Time.deltaTime * hintRevealSpeed);
         }
         position = Mathf.Max(0, Mathf.Min(1, position + speed * direction1*Time.deltaTime));
         toMove.transform.position = Vector3.Lerp(pos0.transform.position, pos1.transform.position, anim.Evaluate(position));

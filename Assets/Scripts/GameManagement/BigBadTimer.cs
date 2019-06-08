@@ -19,10 +19,10 @@ public class BigBadTimer : TimerScript
     {
         if(Mathf.Repeat(timeRem, 1f) > Mathf.Repeat(prevTimeRem, 1f))
         {
-            Tick.Play();
+            if (Tick.enabled) { Tick.Play(); }
         }
         if (timeRem <= 60f && prevTimeRem > 60f)
-            AUS.Play();
+            if (AUS.enabled) { AUS.Play(); }
         int LHS;
         int RHS;
         if (timeRem < 60.0f)
