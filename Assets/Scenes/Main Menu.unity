@@ -5097,7 +5097,7 @@ MonoBehaviour:
   Reticle: {fileID: 0}
   countDone: 0
   startControl: {fileID: 2147450805}
-  ActiveID: 0
+  ActiveID: 2
   Port: 0
   roomMngr: {fileID: 0}
   Rooms: []
@@ -7357,7 +7357,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.00036621094, y: 0.0002746582}
+  m_AnchoredPosition: {x: 0.00036621094, y: 0.000030517578}
   m_SizeDelta: {x: 0, y: 300}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &954943078
@@ -7941,7 +7941,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.00036621094, y: 0.00036621094}
+  m_AnchoredPosition: {x: 0.00036621094, y: 0.0004272461}
   m_SizeDelta: {x: 0, y: 300}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &1019301146
@@ -11748,7 +11748,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 329369602}
   m_HandleRect: {fileID: 329369601}
   m_Direction: 2
-  m_Value: 0
+  m_Value: 1
   m_Size: 0.99999964
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -12620,7 +12620,7 @@ MonoBehaviour:
   Reticle: {fileID: 0}
   countDone: 0
   startControl: {fileID: 0}
-  ActiveID: 0
+  ActiveID: 2
   Port: 0
   roomMngr: {fileID: 0}
   Rooms: []
@@ -20689,7 +20689,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.00000011303861, y: 0.000017288792}
+  m_AnchoredPosition: {x: 0.00000011303861, y: -0.0000071580484}
   m_SizeDelta: {x: 0, y: 300}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &2139289758
