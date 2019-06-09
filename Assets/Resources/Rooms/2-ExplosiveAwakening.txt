@@ -1,8 +1,8 @@
 <Room>
-	<Name>Light Puzzle Tutorial Room</Name>
+	<Name>Explosive Awakening</Name>
 	<HoloName>Cog</HoloName>
 	<NumRooms>1</NumRooms>
-	<RoomID>5</RoomID>
+	<RoomID>1</RoomID>
 	<isSinglePlayer /> 
 	<SizeofRooms>
 		<RoomSize>1</RoomSize>
