@@ -32,7 +32,7 @@ public class ButtonLock : MonoBehaviour
         gameLock.GToggleState(RoomManager.instance.Player.cam);
     }
 
-	public bool interacted(CameraController cc)
+	public virtual bool interacted(CameraController cc)
 	{
         if (finishedObj && !repeatable)
             return false;
