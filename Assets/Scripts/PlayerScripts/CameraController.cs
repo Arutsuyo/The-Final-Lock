@@ -26,6 +26,9 @@ public class CameraController : MonoBehaviour
 
     public GameObject showZoomWindow;
 
+    [Header("Inventory")]
+    public InventoryProtector IVP;
+
 	[Header("Interactive Variables")]
 	public float interactDistance = 20f;
 	public Image centerMarker; // Center Marker
@@ -50,7 +53,8 @@ public class CameraController : MonoBehaviour
     public void RecalculateHints()
     {
         // UGH
-       // Tells the HCS to do stuff
+        // Tells the HCS to do stuff
+        HCS.index = 0;
        if(availableHints.Count <= HCS.index)
         {
             HCS.SwapTheCards(-1);

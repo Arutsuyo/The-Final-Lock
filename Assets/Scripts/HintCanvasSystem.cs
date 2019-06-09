@@ -36,13 +36,8 @@ public class HintCanvasSystem : MonoBehaviour
     public int index = 0;
     public void SwapTheCards(int dir)
     {
-        if (isUpdating)
-        {
-            return;
-        }
-        isUpdating = true;
-        if (stored != null) { StopCoroutine(stored); }
-        StartCoroutine(SwapCards());
+
+        
         if (cc.availableHints.Count == 0)
         {
             index = -1;
@@ -51,8 +46,19 @@ public class HintCanvasSystem : MonoBehaviour
 
             // Don't do anything! D:
         }
-        
         index = (index + dir + cc.availableHints.Count) % cc.availableHints.Count;
+        if (direction1 == -1)
+        {
+            return;
+        }
+        if (isUpdating)
+        {
+            return;
+        }
+        isUpdating = true;
+        if (stored != null) { StopCoroutine(stored); }
+        StartCoroutine(SwapCards());
+        
         
         
     }
@@ -88,6 +94,7 @@ public class HintCanvasSystem : MonoBehaviour
         }
         DisplayCardText();
         isUpdating = false;
+
     }
     public Coroutine stored;
     public List<char> CHARS = new List<char>();
@@ -112,6 +119,8 @@ public class HintCanvasSystem : MonoBehaviour
             CTLP.Add((char)i, CP++);
         }
         MAXCHARS = CHARS.Count;
+        SwapTheCards(-1);
+        DisplayCardText();
     }
     public IEnumerator DecodeCard(string decode, int sp)
     {
