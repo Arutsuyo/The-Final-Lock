@@ -10,11 +10,15 @@ public class InventoryProtector : MonoBehaviour
     public Vector3 targetSize;
     public void AddNewObject(Item go)
     {
-        go.transform.SetParent(locals[CP].transform);
+        // The item is parented to the displayOrientation
+        Quaternion localRot = go.displayOrientation.transform.localRotation;
+        Vector3 size = go.displayOrientation.transform.localScale;    
+        go.displayOrientation.transform.SetParent(locals[CP].transform);
+        go.displayOrientation.transform.localPosition = Vector3.zero;
         // Rather, transform it by the given value in the item
-        go.transform.rotation = Quaternion.identity;
-        go.transform.localPosition = Vector3.zero;
-        //locals[CP].transform.localScale = new Vector3(targetSize.x/bb.extents.x, targetSize.y / bb.extents.y, targetSize.z / bb.extents.z);
+        go.displayOrientation.transform.localScale = size;
+        go.displayOrientation.transform.localRotation = localRot;
+        CP++;
         
     }
 }

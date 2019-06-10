@@ -6,6 +6,7 @@ public class Item : MonoBehaviour
 {
 	public Interactable inter;
 	public CameraController prevCC;
+    public GameObject displayOrientation;
 	public string ItemName;
 	void Start()
 	{

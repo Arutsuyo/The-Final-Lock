@@ -11,6 +11,7 @@ public class Inventory : MonoBehaviour
 
 	public void PickUpItem(Item c)
 	{
+        if (items.Contains(c)) { return; }
         // Remove it from the world and pick it up. Note, for server stuff this would issue a request to the server to grab it. The server will grant it to whoever was first.
         cc.IVP.AddNewObject(c);
         //c.gameObject.SetActive(false);
