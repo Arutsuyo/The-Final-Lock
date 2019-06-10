@@ -497,7 +497,7 @@ MonoBehaviour:
   input: {fileID: 106876082}
   title: SuperComputer
   desc: "Finish Explosive Awakening in \nunder 1 minute."
-  ID: 7
+  ID: 8
   targetTime: 60
 --- !u!43 &113992175
 Mesh:
@@ -10625,9 +10625,17 @@ PrefabInstance:
       propertyPath: m_LocalPosition.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1999925662, guid: 9a3156d65c7b37a47a8e8b7dce3bc304, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1972048580, guid: 9a3156d65c7b37a47a8e8b7dce3bc304, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1999925665, guid: 9a3156d65c7b37a47a8e8b7dce3bc304, type: 3}
+      propertyPath: m_SortingOrder
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1020284436026718662, guid: 9a3156d65c7b37a47a8e8b7dce3bc304,
         type: 3}
@@ -10713,14 +10721,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_SortingOrder
       value: -1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1999925662, guid: 9a3156d65c7b37a47a8e8b7dce3bc304, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1999925665, guid: 9a3156d65c7b37a47a8e8b7dce3bc304, type: 3}
-      propertyPath: m_SortingOrder
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 370013352, guid: 9a3156d65c7b37a47a8e8b7dce3bc304, type: 3}
       propertyPath: overri
@@ -13872,6 +13872,38 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1829596175}
   m_PrefabAsset: {fileID: 0}
+--- !u!84 &1860992488
+RenderTexture:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_Name: 
+  m_ImageContentsHash:
+    serializedVersion: 2
+    Hash: 00000000000000000000000000000000
+  m_ForcedFallbackFormat: 4
+  m_DownscaleFallback: 0
+  m_Width: 1361
+  m_Height: 562
+  m_AntiAliasing: 4
+  m_DepthFormat: 2
+  m_ColorFormat: 7
+  m_MipMap: 0
+  m_GenerateMips: 1
+  m_SRGB: 0
+  m_UseDynamicScale: 0
+  m_BindMS: 0
+  m_TextureSettings:
+    serializedVersion: 2
+    m_FilterMode: 1
+    m_Aniso: 1
+    m_MipBias: 0
+    m_WrapU: 1
+    m_WrapV: 1
+    m_WrapW: 1
+  m_Dimension: 2
+  m_VolumeDepth: 1
 --- !u!1 &1899852440
 GameObject:
   m_ObjectHideFlags: 0

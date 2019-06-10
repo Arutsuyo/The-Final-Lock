@@ -10,6 +10,7 @@ public class AdaptiveOneTimeLock : MonoBehaviour
     public void Start()
     {
         flipableSource.GameStateToggle += FlipableSource_GameStateToggle;
+        flipableSource.GameFinished += FlipableSource_GameStateToggle;
     }
 
     private void FlipableSource_GameStateToggle(CameraController cc, int eventID)

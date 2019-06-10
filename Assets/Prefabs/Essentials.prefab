@@ -254,6 +254,7 @@ MonoBehaviour:
   from: {fileID: 1530697916}
   to: {fileID: 1768098055}
   times: 1.5
+  overri: 1
   toggleAward: 0
 --- !u!1 &521529022
 GameObject:
@@ -3536,7 +3537,7 @@ MonoBehaviour:
   - {fileID: 808849304449964740}
   percent: {fileID: 87954810}
   swapSpeed: 4
-  hintRevealSpeed: 0.25
+  hintRevealSpeed: 0.1
   index: 0
   CHARS: 
   MAXCHARS: 0
