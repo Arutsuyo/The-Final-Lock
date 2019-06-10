@@ -174,8 +174,15 @@ public class HintCanvasSystem : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.H))
         {
+            if(index == -1 && cc.availableHints.Count != 0)
+            {
+                index = 0;
+                
+            }
             direction1 = -1*direction1;
             rec.text = (direction1 ==1? "Close":"Stuck") + "? (H)";
+            DisplayCardText();
+
         }
         if (Input.GetKeyDown(KeyCode.I) && direction1 == 1)
         {

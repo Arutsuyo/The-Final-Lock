@@ -399,6 +399,7 @@ GameObject:
   - component: {fileID: 106876080}
   - component: {fileID: 106876082}
   - component: {fileID: 106876083}
+  - component: {fileID: 106876084}
   m_Layer: 0
   m_Name: Light Puzzle
   m_TagString: Untagged
@@ -481,6 +482,23 @@ MonoBehaviour:
   locks: {fileID: 106876082}
   WT: {fileID: 0}
   failGame: 0
+--- !u!114 &106876084
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 106876079}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7bddbacde283b56468256a2783833b5e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  input: {fileID: 106876082}
+  title: SuperComputer
+  desc: "Finish Explosive Awakening in \nunder 1 minute."
+  ID: 7
+  targetTime: 60
 --- !u!43 &113992175
 Mesh:
   m_ObjectHideFlags: 0
@@ -5837,38 +5855,6 @@ Mesh:
     offset: 0
     size: 0
     path: 
---- !u!84 &783194687
-RenderTexture:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_Name: 
-  m_ImageContentsHash:
-    serializedVersion: 2
-    Hash: 00000000000000000000000000000000
-  m_ForcedFallbackFormat: 4
-  m_DownscaleFallback: 0
-  m_Width: 1360
-  m_Height: 441
-  m_AntiAliasing: 4
-  m_DepthFormat: 2
-  m_ColorFormat: 7
-  m_MipMap: 0
-  m_GenerateMips: 1
-  m_SRGB: 0
-  m_UseDynamicScale: 0
-  m_BindMS: 0
-  m_TextureSettings:
-    serializedVersion: 2
-    m_FilterMode: 1
-    m_Aniso: 1
-    m_MipBias: 0
-    m_WrapU: 1
-    m_WrapV: 1
-    m_WrapW: 1
-  m_Dimension: 2
-  m_VolumeDepth: 1
 --- !u!1 &819928571
 GameObject:
   m_ObjectHideFlags: 0
@@ -7006,7 +6992,7 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 980076115}
   m_PrefabAsset: {fileID: 0}
---- !u!84 &1032943711
+--- !u!84 &1063457660
 RenderTexture:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -7018,8 +7004,8 @@ RenderTexture:
     Hash: 00000000000000000000000000000000
   m_ForcedFallbackFormat: 4
   m_DownscaleFallback: 0
-  m_Width: 560
-  m_Height: 947
+  m_Width: 640
+  m_Height: 480
   m_AntiAliasing: 4
   m_DepthFormat: 2
   m_ColorFormat: 7
@@ -10618,7 +10604,7 @@ PrefabInstance:
         type: 3}
       propertyPath: m_TargetTexture
       value: 
-      objectReference: {fileID: 1032943711}
+      objectReference: {fileID: 1063457660}
     - target: {fileID: 1020284434769714981, guid: 9a3156d65c7b37a47a8e8b7dce3bc304,
         type: 3}
       propertyPath: m_LocalPosition.z
@@ -10722,6 +10708,23 @@ PrefabInstance:
         type: 3}
       propertyPath: m_AssetId.i15
       value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 3141789551942737310, guid: 9a3156d65c7b37a47a8e8b7dce3bc304,
+        type: 3}
+      propertyPath: m_SortingOrder
+      value: -1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1999925662, guid: 9a3156d65c7b37a47a8e8b7dce3bc304, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1999925665, guid: 9a3156d65c7b37a47a8e8b7dce3bc304, type: 3}
+      propertyPath: m_SortingOrder
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 370013352, guid: 9a3156d65c7b37a47a8e8b7dce3bc304, type: 3}
+      propertyPath: overri
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9a3156d65c7b37a47a8e8b7dce3bc304, type: 3}
@@ -12941,6 +12944,9 @@ GameObject:
   - component: {fileID: 1694417945}
   - component: {fileID: 1694417949}
   - component: {fileID: 1694417948}
+  - component: {fileID: 1694417951}
+  - component: {fileID: 1694417950}
+  - component: {fileID: 1694417944}
   m_Layer: 0
   m_Name: Simple
   m_TagString: Untagged
@@ -12948,6 +12954,22 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
+--- !u!114 &1694417944
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1694417943}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b237089b05ceb924987aefa322ab5545, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  input: {fileID: 1694417950}
+  title: Burnt Fuse
+  desc: Fail to survive the first real room.
+  ID: 3
 --- !u!114 &1694417945
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13034,6 +13056,32 @@ MonoBehaviour:
   - The number of dots on that wall might be linked to the numbers for the combo lock
     on the safe.
   finished: 0
+--- !u!114 &1694417950
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1694417943}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b1446b4d6fbc52468ee2745f6b1e994, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1694417951
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1694417943}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f11709e3997ad3142a788b26d6730164, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  exe: {fileID: 1694417950}
+  ti: {fileID: 3302766607599649118}
 --- !u!1001 &1709112602
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -15293,6 +15341,24 @@ MonoBehaviour:
     i15: 94
   m_ServerOnly: 0
   m_LocalPlayerAuthority: 0
+--- !u!114 &1379555749404521711
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1379555749404521703}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b237089b05ceb924987aefa322ab5545, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  input: {fileID: 1379555749404521706}
+  title: Darwin Award
+  desc: 'They''re explosives, what did you
+
+    expect would happen?'
+  ID: 0
 --- !u!33 &1608671991618982842
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -15517,6 +15583,11 @@ PrefabInstance:
       propertyPath: toDisable.Array.data[0]
       value: 
       objectReference: {fileID: 676342790}
+    - target: {fileID: 3763714909193464639, guid: dcad4603b7624e84088dc7101aba32f3,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6015240249282380986, guid: dcad4603b7624e84088dc7101aba32f3,
         type: 3}
       propertyPath: m_AssetId.i0
@@ -15596,11 +15667,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_AssetId.i15
       value: 243
-      objectReference: {fileID: 0}
-    - target: {fileID: 3763714909193464639, guid: dcad4603b7624e84088dc7101aba32f3,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: dcad4603b7624e84088dc7101aba32f3, type: 3}
@@ -15865,11 +15931,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 90.00001
       objectReference: {fileID: 0}
-    - target: {fileID: 4840483048257590020, guid: 6370d836f290111408521f0f59b2acd6,
-        type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 2100000, guid: bc497073511d24b4e831b4954aa20eab, type: 2}
     - target: {fileID: 4840483047633011435, guid: 6370d836f290111408521f0f59b2acd6,
         type: 3}
       propertyPath: m_AssetId.i0
@@ -15950,6 +16011,11 @@ PrefabInstance:
       propertyPath: m_AssetId.i15
       value: 214
       objectReference: {fileID: 0}
+    - target: {fileID: 4840483048257590020, guid: 6370d836f290111408521f0f59b2acd6,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: bc497073511d24b4e831b4954aa20eab, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6370d836f290111408521f0f59b2acd6, type: 3}
 --- !u!114 &5421572009963594285

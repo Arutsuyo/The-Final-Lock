@@ -25,7 +25,7 @@ public class CameraController : MonoBehaviour
 	public float pitch = 0.0f;
 
     public GameObject showZoomWindow;
-
+    public AchievementManager AM;
     [Header("Inventory")]
     public InventoryProtector IVP;
 
