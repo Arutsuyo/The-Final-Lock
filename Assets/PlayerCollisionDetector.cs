@@ -9,7 +9,8 @@ public class PlayerCollisionDetector : MonoBehaviour
     public bool hasFired = false;
     void OnCollisionEnter(Collision other)
     {
-        if(!hasFired && other.transform.name.Equals("Player Model"))
+        //Debug.Log(other.gameObject);
+        if(!hasFired && other.gameObject.CompareTag("Player"))
         {
             hasFired = true;
             toFire.GFinished(RoomManager.instance.Player.cam);
