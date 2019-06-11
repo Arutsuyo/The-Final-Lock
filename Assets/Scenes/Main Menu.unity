@@ -770,7 +770,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &58940364
 RectTransform:
   m_ObjectHideFlags: 0
@@ -5602,7 +5602,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 2036233852}
   m_Direction: 2
   m_Value: 0
-  m_Size: 0.99999964
+  m_Size: 0.9999989
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -8229,7 +8229,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.00036621094, y: 0.000091552734}
+  m_AnchoredPosition: {x: 0.00036621094, y: 0.00021362305}
   m_SizeDelta: {x: 0, y: 300}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &954943078
@@ -8967,7 +8967,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.00036621094, y: 0.00018310547}
+  m_AnchoredPosition: {x: 0.00036621094, y: 0.00045776367}
   m_SizeDelta: {x: 0, y: 300}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &1019301146
@@ -9313,7 +9313,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1549653886}
   m_Direction: 2
   m_Value: 0
-  m_Size: 1
+  m_Size: 0.99999887
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -13176,7 +13176,7 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 329369602}
   m_HandleRect: {fileID: 329369601}
   m_Direction: 2
-  m_Value: 1
+  m_Value: 0
   m_Size: 0.99999964
   m_NumberOfSteps: 0
   m_OnValueChanged:
@@ -14460,7 +14460,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1785237036
 RectTransform:
   m_ObjectHideFlags: 0
@@ -22590,7 +22590,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0.00000011303861, y: -0.000012372264}
+  m_AnchoredPosition: {x: 0.00000011303861, y: 0.0000060332427}
   m_SizeDelta: {x: 0, y: 300}
   m_Pivot: {x: 0, y: 1}
 --- !u!1 &2139289758
